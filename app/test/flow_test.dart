@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vitals/app/app.dart';
 import 'package:vitals/design/glass.dart';
 import 'package:vitals/design/motion.dart';
+import 'package:vitals/speech/patient_strings.dart';
 import 'package:vitals/speech/strings.dart';
 import 'package:vitals/store/preferences.dart';
 import 'package:vitals/store/records.dart';
@@ -70,8 +71,8 @@ void main() {
     await sweep(t);
     await t.tap(find.text(Strings.patient));
     await t.pumpAndSettle();
-    expect(find.text(Strings.noRecordYet), findsOneWidget);
-    expect(find.text(Strings.receiveRecord), findsOneWidget);
+    expect(find.text(PatientStrings.t('noRecordYet')), findsOneWidget);
+    expect(find.text(PatientStrings.t('receiveRecord')), findsOneWidget);
   });
 
   testWidgets('settings turn glass off and motion down without a relaunch',

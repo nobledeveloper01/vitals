@@ -220,3 +220,13 @@ one layer further in.
 words a judgement would use found the registry's relevance score, which
 is not clinical and was renamed anyway — a guard with an exception list
 is a guard with a hole.
+
+### Later: the languages
+
+Four tables, thirteen keys each, a gate that counts them and was broken to
+see it count, and a note in Settings that says *a draft, not yet read by a
+speaker* under every language but English. The translations are mine and
+the note is the honest part; a test also fails a table that repeats English
+for more than three keys, so a "translation" that is English with a
+different file name cannot pass as one. Naijá shares *days* and *in* with
+English, which is Naijá.

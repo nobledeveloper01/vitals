@@ -9,8 +9,6 @@ abstract final class Strings {
   static const chooseFace = 'Who is this device for?';
   static const clinicHint =
       'A facility tablet: registry, encounters, stock, and the whiteboard.';
-  static const patientHint =
-      'Your own phone: your record, your card, who has opened it.';
   static const settings = 'Settings';
   static const plainSurfaces = 'Plain surfaces';
   static const plainSurfacesHint =
@@ -119,11 +117,6 @@ abstract final class Strings {
   static const record = 'Record';
   static const product = 'Product';
   static const units = 'Units';
-  static const cardComplete = 'Every dose on the card is given.';
-  static const dueNowLower = 'due now';
-  static const inDays = 'in';
-  static const reminderNote =
-      'From the national schedule and the dates on the card.';
   static const dueToday = 'due today';
   static const defaulters = 'behind';
   static const daysOverdue = 'days overdue';
@@ -145,10 +138,6 @@ abstract final class Strings {
   static const expires = 'Expires';
   static const expiredVial =
       'This vial has expired. It is not recorded. Use another vial.';
-  static const myRecord = 'My record';
-  static const noRecordYet =
-      'No record on this phone yet. A facility hands you yours.';
-  static const receiveRecord = 'Receive my record';
   static const done = 'Done';
   static const backup = 'Backup';
   static const backupHint =

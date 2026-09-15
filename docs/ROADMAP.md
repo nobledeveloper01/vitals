@@ -132,8 +132,11 @@ domain. Stock: every movement a fact on the facility's record, the count by
 tapping tiles with the difference from the ledger shown and never absorbed,
 low stock and expiring batches marked, a unit issued with every dose in the
 same write. The fridge: morning and evening prompts, a reading outside the
-printed range marked. Still to do in this phase: voice notes (#5), the four
-patient-face languages (#27), and the exit gate's supervised timing (R2).
+printed range marked. Then the four patient-face languages (#27): Naijá,
+Yorùbá, Hausa and Igbo as complete tables of the same keys, `l10n-check`
+failing on one missing and proved to, each marked a draft in Settings until a
+speaker has read it; the clinic face stays English. Still to do in this
+phase: voice notes (#5), and the exit gate's supervised timing (R2).
 
 ## Phase 5 — Exchange and verification
 

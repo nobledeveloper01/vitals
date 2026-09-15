@@ -6,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum Face { unchosen, clinic, patient }
 
+/// The patient face's language; the clinic face stays English.
+enum Lang { english, pidgin, yoruba, hausa, igbo }
+
 final class Preferences extends ChangeNotifier {
   Preferences._();
   static final shared = Preferences._();
@@ -13,10 +16,12 @@ final class Preferences extends ChangeNotifier {
   Face _face = Face.unchosen;
   bool _largeType = false;
   List<int> _facility = const [];
+  Lang _lang = Lang.english;
   bool _locked = false;
   SharedPreferences? _store;
 
   Face get face => _face;
+  Lang get lang => _lang;
 
   /// The facility's own record id — where stock and the fridge log hang.
   /// Made once on this tablet and kept; a test hands one in.
@@ -30,6 +35,7 @@ final class Preferences extends ChangeNotifier {
       _store = await SharedPreferences.getInstance();
       _face = Face.values[_store!.getInt('face') ?? 0];
       _largeType = _store!.getBool('largeType') ?? false;
+      _lang = Lang.values[_store!.getInt('lang') ?? 0];
       final hex = _store!.getString('facility');
       _facility = hex == null
           ? const []
@@ -59,6 +65,12 @@ final class Preferences extends ChangeNotifier {
           _facility.map((b) => b.toRadixString(16).padLeft(2, '0')).join());
     }
     return _facility;
+  }
+
+  set lang(Lang l) {
+    _lang = l;
+    _store?.setInt('lang', l.index);
+    notifyListeners();
   }
 
   set largeType(bool v) {

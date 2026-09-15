@@ -11,6 +11,7 @@ import '../design/glass.dart';
 import '../design/motion.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
+import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/backup.dart';
 import '../store/preferences.dart';
@@ -70,6 +71,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 onChanged: (v) =>
                                     Preferences.shared.largeType = v,
                                 key: const Key('largeType')),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: Gap.m),
+                      // The patient face's language (ADR-0006 #27); a draft
+                      // says it is one.
+                      Glass(
+                        depth: Depth.low,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(PatientStrings.t('language'),
+                                style:
+                                    Type.title.copyWith(color: p.textPrimary)),
+                            const SizedBox(height: Gap.s),
+                            Wrap(
+                              spacing: Gap.s,
+                              runSpacing: Gap.s,
+                              children: [
+                                for (final l in Lang.values)
+                                  ChoiceChip(
+                                    key: Key('lang-${l.name}'),
+                                    label: Text(l.own),
+                                    selected: Preferences.shared.lang == l,
+                                    selectedColor: p.accent,
+                                    labelStyle: Type.small.copyWith(
+                                        color: Preferences.shared.lang == l
+                                            ? p.textOnAccent
+                                            : p.textPrimary),
+                                    onSelected: (_) => setState(
+                                        () => Preferences.shared.lang = l),
+                                  ),
+                              ],
+                            ),
+                            if (!Preferences.shared.lang.reviewed) ...[
+                              const SizedBox(height: Gap.s),
+                              Text(
+                                  '${Preferences.shared.lang.own}: ${PatientStrings.t('draftLanguage')}',
+                                  style: Type.small
+                                      .copyWith(color: p.textSecondary),
+                                  key: const Key('draftNote')),
+                            ],
                           ],
                         ),
                       ),

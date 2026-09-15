@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vitals/screens/shell.dart';
+import 'package:vitals/speech/patient_strings.dart';
 import 'package:vitals/speech/strings.dart';
 import 'package:vitals/store/ids.dart';
 import 'package:vitals/store/records.dart';
@@ -75,11 +76,13 @@ void main() {
         find.bySemanticsLabel('Musa Bello: OPV 1 · 58 ${Strings.daysOverdue}'),
         findsOneWidget,
         reason: 'due at day 42, today is day 100');
-    expect(find.bySemanticsLabel('Amina Bello: BCG · ${Strings.dueNowLower}'),
+    expect(
+        find.bySemanticsLabel(
+            'Amina Bello: BCG · ${PatientStrings.t('dueNow')}'),
         findsOneWidget);
     expect(
         find.bySemanticsLabel(
-            'Sadiq Bello: OPV 1 · ${Strings.inDays} 22 ${Strings.days}'),
+            'Sadiq Bello: OPV 1 · ${PatientStrings.t('inDays')} 22 ${Strings.days}'),
         findsOneWidget,
         reason: 'the six-week doses are 42 days from birth');
     semantics.dispose();
@@ -97,7 +100,9 @@ void main() {
     await t.pumpWidget(MaterialApp(
         home: Scaffold(body: Reminders(records: records, today: today))));
     await t.pumpAndSettle();
-    expect(find.bySemanticsLabel('Zara Bello: ${Strings.cardComplete}'),
+    expect(
+        find.bySemanticsLabel(
+            'Zara Bello: ${PatientStrings.t('cardComplete')}'),
         findsOneWidget);
     semantics.dispose();
   });

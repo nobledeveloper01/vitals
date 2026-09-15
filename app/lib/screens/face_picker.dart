@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
+import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
 
@@ -32,7 +33,7 @@ class FacePicker extends StatelessWidget {
               const SizedBox(height: Gap.m),
               _FaceCard(
                   title: Strings.patient,
-                  hint: Strings.patientHint,
+                  hint: PatientStrings.t('patientHint'),
                   icon: Icons.person_outline,
                   onTap: () => Preferences.shared.face = Face.patient),
             ],

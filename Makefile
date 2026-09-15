@@ -17,10 +17,10 @@ help: ## Show this help
 # --- the gate ---------------------------------------------------------------
 
 .PHONY: ci
-ci: doc-check design-check counts-check copy-check domain-purity brandmark-check analyze test parity coverage-gate ## Everything CI runs
+ci: doc-check design-check counts-check copy-check l10n-check domain-purity brandmark-check analyze test parity coverage-gate ## Everything CI runs
 
 .PHONY: gates
-gates: doc-check design-check counts-check copy-check domain-purity brandmark-check coverage-gate ## The blocking gates alone
+gates: doc-check design-check counts-check copy-check l10n-check domain-purity brandmark-check coverage-gate ## The blocking gates alone
 
 .PHONY: doc-check
 doc-check: ## Fail if a required document is missing, untracked, or stale
@@ -37,6 +37,10 @@ counts-check: ## Fail if README quotes a figure the repository does not have
 .PHONY: copy-check
 copy-check: ## Fail on any string that interprets or overclaims
 	@python3 scripts/copy-check.py
+
+.PHONY: l10n-check
+l10n-check: ## Every patient-face language has every key
+	@python3 scripts/l10n-check.py
 
 .PHONY: domain-purity
 domain-purity: ## Fail if the domain package imports anything, or reads a clock

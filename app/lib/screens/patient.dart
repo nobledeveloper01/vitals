@@ -14,6 +14,7 @@ import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
 import '../report/card_pdf.dart';
+import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/ids.dart';
 import '../store/drafts.dart';
@@ -76,7 +77,7 @@ class PatientScreen extends StatelessWidget {
                   record == null ? null : Registration.of(record.current);
               if (record == null || reg == null) {
                 return Center(
-                    child: Text(Strings.noRecordYet,
+                    child: Text(PatientStrings.t('noRecordYet'),
                         style: Type.body.copyWith(color: p.textSecondary)));
               }
               final given = Given.of(record.current);

@@ -9,6 +9,7 @@ import 'package:vitals_domain/vitals_domain.dart';
 import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
+import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
 import '../store/records.dart';
@@ -155,12 +156,12 @@ class _PatientHome extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(Gap.l),
             children: [
-              _Header(title: Strings.myRecord, records: records),
+              _Header(title: PatientStrings.t('myRecord'), records: records),
               const SizedBox(height: Gap.m),
               if (records.all.isEmpty)
                 Glass(
                   depth: Depth.low,
-                  child: Text(Strings.noRecordYet,
+                  child: Text(PatientStrings.t('noRecordYet'),
                       style: Type.body.copyWith(color: p.textSecondary)),
                 )
               else
@@ -170,7 +171,8 @@ class _PatientHome extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(Gap.l),
-          child: PrimaryButton(label: Strings.receiveRecord, onPressed: () {}),
+          child: PrimaryButton(
+              label: PatientStrings.t('receiveRecord'), onPressed: () {}),
         ),
       ],
     );
@@ -207,14 +209,17 @@ class Reminders extends StatelessWidget {
               ? '${next.due.vaccine.label} ${next.due.dose}'
               : next.due.vaccine.label;
       final (line, colour) = switch (next?.status) {
-        null => (Strings.cardComplete, p.fine),
+        null => (PatientStrings.t('cardComplete'), p.fine),
         Status.overdue => (
-            '$vaccine · ${todayDays - next!.dueOn!} ${Strings.daysOverdue}',
+            '$vaccine · ${todayDays - next!.dueOn!} ${PatientStrings.t('daysOverdue')}',
             p.attention
           ),
-        Status.due => ('$vaccine · ${Strings.dueNowLower}', p.textPrimary),
+        Status.due => (
+            '$vaccine · ${PatientStrings.t('dueNow')}',
+            p.textPrimary
+          ),
         _ => (
-            '$vaccine · ${Strings.inDays} ${next!.dueOn! - todayDays} ${Strings.days}',
+            '$vaccine · ${PatientStrings.t('inDays')} ${next!.dueOn! - todayDays} ${PatientStrings.t('days')}',
             p.textPrimary
           ),
       };
@@ -234,7 +239,7 @@ class Reminders extends StatelessWidget {
                 const SizedBox(height: Gap.xs),
                 Text(line, style: Type.headline.copyWith(color: colour)),
                 const SizedBox(height: Gap.xs),
-                Text(Strings.reminderNote,
+                Text(PatientStrings.t('reminderNote'),
                     style: Type.small.copyWith(color: p.textSecondary)),
               ],
             ),

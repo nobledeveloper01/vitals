@@ -7,6 +7,10 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **Five languages on the patient face.** English, Naijá, Yorùbá, Hausa and
+  Igbo, each a complete table of the same keys held complete by a gate;
+  every table but English marked a draft where it is chosen, until a
+  speaker has read it. The clinic face stays English.
 - **Vitals, antenatal, stock, the fridge.** Readings as integer facts with
   the pulse card, the printed range and the trend behind the number; forms
   drafted on every keystroke and restored after a kill; the pregnancy and
