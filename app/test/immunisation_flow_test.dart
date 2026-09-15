@@ -58,6 +58,15 @@ void main() {
           today: today,
           facilityRecord: facility));
 
+  /// A tall surface: the card's header sits under the pulse and lab cards
+  /// and above the buttons, and its icons must be inside the viewport.
+  void tall(WidgetTester t) {
+    t.view.physicalSize = const Size(800, 2000);
+    t.view.devicePixelRatio = 1.0;
+    addTearDown(t.view.resetPhysicalSize);
+    addTearDown(t.view.resetDevicePixelRatio);
+  }
+
   Future<void> tapAndWrite(WidgetTester t, Finder f) async {
     await t.runAsync(() async {
       await t.tap(f);
@@ -113,6 +122,7 @@ void main() {
 
   testWidgets('the print button hands over an A5 PDF named for the child',
       (t) async {
+    tall(t);
     final patient = await newborn(t);
     List<int>? bytes;
     String? name;
@@ -139,6 +149,7 @@ void main() {
   });
 
   testWidgets('the referral letter carries the chosen sections', (t) async {
+    tall(t);
     final patient = await newborn(t);
     List<int>? bytes;
     String? name;

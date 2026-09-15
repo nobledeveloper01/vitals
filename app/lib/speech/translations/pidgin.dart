@@ -95,4 +95,10 @@ const Map<String, String> pidgin = {
   'noCamera': 'No camera for this phone. Paste the code for down instead.',
   'cameraRefused':
       'Dem no allow the camera. Paste the code for down, or allow am for the phone settings.',
+  'facilitiesNearMe': 'Clinic wey near me',
+  'facilitiesSample': 'sample for Lagos, until the full register enter',
+  'askingPosition': 'Dey ask the phone where e dey…',
+  'noPosition': 'The phone no fit talk where e dey. Choose your area:',
+  'fromWhereYouAre': 'From where you dey',
+  'fromTheCentreOf': 'From the middle of',
 };

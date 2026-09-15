@@ -327,3 +327,16 @@ built, with a paste field as the floor for a device with no camera, and
 the simulator — which has no camera — says so in the app's own words
 instead of the plugin's. What is still hardware is the watching: two real
 handsets, one screen, one camera, timed.
+
+### Then: the rest of the code
+
+Lab results and AEFI as two new fact kinds, on both sides of the parity
+line (the C# enum first, so the fixture could not drift). The pack's
+barcode through the scanner already in the app; the facility list from a
+position asked once. All thirty of ADR-0006 are built now, three refused.
+
+**A tall test surface, not a taller tolerance.** Three tests failed after
+the lab card went above the immunisation card: the header's icons had
+slipped under the viewport's edge and `tap` warned and did nothing. The
+fix was a 2000-pixel surface at pixel ratio one — the phone is taller
+than the test's default — and not `warnIfMissed: false`.

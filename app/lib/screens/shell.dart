@@ -17,6 +17,7 @@ import 'patient.dart';
 import 'register.dart';
 import 'registry.dart';
 import 'emergency.dart';
+import 'facilities.dart';
 import 'receive.dart';
 import 'settings.dart';
 import 'share.dart';
@@ -194,6 +195,13 @@ class _PatientHome extends StatelessWidget {
                 onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
                         builder: (_) => ReceiveScreen(records: records)))),
+            const SizedBox(height: Gap.s),
+            SecondaryButton(
+              label: PatientStrings.t('facilitiesNearMe'),
+              onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                      builder: (_) => const FacilitiesScreen())),
+            ),
             const SizedBox(height: Gap.s),
             SecondaryButton(
               label: PatientStrings.t('checkAPack'),

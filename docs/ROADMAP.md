@@ -174,9 +174,13 @@ and a *Receive a record* screen on both faces gathers frames from the camera,
 or from a paste field where there is no camera, and merges the record by
 union; a test pastes a real transfer's frames in reverse, one twice, one junk,
 and reads the record back on the other device, then again for nothing added.
-Still to build: BLE (R3, hardware), a mixed Android↔iOS QR transfer watched
-on real handsets (R3), the facility map (#18), the pack photographed (#20's
-camera half).
+Then the pack's barcode through the same camera on the verify screen — a
+number printed in a code, or a GTIN the list knows, the printed number
+winning — and the facility list (#18): a bundled sample with its date, sorted
+from the phone's position asked once and never kept, or from the centre of an
+area the person picks, with the words saying which. All thirty are built.
+Still to build: BLE (R3, hardware); a mixed Android↔iOS QR transfer watched on
+real handsets (R3).
 
 ## Phase 6 — Pilot hardening → **v1.0**
 
@@ -190,7 +194,11 @@ data.*
 
 From the thirty: #30 the signed audit export.
 
-**Built ahead, 2026-09-15.** The audit export: every write and every open as
+**Built ahead, 2026-09-15.** Lab results as the laboratory printed them —
+text, never compared to anything, the laboratory's own report carrying its
+range — and AEFI as the national form asks it: every sign answered, the
+form's *serious* box kept as the nurse's answer, reported onward or not.
+The audit export: every write and every open as
 a CSV row, signed with the tablet's own Ed25519 key kept in the keychain, the
 public key in the file and in Settings; `scripts/verify-audit.py` checks a
 file with nothing but Python, and the test runs it on a good file, a changed

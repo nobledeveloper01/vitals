@@ -7,6 +7,13 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **Lab results and events after a dose.** A result as the laboratory
+  printed it, text never compared to anything; the national AEFI form with
+  every sign answered and its own *serious* box kept as an answer.
+- **The pack's barcode and the facility list.** The verify screen reads a
+  pack's code through the camera — a printed number or a GTIN the list
+  knows; the bundled facility list sorted from the phone's position, asked
+  once, or from an area's centre, and says which. All thirty things built.
 - **The receiving side of the handover.** A frame is text any camera can
   name (`VITALS/1 …`); *Receive a record* on both faces reads frames from
   the camera, or from a paste field on a device without one, and merges the

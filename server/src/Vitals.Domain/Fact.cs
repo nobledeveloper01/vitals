@@ -11,6 +11,8 @@ public enum FactKind : byte
     Note = 5,
     Supersession = 6,
     Access = 7,
+    Lab = 8,
+    Aefi = 9,
 }
 
 /// <summary>One immutable observation. Equality is by id; order is by stamp then id.</summary>

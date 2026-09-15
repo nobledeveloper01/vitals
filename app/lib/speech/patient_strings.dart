@@ -119,6 +119,12 @@ abstract final class PatientStrings {
     'noCamera': 'No camera on this device. Paste the code below instead.',
     'cameraRefused':
         'The camera was not allowed. Paste the code below instead, or allow it in the phone\'s settings.',
+    'facilitiesNearMe': 'Facilities near me',
+    'facilitiesSample': 'a sample of Lagos, until the full register is loaded',
+    'askingPosition': 'Asking the phone where it is…',
+    'noPosition': 'The phone could not say where it is. Pick your area:',
+    'fromWhereYouAre': 'From where you are',
+    'fromTheCentreOf': 'From the centre of',
   };
 
   static const Map<Lang, Map<String, String>> tables = {

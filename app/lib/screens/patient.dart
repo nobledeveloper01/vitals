@@ -20,6 +20,7 @@ import '../store/ids.dart';
 import '../store/drafts.dart';
 import '../store/records.dart';
 import 'anc.dart';
+import 'lab.dart';
 import 'referral.dart';
 import 'shell.dart' show AttributionChip, Dates;
 import 'vitals.dart';
@@ -155,6 +156,21 @@ class _PatientScreenState extends State<PatientScreen> {
                             observations: observations,
                             ageDays: _today - reg.bornDays),
                         const SizedBox(height: Gap.m),
+                        LabCard(
+                          results: LabResult.of(record.current),
+                          onAdd: () => showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => LabSheet(
+                                records: records,
+                                patient: patient,
+                                ids: ids,
+                                author: author,
+                                today: _today),
+                          ),
+                        ),
+                        const SizedBox(height: Gap.m),
                         if (Schedule.covers(
                             bornDays: reg.bornDays, todayDays: _today))
                           Glass(
@@ -173,6 +189,25 @@ class _PatientScreenState extends State<PatientScreen> {
                                         color: p.textPrimary),
                                     onPressed: () => _print(reg, card),
                                   ),
+                                  if (given.isNotEmpty)
+                                    IconButton(
+                                      tooltip: Strings.eventAfterDose,
+                                      icon: Icon(Icons.report_gmailerrorred,
+                                          color: p.textPrimary),
+                                      onPressed: () =>
+                                          showModalBottomSheet<void>(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (_) => AefiSheet(
+                                            records: records,
+                                            patient: patient,
+                                            ids: ids,
+                                            author: author,
+                                            given: given,
+                                            today: _today),
+                                      ),
+                                    ),
                                   IconButton(
                                     tooltip: Strings.referralLetter,
                                     icon: Icon(Icons.outgoing_mail,
@@ -206,6 +241,25 @@ class _PatientScreenState extends State<PatientScreen> {
                                 const SizedBox(height: Gap.s),
                                 for (final line in card)
                                   _CardRow(line: line, today: _today),
+                                for (final e in Aefi.of(record.current)) ...[
+                                  const SizedBox(height: Gap.s),
+                                  Semantics(
+                                    container: true,
+                                    excludeSemantics: true,
+                                    label:
+                                        '${Strings.eventAfterDose}, ${Vaccine.fromCode(e.vaccine).label} ${e.dose}: ${e.present.map((s) => s.question).join(', ')}',
+                                    child: Row(children: [
+                                      Icon(Icons.report_gmailerrorred,
+                                          color: p.danger, size: 20),
+                                      const SizedBox(width: Gap.s),
+                                      Expanded(
+                                          child: Text(
+                                              '${Vaccine.fromCode(e.vaccine).label} ${e.dose} · ${e.present.map((s) => s.question).join(', ')}${e.reported ? ' · ${Strings.reportedOnward}' : ''}',
+                                              style: Type.small
+                                                  .copyWith(color: p.danger))),
+                                    ]),
+                                  ),
+                                ],
                               ],
                             ),
                           )

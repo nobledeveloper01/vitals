@@ -96,4 +96,10 @@ const Map<String, String> hausa = {
   'noCamera': 'Babu kyamara a wannan wayar. Manna lambar a ƙasa maimakon haka.',
   'cameraRefused':
       'Ba a bar kyamarar ba. Manna lambar a ƙasa, ko ka bar ta a saitunan wayar.',
+  'facilitiesNearMe': 'Asibitoci kusa da ni',
+  'facilitiesSample': 'samfurin Legas, har sai an ɗora cikakken rajista',
+  'askingPosition': 'Ana tambayar wayar inda take…',
+  'noPosition': 'Wayar ba ta iya cewa inda take ba. Zaɓi yankinka:',
+  'fromWhereYouAre': 'Daga inda kake',
+  'fromTheCentreOf': 'Daga tsakiyar',
 };

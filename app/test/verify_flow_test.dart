@@ -13,7 +13,7 @@ void main() {
   }
 
   testWidgets('three outcomes', (t) async {
-    await t.pumpWidget(const MaterialApp(home: VerifyScreen()));
+    await t.pumpWidget(const MaterialApp(home: VerifyScreen(camera: false)));
     await t.pumpAndSettle();
     await check(t, 'NAFDAC REG NO a4 - 1234');
     expect(find.text(PatientStrings.t('onTheList')), findsOneWidget);
@@ -25,6 +25,13 @@ void main() {
         reason: 'Z9 is not covered by the list');
     await check(t, 'nothing printed');
     expect(find.text(PatientStrings.t('cannotSay')), findsOneWidget);
+    // A pack's barcode, as the scanner would hand it over.
+    await check(t, '(01)05012345678917(10)AMX-3');
+    expect(find.text(PatientStrings.t('onTheList')), findsOneWidget);
+    expect(find.textContaining('Amoxicillin'), findsOneWidget);
+    await check(t, '5012345678999');
+    expect(find.text(PatientStrings.t('cannotSay')), findsOneWidget,
+        reason: 'a barcode the list does not know is not a number');
   });
 
   test('no language says genuine, authentic, fake or counterfeit', () {

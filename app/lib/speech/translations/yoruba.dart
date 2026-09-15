@@ -96,4 +96,10 @@ const Map<String, String> yoruba = {
   'noCamera': 'Kò sí kámẹ́rà lórí fóònù yìí. Lẹ kóòdù náà sísàlẹ̀ dípò rẹ̀.',
   'cameraRefused':
       'A kò gba kámẹ́rà láàyè. Lẹ kóòdù náà sísàlẹ̀, tàbí gbà á láàyè nínú ètò fóònù.',
+  'facilitiesNearMe': 'Àwọn ilé ìwòsàn tó sún mọ́ mi',
+  'facilitiesSample': 'àpẹẹrẹ fún Èkó, títí a ó fi kó ìforúkọsílẹ̀ kíkún wọlé',
+  'askingPosition': 'Ń bi fóònù níbi tó wà…',
+  'noPosition': 'Fóònù kò lè sọ ibi tó wà. Yan agbègbè rẹ:',
+  'fromWhereYouAre': 'Láti ibi tí o wà',
+  'fromTheCentreOf': 'Láti àárín',
 };

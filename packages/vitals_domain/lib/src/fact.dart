@@ -10,7 +10,9 @@ enum FactKind {
   stockMovement(4),
   note(5),
   supersession(6),
-  access(7);
+  access(7),
+  lab(8),
+  aefi(9);
 
   const FactKind(this.code);
   final int code;

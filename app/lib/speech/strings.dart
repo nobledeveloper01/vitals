@@ -104,6 +104,22 @@ abstract final class Strings {
   static const receiveRecord = 'Receive a record';
   static const thisFacility = 'this facility';
   static const referralLetter = 'Referral letter';
+  static const labResults = 'Lab results';
+  static const noLabResults = 'None recorded.';
+  static const addLabResult = 'Add a lab result';
+  static const labHint =
+      'As the laboratory printed it. The result is shown as text; the laboratory\'s own report carries its range.';
+  static const labTest = 'Test';
+  static const labResult = 'Result';
+  static const labUnit = 'Unit';
+  static const labName = 'Laboratory';
+  static const eventAfterDose = 'Event after a dose';
+  static const aefiHint =
+      'The national AEFI form. Ask each sign; every one needs an answer.';
+  static const formSeriousBox = 'The form\'s "serious" box';
+  static const reportedOnward = 'Reported to the LGA';
+  static const recordEvent = 'Record the event';
+  static const eventsAfterDoses = 'Events after doses';
   static const scheduleCoversChildren =
       'The routine schedule covers children under five; no card here.';
   static const changeFace = 'Change who this device is for';

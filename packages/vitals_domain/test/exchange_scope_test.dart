@@ -184,6 +184,40 @@ void main() {
           Outcome.cannotSay);
     });
 
+    test('a pack barcode: the GTIN the list knows resolves to its number', () {
+      expect(Verify.gtinIn('(01)05012345678900(17)271231(10)ABC'),
+          '05012345678900');
+      expect(Verify.gtinIn('5012345678900'), '05012345678900');
+      expect(Verify.gtinIn('hello'), isNull);
+      const gtins = {'05012345678900': 'A4-1234'};
+      expect(
+          Verify.check(null,
+                  list: list,
+                  covered: covered,
+                  gtins: gtins,
+                  gtin: '05012345678900')
+              .outcome,
+          Outcome.onTheList);
+      expect(
+          Verify.check(null,
+                  list: list,
+                  covered: covered,
+                  gtins: gtins,
+                  gtin: '09999999999999')
+              .outcome,
+          Outcome.cannotSay,
+          reason: 'a GTIN the list does not know is not a number');
+      expect(
+          Verify.check('A4-9999',
+                  list: list,
+                  covered: covered,
+                  gtins: gtins,
+                  gtin: '05012345678900')
+              .outcome,
+          Outcome.notOnTheList,
+          reason: 'the printed number wins over the GTIN');
+    });
+
     test('the domain never says genuine', () {
       final banned = RegExp(r'\b(genuine|authentic|fake|counterfeit\w*|real)\b',
           caseSensitive: false);

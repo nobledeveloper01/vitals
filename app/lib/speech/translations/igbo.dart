@@ -95,4 +95,10 @@ const Map<String, String> igbo = {
   'noCamera': "Enweghị igwefoto na ekwentị a. Mado koodu ahụ n'okpuru kama.",
   'cameraRefused':
       "Anabataghị igwefoto ahụ. Mado koodu ahụ n'okpuru, ma ọ bụ kwe ya na ntọala ekwentị.",
+  'facilitiesNearMe': 'Ụlọ ọgwụ ndị dị m nso',
+  'facilitiesSample': 'ihe atụ nke Lagos, ruo mgbe a ga-ebubata ndekọ zuru ezu',
+  'askingPosition': 'Na-ajụ ekwentị ebe ọ nọ…',
+  'noPosition': 'Ekwentị enweghị ike ikwu ebe ọ nọ. Họrọ mpaghara gị:',
+  'fromWhereYouAre': 'Site ebe ị nọ',
+  'fromTheCentreOf': 'Site na etiti',
 };

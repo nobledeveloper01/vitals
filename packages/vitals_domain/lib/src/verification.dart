@@ -23,11 +23,27 @@ abstract final class Verify {
     return m == null ? null : '${m[1]}-${m[2]}';
   }
 
+  /// A pack's barcode, as a scanner reads it: a GS1 element string with a
+  /// (01) GTIN, or a bare EAN-13 / GTIN-14 of digits. The list may know a
+  /// GTIN as well as a number; the number printed inside a code wins.
+  static String? gtinIn(String text) {
+    final t = text.trim();
+    final gs1 = RegExp(r'\(?01\)?(\d{14})').firstMatch(t);
+    if (gs1 != null) return gs1[1];
+    final bare = RegExp(r'^\d{13,14}$').firstMatch(t);
+    return bare == null ? null : bare[0]!.padLeft(14, '0');
+  }
+
   /// The list as data: number to product. A list that covers a prefix is
   /// declared by [covered]; a number whose prefix is not covered is a
   /// question the list cannot answer, not a number that is not on it.
+  /// A scanned GTIN the list knows resolves to its number first.
   static Verification check(String? number,
-      {required Map<String, String> list, required Set<String> covered}) {
+      {required Map<String, String> list,
+      required Set<String> covered,
+      Map<String, String> gtins = const {},
+      String? gtin}) {
+    number ??= gtin == null ? null : gtins[gtin];
     if (number == null) {
       return const Verification(Outcome.cannotSay, number: '');
     }
