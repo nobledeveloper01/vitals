@@ -382,3 +382,16 @@ in one room.
 **What the user's list came to:** all five items are code now, and every
 one of them landed with its test the same day. What remains is the same
 wall as before, exactly: hardware, people, and a pilot.
+
+## 2026-09-15, afternoon — the README in Grid's shape
+
+The README was a status page with a design section and a numbers table. It is
+Grid's twelve sections now — the problem, how it works, the app, each layer,
+quick start, correctness notes, the pipeline, data handling, development,
+layout, status, licensing — because the user asked for that shape across the
+portfolio, and because the correctness notes are where the journal's surprises
+become something a reader can learn from without reading a night's journal.
+The repository also had no licence file at all; it has Grid's pair now — BSL
+for the app and the server, Apache-2.0 for the domain — with the grant written
+for records rather than meters. **A README that says "two licences" needs two
+files**, which the counts gate does not check and a reader would.
