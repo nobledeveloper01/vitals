@@ -184,6 +184,12 @@ data.*
 
 From the thirty: #30 the signed audit export.
 
+**Built ahead, 2026-09-15.** The audit export: every write and every open as
+a CSV row, signed with the tablet's own Ed25519 key kept in the keychain, the
+public key in the file and in Settings; `scripts/verify-audit.py` checks a
+file with nothing but Python, and the test runs it on a good file, a changed
+byte, and the wrong key. The rest of this phase is the pilot itself.
+
 ## Phase 7 — Scale · *v1.1*
 
 The supervisor dashboard served by the .NET server, FHIR export, multi-facility

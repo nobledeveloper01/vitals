@@ -13,6 +13,7 @@ import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
+import '../store/audit.dart';
 import '../store/backup.dart';
 import '../store/preferences.dart';
 import '../store/records.dart';
@@ -150,6 +151,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
+                      if (Preferences.shared.face == Face.clinic) ...[
+                        const SizedBox(height: Gap.m),
+                        // The signed audit export (ADR-0006 #30).
+                        Glass(
+                          depth: Depth.low,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(Strings.auditExport,
+                                  style: Type.title
+                                      .copyWith(color: p.textPrimary)),
+                              const SizedBox(height: Gap.xs),
+                              Text(Strings.auditExportHint,
+                                  style: Type.secondary
+                                      .copyWith(color: p.textSecondary)),
+                              const SizedBox(height: Gap.m),
+                              SecondaryButton(
+                                  label: Strings.exportTheAudit,
+                                  onPressed: widget.records.facts == 0
+                                      ? null
+                                      : _exportAudit),
+                              if (_publicKey != null) ...[
+                                const SizedBox(height: Gap.s),
+                                SelectableText(
+                                    '${Strings.tabletKey} $_publicKey',
+                                    style: Type.small
+                                        .copyWith(color: p.textSecondary)),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -188,6 +221,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  String? _publicKey;
+
+  Future<void> _exportAudit() async {
+    final keys = AuditKeys();
+    final file = File(
+        '${(await getTemporaryDirectory()).path}/vitals-audit-${DateTime.now().toIso8601String().substring(0, 10)}.csv');
+    await file.writeAsBytes(await AuditExport.signed(widget.records, keys));
+    final pk = await keys.publicKeyHex();
+    if (mounted) setState(() => _publicKey = pk);
+    await SharePlus.instance.share(
+        ShareParams(files: [XFile(file.path)], text: Strings.auditShareText));
   }
 
   Future<void> _backUp() async {

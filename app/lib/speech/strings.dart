@@ -103,6 +103,12 @@ abstract final class Strings {
   static const stock = 'Stock';
   static const thisFacility = 'this facility';
   static const referralLetter = 'Referral letter';
+  static const auditExport = 'Audit export';
+  static const auditExportHint =
+      'Every write and every open, as a CSV signed by this tablet. A changed line is a failed signature; the check needs only Python.';
+  static const exportTheAudit = 'Export the audit';
+  static const tabletKey = 'This tablet\'s key:';
+  static const auditShareText = 'Vitals audit export, signed by the tablet.';
   static const referTo = 'To which facility';
   static const reasonInYourWords = 'The reason, in your words';
   static const sectionsToInclude = 'Sections to include';

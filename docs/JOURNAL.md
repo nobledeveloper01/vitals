@@ -273,3 +273,10 @@ lines and finds the private note absent before the PDF is rendered.
 sheet's save ended with `Navigator.pop`, and in a test whose whole tree
 was that sheet, the navigator had nothing left and said so on the next
 pump. A fresh tree between steps; the widget was right.
+
+### Later: the audit, signed
+
+A CSV, a public key line, a signature line, and a verifier in plain Python
+— the reference Ed25519 arithmetic, slow and dependency-free, the same
+shape as Snag's second verifier. The test runs the script three times: a
+good file, a byte flipped, the wrong key. Two of the three must fail.

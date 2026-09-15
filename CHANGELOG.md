@@ -14,7 +14,8 @@ is pre-release, so everything is under Unreleased until v1.0.
   patient sees. A pack checked against a bundled list with three outcomes
   and never a fourth word. The emergency card on the lock face while the
   patient opts in, never on a clinic tablet. The referral letter with the
-  sections the nurse chose.
+  sections the nurse chose. The audit export, signed by the tablet's
+  Ed25519 key and verified by a Python script with no dependencies.
 - **Five languages on the patient face.** English, Naijá, Yorùbá, Hausa and
   Igbo, each a complete table of the same keys held complete by a gate;
   every table but English marked a draft where it is chosen, until a
