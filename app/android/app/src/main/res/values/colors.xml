@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The launch ground, the same colour as the splash's mesh base, so there is no flash on handover. -->
+    <color name="launch_ground">#F4F7FA</color>
+</resources>

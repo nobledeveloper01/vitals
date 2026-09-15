@@ -36,41 +36,46 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
-    return Mesh(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedBuilder(
-              animation: _c,
-              builder: (context, child) => ShaderMask(
-                blendMode: BlendMode.srcATop,
-                shaderCallback: (rect) => LinearGradient(
-                  begin: Alignment(-1 + 2 * _c.value * 2 - 2, 0),
-                  end: Alignment(-1 + 2 * _c.value * 2, 0),
-                  colors: [
-                    Colors.transparent,
-                    Colors.white.withValues(alpha: 0.35),
-                    Colors.transparent
-                  ],
-                ).createShader(rect),
-                child: child,
+    // A Material under the text: without one, Flutter draws the yellow
+    // double underline that means "no default text style here".
+    return Material(
+      color: p.base,
+      child: Mesh(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedBuilder(
+                animation: _c,
+                builder: (context, child) => ShaderMask(
+                  blendMode: BlendMode.srcATop,
+                  shaderCallback: (rect) => LinearGradient(
+                    begin: Alignment(-1 + 2 * _c.value * 2 - 2, 0),
+                    end: Alignment(-1 + 2 * _c.value * 2, 0),
+                    colors: [
+                      Colors.transparent,
+                      Colors.white.withValues(alpha: 0.35),
+                      Colors.transparent
+                    ],
+                  ).createShader(rect),
+                  child: child,
+                ),
+                child: Semantics(
+                  label: Strings.appName,
+                  image: true,
+                  child: Image.asset('assets/mark/mark.png',
+                      width: 112, height: 112, excludeFromSemantics: true),
+                ),
               ),
-              child: Semantics(
-                label: Strings.appName,
-                image: true,
-                child: Image.asset('assets/mark/mark.png',
-                    width: 112, height: 112, excludeFromSemantics: true),
-              ),
-            ),
-            const SizedBox(height: Gap.l),
-            Text(Strings.appName,
-                style: Type.display.copyWith(color: p.textPrimary)),
-            const SizedBox(height: Gap.s),
-            Text(Strings.tagline,
-                style: Type.secondary.copyWith(color: p.textSecondary),
-                textAlign: TextAlign.center),
-          ],
+              const SizedBox(height: Gap.l),
+              Text(Strings.appName,
+                  style: Type.display.copyWith(color: p.textPrimary)),
+              const SizedBox(height: Gap.s),
+              Text(Strings.tagline,
+                  style: Type.secondary.copyWith(color: p.textSecondary),
+                  textAlign: TextAlign.center),
+            ],
+          ),
         ),
       ),
     );

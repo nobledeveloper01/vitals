@@ -53,13 +53,18 @@ brandmark-check: ## Fail if the committed mark is not what the script draws
 # --- build and test ---------------------------------------------------------
 
 .PHONY: analyze
-analyze: ## Static analysis: the domain, the app, the server (warnings are errors)
+analyze: deps ## Static analysis: the domain, the app, the server (warnings are errors)
 	cd $(DOMAIN) && $(DART) analyze --fatal-infos
 	cd $(APP) && $(FLUTTER) analyze --fatal-infos
 	cd $(SERVER) && $(DOTNET) build --nologo -v q
 
+.PHONY: deps
+deps: ## Fetch the Dart and Flutter dependencies
+	cd $(DOMAIN) && $(DART) pub get
+	cd $(APP) && $(FLUTTER) pub get
+
 .PHONY: test
-test: test-domain test-app test-server ## Run every test suite
+test: deps test-domain test-app test-server ## Run every test suite
 
 .PHONY: test-domain
 test-domain: ## The domain's five invariants over generated worlds, in seconds

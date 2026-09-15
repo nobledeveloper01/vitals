@@ -48,6 +48,22 @@ clinician's hour, and a programme partner.
 
 <p align="center"><img src="docs/mark.png" width="112" alt="The Vitals mark: a rounded square in the brand gradient with one pulse line ending in a dot" /></p>
 
+## The design, on a screen
+
+<p align="center">
+  <img src="docs/screenshots/01-splash.png" width="230" alt="The splash: the mark on the gradient mesh, the brand gradient sweeping through it once" />
+  <img src="docs/screenshots/02-faces.png" width="230" alt="Who is this device for: two glass cards, Clinic and My record" />
+  <img src="docs/screenshots/03-whiteboard.png" width="230" alt="The clinic's whiteboard: a glass card on the mesh, the sync-honesty chip saying last met another device: never, and the gradient primary action" />
+</p>
+
+Glass over a gradient mesh, in three depths that each mean one thing; one gradient-filled
+control per screen; and under all of it a solid floor — `Plain surfaces` and `Less
+motion` in Settings, read at act time, and the same app either way.
+
+<p align="center">
+  <img src="docs/screenshots/04-settings.png" width="230" alt="Settings: Plain surfaces, Less motion, Large type for the ward, each with its sentence" />
+</p>
+
 ## The numbers
 
 | | |
