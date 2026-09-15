@@ -10,7 +10,10 @@ import '../design/type.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
 import '../store/records.dart';
+import 'register.dart';
+import 'registry.dart';
 import 'settings.dart';
+import '../store/ids.dart';
 
 class Shell extends StatelessWidget {
   const Shell({super.key, required this.records});
@@ -54,10 +57,17 @@ class _ClinicHome extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(Strings.nothingDue,
-                        style: Type.body.copyWith(color: p.textSecondary)),
+                    Text(
+                      records.patients == 0
+                          ? Strings.nothingDue
+                          : '${records.patients} ${Strings.patientsRegistered} · ${records.facts} ${Strings.factsHeld}',
+                      style: Type.body.copyWith(
+                          color: records.patients == 0
+                              ? p.textSecondary
+                              : p.textPrimary),
+                    ),
                     const SizedBox(height: Gap.m),
-                    const SyncChip(),
+                    SyncChip(lastMet: records.lastMet),
                   ],
                 ),
               ),
@@ -66,8 +76,26 @@ class _ClinicHome extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(Gap.l),
-          child:
-              PrimaryButton(label: Strings.registerPatient, onPressed: () {}),
+          child: Column(
+            children: [
+              PrimaryButton(
+                label: Strings.registerPatient,
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<List<int>?>(
+                        builder: (_) => RegisterScreen(
+                            records: records,
+                            ids: Ids.shared,
+                            author: 'staff'))),
+              ),
+              const SizedBox(height: Gap.s),
+              SecondaryButton(
+                label: Strings.openRegistry,
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => RegistryScreen(records: records))),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -140,23 +168,38 @@ class _Header extends StatelessWidget {
 /// Sync honesty (ADR-0006 #28): when another device was last met. Never
 /// "synced".
 class SyncChip extends StatelessWidget {
-  const SyncChip({super.key});
+  const SyncChip({super.key, required this.lastMet});
+  final DateTime? lastMet;
 
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
+    final when =
+        lastMet == null ? Strings.never : Dates.ago(lastMet!, DateTime.now());
+    final text = '${Strings.lastMet}: $when';
     return Semantics(
-      label: '${Strings.lastMet}: ${Strings.never}',
+      label: text,
       child: Container(
         padding:
             const EdgeInsets.symmetric(horizontal: Gap.sm, vertical: Gap.s),
         decoration: BoxDecoration(
             border: Border.all(color: p.hairline),
             borderRadius: BorderRadius.circular(Radius2.chip)),
-        child: Text('${Strings.lastMet}: ${Strings.never}',
-            style: Type.small.copyWith(color: p.textSecondary)),
+        child: Text(text, style: Type.small.copyWith(color: p.textSecondary)),
       ),
     );
+  }
+}
+
+/// How long ago, in the words a nurse reads at a glance. The phone's own
+/// clock, for the chip only; never a clock the record trusts.
+abstract final class Dates {
+  static String ago(DateTime then, DateTime now) {
+    final d = now.difference(then);
+    if (d.inMinutes < 1) return Strings.justNow;
+    if (d.inHours < 1) return '${d.inMinutes} ${Strings.minutesAgo}';
+    if (d.inDays < 1) return '${d.inHours} ${Strings.hoursAgo}';
+    return '${d.inDays} ${Strings.daysAgo}';
   }
 }
 

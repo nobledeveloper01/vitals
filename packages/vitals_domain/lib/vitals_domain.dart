@@ -10,3 +10,6 @@ export 'src/record.dart';
 export 'src/merge.dart';
 export 'src/canonical.dart';
 export 'src/exchange.dart';
+export 'src/registration.dart';
+export 'src/names.dart';
+export 'src/registry.dart';

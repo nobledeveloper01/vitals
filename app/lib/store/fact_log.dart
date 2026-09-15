@@ -29,11 +29,15 @@ final class FactLog {
   final KeySource keys;
   static final _cipher = Chacha20.poly1305Aead();
 
+  /// Frames written so far, counted once from the file and kept, so an
+  /// append does not re-read a log that grows with every patient.
+  int? _count;
+
   /// The nonce is the counter of frames written, never reused under a key
   /// because the log is append-only and a frame is never rewritten.
   Future<void> append(Iterable<Fact> facts) async {
     final key = SecretKey(await keys.key());
-    var n = await _frames();
+    var n = _count ??= await _frames();
     final sink = file.openWrite(mode: FileMode.append);
     for (final f in facts) {
       final plain = Canonical.bytesOf(Record.of(f.patient, [f]));
@@ -46,6 +50,7 @@ final class FactLog {
     }
     await sink.flush();
     await sink.close();
+    _count = n;
   }
 
   /// Everything in the log, decrypted and unioned per patient. A frame that
@@ -84,7 +89,7 @@ final class FactLog {
   }
 
   /// How many frames the file holds, whatever they decrypt to.
-  Future<int> frameCount() => _frames();
+  Future<int> frameCount() async => _count ??= await _frames();
 
   Future<int> _frames() async {
     if (!await file.exists()) return 0;

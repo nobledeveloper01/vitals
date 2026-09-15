@@ -92,3 +92,30 @@ target `analyze` depends on, and the transition theme is the platform's own.
 **The runner's Flutter was two minors behind this Mac's**, and `path_provider`
 wanted the newer SDK. The workflow pins the version this machine has, which
 is the honest form of "works on my machine": say which machine.
+
+## 2026-09-15, dawn — the registry
+
+Phases 0 and 1 cleared; Phase 2 built as far as this Mac reaches. A
+registration is a fact with its own encoding. Names fold to a phonetic key
+tuned to how Nigerians spell one name three ways — the Oluwa- and Chukwu-
+prefixes that speech drops, Muhammad's four spellings, the tone marks a
+keyboard may or may not have. Search matches every token against the
+patient or the mother, or four digits of a phone. A duplicate is a
+candidate with reasons, side by side, and a person registers anyway or
+opens the one it is; the app never merges.
+
+### What surprised us
+
+**A shared family phone made twins one person.** The first duplicate rule
+took "same phone and family name" as a reason, and in Lagos a household
+has one phone. Kehinde matched Taiwo. The phone is a reason only with the
+given name now, and the twins test is the one that keeps it so.
+
+**A hyphen is a joiner, not a space.** Ade-Ola is one name; the tokeniser
+had split it. Its own test said so.
+
+**A widget test's fake clock, again.** A write to the log inside a tap
+handler is real file IO; the tests wrap such taps in `runAsync` and wait a
+real half-second. And the whiteboard text that never changed turned out to
+be a patch that had missed its target after the formatter reflowed the
+line — a failing test found a patch that had silently not applied.

@@ -40,6 +40,36 @@ abstract final class Strings {
   static const nothingDue =
       'Nothing due today. The registry is empty until a patient is registered.';
   static const registerPatient = 'Register a patient';
+  static const register = 'Register';
+  static const registerAnyway = 'Register as a new patient anyway';
+  static const givenName = 'Given name';
+  static const otherNames = 'Other names';
+  static const familyName = 'Family name';
+  static const sex = 'Sex';
+  static const female = 'Female';
+  static const male = 'Male';
+  static const notRecorded = 'Not recorded';
+  static const dateOfBirth = 'Date of birth';
+  static const chooseDate = 'Choose the date';
+  static const dobEstimated = 'The date is estimated';
+  static const motherName = 'Mother\'s name';
+  static const mother = 'Mother';
+  static const motherNotRecorded = 'mother not recorded';
+  static const phone = 'Phone';
+  static const address = 'Address';
+  static const maybeAlreadyHere = 'This may be someone already registered';
+  static const youDecide =
+      'Open the one it is, or register a new patient. The app never merges two records by itself.';
+  static const registry = 'Patients';
+  static const searchHint = 'Name, mother\'s name, or phone';
+  static const noPatientsYet = 'No patients registered yet.';
+  static const noMatch =
+      'Nobody matches. Try fewer letters, or the mother\'s name.';
+  static const estimated = 'estimated';
+  static const days = 'days';
+  static const months = 'months';
+  static const years = 'years';
+  static const openRegistry = 'Patients';
   static const myRecord = 'My record';
   static const noRecordYet =
       'No record on this phone yet. A facility hands you yours.';

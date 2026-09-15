@@ -42,7 +42,8 @@ class _VitalsAppState extends State<VitalsApp> {
     if (const bool.fromEnvironment('VITALS_REDUCE', defaultValue: false)) {
       Motion.shared.reduced = true;
     }
-    // The store opens while the splash is up.
+    // What the app remembers, then the store, while the splash is up.
+    Preferences.shared.load();
     widget.open().then((r) {
       if (mounted) setState(() => _records = r);
     });

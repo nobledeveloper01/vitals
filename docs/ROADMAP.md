@@ -13,7 +13,7 @@ retrofitting immutability onto a schema that allows updates is a rewrite.
 The thirty extra things (ADR-0006) are placed in the phase whose exit gate they
 serve, never ahead of it.
 
-## Phase 0 — Foundation · **current**
+## Phase 0 — Foundation · *cleared 2026-09-15*
 
 The app and its two faces, the pure domain package, the design system as code
 (mesh, glass with its solid floor, motion tokens, the mark, the splash), the
@@ -28,7 +28,7 @@ stub and failing.*
 From the thirty: #24 auto-lock with the blurred lock screen, #25 the plain-surfaces
 and reduce-motion toggles, #26 large-type nurse mode, #23 the attribution chip.
 
-## Phase 1 — The merge engine
+## Phase 1 — The merge engine · *cleared 2026-09-15*
 
 Immutable facts, a hybrid logical clock, union merge, supersession for
 corrections, state versioning, the outbox, and the five invariants:
@@ -54,7 +54,7 @@ From the thirty: #22 correction as a superseding fact with visible history, #28
 sync honesty ("last met another device"), #29 encrypted backup to a file that
 verifies on restore.
 
-## Phase 2 — Registry and search
+## Phase 2 — Registry and search · **current**
 
 Registration, name tokenisation and phonetics for Nigerian names, FTS plus
 trigram search, duplicate detection, households, the patient ID and its QR.
@@ -62,6 +62,15 @@ trigram search, duplicate detection, households, the patient ID and its QR.
 **Exit gate**. *Search under 500 ms across a synthetic 50,000-patient registry on
 the reference tablet; duplicate detection validated against realistic
 name-variant fixtures; the "same patient?" assistant never merges by itself.*
+
+**Built 2026-09-15, short of the tablet.** Registration as a fact with its own
+encoding; Nigerian-name phonetics (Adeola/Adéọlá, Oluwaseun/Seun,
+Chukwuemeka/Emeka, Muhammad/Mohammed fold to one key); search by any token,
+the mother's name or four digits of a phone; duplicates as candidates with
+reasons, twins kept as two, a shared family phone never a reason alone; the
+assistant on screen, and a person registering anyway. Fifty thousand
+synthetic patients search in under half a second in the test — on this Mac;
+the reference tablet is R4.
 
 From the thirty: #13 households with a family view, #14 twins and duplicates by
 phonetics + DOB + mother, #21 the merge assistant that presents and never

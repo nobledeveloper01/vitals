@@ -7,6 +7,10 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **The registry.** Registration as a fact; Nigerian-name phonetics; search
+  by name, mother or phone; the duplicate assistant that presents and never
+  merges; fifty thousand searched under half a second. Phase 2's screens on
+  the clinic face, the face and large type remembered across launches.
 - **Backup and the mirror.** Every fact into one file under a passphrase
   (PBKDF2, 200k rounds) with every fact checked on restore, from Settings;
   and `Sync`, the replica met over HTTP as another tablet is met over BLE —
