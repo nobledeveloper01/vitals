@@ -37,6 +37,20 @@ final class Frame {
     return Frame(index: index, total: total, part: part);
   }
 
+  /// The frame as the text a QR carries: a name any camera can read, a
+  /// version, and the bytes in base64. A phone that is not Vitals sees
+  /// `VITALS/1 …` and knows what it is looking at; a Vitals device parses it.
+  static const String prefix = 'VITALS/1 ';
+  String get text => prefix + _base64(encode());
+
+  /// Null for text that is not a frame.
+  static Frame? fromText(String text) {
+    final t = text.trim();
+    if (!t.startsWith(prefix)) return null;
+    final bytes = _unbase64(t.substring(prefix.length));
+    return bytes == null ? null : decode(bytes);
+  }
+
   /// Cut a payload into frames of at most [size] bytes of part each.
   static List<Frame> cut(List<int> payload, {int size = 400}) {
     if (payload.isEmpty) return const [];
@@ -52,6 +66,48 @@ final class Frame {
                     ? payload.length
                     : (i + 1) * size)),
     ];
+  }
+
+  static const _alphabet =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+  static String _base64(List<int> b) {
+    final out = StringBuffer();
+    for (var i = 0; i < b.length; i += 3) {
+      final n = (b[i] << 16) |
+          ((i + 1 < b.length ? b[i + 1] : 0) << 8) |
+          (i + 2 < b.length ? b[i + 2] : 0);
+      out.write(_alphabet[(n >> 18) & 63]);
+      out.write(_alphabet[(n >> 12) & 63]);
+      out.write(i + 1 < b.length ? _alphabet[(n >> 6) & 63] : '=');
+      out.write(i + 2 < b.length ? _alphabet[n & 63] : '=');
+    }
+    return out.toString();
+  }
+
+  static List<int>? _unbase64(String s) {
+    final clean = s.replaceAll(RegExp(r'\s'), '');
+    if (clean.length % 4 != 0) return null;
+    final out = <int>[];
+    for (var i = 0; i < clean.length; i += 4) {
+      var n = 0;
+      var pad = 0;
+      for (var k = 0; k < 4; k++) {
+        final c = clean[i + k];
+        if (c == '=') {
+          pad++;
+          n <<= 6;
+          continue;
+        }
+        final v = _alphabet.indexOf(c);
+        if (v < 0 || pad > 0) return null;
+        n = (n << 6) | v;
+      }
+      out.add((n >> 16) & 0xff);
+      if (pad < 2) out.add((n >> 8) & 0xff);
+      if (pad < 1) out.add(n & 0xff);
+    }
+    return out;
   }
 
   static int crc32(List<int> bytes) {

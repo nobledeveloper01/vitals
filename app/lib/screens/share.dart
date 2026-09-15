@@ -5,7 +5,6 @@
 // motion the frames step by hand and the count is the ring.
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart' hide Card;
 import 'package:qr/qr.dart';
@@ -231,9 +230,10 @@ class _AnimatedQrState extends State<AnimatedQr> {
     final p = Palette.of(context);
     final n = widget.frames.length;
     final frame = widget.frames[_i];
-    final qr = QrCode.fromUint8List(
-        data: Uint8List.fromList(frame.encode()),
-        errorCorrectLevel: QrErrorCorrectLevel.M);
+    // Text, not bytes: a camera that is not Vitals reads `VITALS/1 …` and
+    // knows what it saw; a Vitals device parses the rest.
+    final qr = QrCode.fromData(
+        data: frame.text, errorCorrectLevel: QrErrorCorrectLevel.M);
     final image = QrImage(qr);
     final reduced = Motion.shared.reduced;
     return Semantics(

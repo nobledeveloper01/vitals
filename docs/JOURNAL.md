@@ -314,3 +314,16 @@ language now, and the clinic face is not offered a picker at all).
 **A rule the tests could not have held:** *the patient's language applies
 to every screen the patient sees*, including the two the faces share. The
 l10n gate counts keys; it cannot know which screens are the patient's.
+
+### Then: "the QR code is not leading anywhere"
+
+The user scanned it with a phone and got nothing, which was true: the code
+carried raw bytes only a Vitals device could read, and no Vitals device had
+a reader. Two things were wrong with that. A code a camera cannot even name
+is a bad code — it is text now, `VITALS/1 ` and base64, so any phone says
+what it saw. And "the camera is hardware" was an excuse: the gather, the
+merge and the screen are code, and only the lens is not. The receiver is
+built, with a paste field as the floor for a device with no camera, and
+the simulator — which has no camera — says so in the app's own words
+instead of the plugin's. What is still hardware is the watching: two real
+handsets, one screen, one camera, timed.

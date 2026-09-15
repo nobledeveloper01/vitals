@@ -130,6 +130,26 @@ void main() {
       expect(Frame.cut(const []), isEmpty);
     });
 
+    test('a frame as text: named for any camera, exact for a Vitals one', () {
+      for (final n in [0, 1, 2, 3, 100, 255, 400]) {
+        final f = Frame(
+            index: 3,
+            total: 7,
+            part: List<int>.generate(n, (i) => (i * 37 + 11) & 0xff));
+        final text = f.text;
+        expect(text, startsWith('VITALS/1 '));
+        expect(RegExp(r'^VITALS/1 [A-Za-z0-9+/]*=*$').hasMatch(text), isTrue,
+            reason: 'plain text, no binary');
+        final back = Frame.fromText(text)!;
+        expect((back.index, back.total), (3, 7));
+        expect(back.part, f.part);
+      }
+      expect(Frame.fromText('https://example.com'), isNull);
+      expect(Frame.fromText('VITALS/1 not-base64!'), isNull);
+      expect(Frame.fromText('VITALS/1 AAAA'), isNull,
+          reason: 'too short to be a frame');
+    });
+
     test('a frame from another transfer starts the gather over', () {
       final g = Gather();
       g.add(Frame.cut(List.filled(10, 1), size: 5)[0]);

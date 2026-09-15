@@ -17,6 +17,7 @@ import 'patient.dart';
 import 'register.dart';
 import 'registry.dart';
 import 'emergency.dart';
+import 'receive.dart';
 import 'settings.dart';
 import 'share.dart';
 import 'stock.dart';
@@ -128,6 +129,13 @@ class _ClinicHome extends StatelessWidget {
               ),
               const SizedBox(height: Gap.s),
               SecondaryButton(
+                label: Strings.receiveRecord,
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => ReceiveScreen(records: records))),
+              ),
+              const SizedBox(height: Gap.s),
+              SecondaryButton(
                 label: Strings.stock,
                 onPressed: () {
                   final now = DateTime.now().toUtc();
@@ -182,7 +190,10 @@ class _PatientHome extends StatelessWidget {
           padding: const EdgeInsets.all(Gap.l),
           child: Column(children: [
             PrimaryButton(
-                label: PatientStrings.t('receiveRecord'), onPressed: () {}),
+                label: PatientStrings.t('receiveRecord'),
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => ReceiveScreen(records: records)))),
             const SizedBox(height: Gap.s),
             SecondaryButton(
               label: PatientStrings.t('checkAPack'),

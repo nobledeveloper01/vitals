@@ -80,4 +80,20 @@ const Map<String, String> yoruba = {
   'passphrase': 'Ọ̀rọ̀ìpamọ́',
   'kept': 'A tọ́jú',
   'refused': 'a kọ̀',
+  'receiveHint':
+      'Tọ́ka kámẹ́rà sí kóòdù lórí ojú fóònù kejì. Ohun tó bá dé ni a ó fi kún un; kò sí ohun tí a ó pa rẹ́ níbí.',
+  'factsReceived': 'ohun nínú ìwé ìlera',
+  'factsNew': 'tuntun lórí fóònù yìí',
+  'waitingForCode': 'Ń dúró de kóòdù.',
+  'framesToCome': 'tí ó kù',
+  'pasteCode': 'Tàbí lẹ kóòdù náà',
+  'pasteHint':
+      'Fún fóònù tí kò ní kámẹ́rà: ọ̀rọ̀ tí kóòdù náà gbé, ní ọ̀kọ̀ọ̀kan.',
+  'addCode': 'Fi kóòdù kún un',
+  'notAVitalsCode': 'Ìyẹn kì í ṣe kóòdù Vitals.',
+  'codeDamaged': 'Kóòdù náà bàjẹ́ nínú kíkà; bẹ̀rẹ̀ lẹ́ẹ̀kan sí i.',
+  'aRecord': 'Ìwé ìlera kan',
+  'noCamera': 'Kò sí kámẹ́rà lórí fóònù yìí. Lẹ kóòdù náà sísàlẹ̀ dípò rẹ̀.',
+  'cameraRefused':
+      'A kò gba kámẹ́rà láàyè. Lẹ kóòdù náà sísàlẹ̀, tàbí gbà á láàyè nínú ètò fóònù.',
 };

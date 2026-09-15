@@ -168,9 +168,15 @@ list*, *not on the list*, *the list cannot say* — and a test over every
 language for the fourth word. Then the emergency card (#17) on the lock face
 while the patient says so and never on a clinic tablet, opting out a fact and
 not a deletion; and the referral letter (#19) with the sections the nurse
-chose and the unchosen ones never in the bytes. Still to build: the camera
-side of the QR and BLE (R3, hardware), the facility map (#18), the pack
-photographed (#20's camera half).
+chose and the unchosen ones never in the bytes. Then the receiving side: a
+frame is text — `VITALS/1 ` and base64 — so any camera knows what it saw,
+and a *Receive a record* screen on both faces gathers frames from the camera,
+or from a paste field where there is no camera, and merges the record by
+union; a test pastes a real transfer's frames in reverse, one twice, one junk,
+and reads the record back on the other device, then again for nothing added.
+Still to build: BLE (R3, hardware), a mixed Android↔iOS QR transfer watched
+on real handsets (R3), the facility map (#18), the pack photographed (#20's
+camera half).
 
 ## Phase 6 — Pilot hardening → **v1.0**
 

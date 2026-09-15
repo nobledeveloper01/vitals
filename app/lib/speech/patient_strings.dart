@@ -103,6 +103,22 @@ abstract final class PatientStrings {
     'passphrase': 'Passphrase',
     'kept': 'Kept',
     'refused': 'refused',
+    'receiveHint':
+        "Point the camera at the code on the other phone's screen. What arrives is added; nothing here is overwritten.",
+    'factsReceived': 'facts in the record',
+    'factsNew': 'new to this device',
+    'waitingForCode': 'Waiting for a code.',
+    'framesToCome': 'to come',
+    'pasteCode': 'Or paste the code',
+    'pasteHint':
+        'For a device with no camera: the text a code carries, one at a time.',
+    'addCode': 'Add the code',
+    'notAVitalsCode': 'That is not a Vitals code.',
+    'codeDamaged': 'The code was damaged in the reading; start again.',
+    'aRecord': 'A record',
+    'noCamera': 'No camera on this device. Paste the code below instead.',
+    'cameraRefused':
+        'The camera was not allowed. Paste the code below instead, or allow it in the phone\'s settings.',
   };
 
   static const Map<Lang, Map<String, String>> tables = {
@@ -120,6 +136,9 @@ abstract final class PatientStrings {
   /// faces share.
   static String face(String key, String clinic) =>
       Preferences.shared.face == Face.patient ? t(key) : clinic;
+
+  /// A screen both faces share, whose English is the patient table's own.
+  static String shared(String key) => face(key, english[key]!);
 
   static String t(String key, {Lang? lang}) {
     final l = lang ?? Preferences.shared.lang;

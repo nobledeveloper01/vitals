@@ -79,4 +79,20 @@ const Map<String, String> pidgin = {
   'passphrase': 'Passphrase',
   'kept': 'Kept',
   'refused': 'refused',
+  'receiveHint':
+      'Point the camera to the code for the other phone screen. Wetin come go join; nothing for here go change.',
+  'factsReceived': 'facts for the record',
+  'factsNew': 'new for this phone',
+  'waitingForCode': 'Dey wait for code.',
+  'framesToCome': 'still dey come',
+  'pasteCode': 'Or paste the code',
+  'pasteHint':
+      'For phone wey no get camera: the text wey the code carry, one by one.',
+  'addCode': 'Add the code',
+  'notAVitalsCode': 'That one no be Vitals code.',
+  'codeDamaged': 'The code spoil as e dey read; start again.',
+  'aRecord': 'One record',
+  'noCamera': 'No camera for this phone. Paste the code for down instead.',
+  'cameraRefused':
+      'Dem no allow the camera. Paste the code for down, or allow am for the phone settings.',
 };

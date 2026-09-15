@@ -80,4 +80,20 @@ const Map<String, String> hausa = {
   'passphrase': 'Kalmar sirri',
   'kept': 'An ajiye',
   'refused': 'an ƙi',
+  'receiveHint':
+      'Nuna kyamarar ga lambar da ke fuskar ɗayan wayar. Abin da ya zo ana ƙarawa; ba a goge komai a nan.',
+  'factsReceived': 'bayanai a cikin rikodin',
+  'factsNew': 'sababbi a wannan wayar',
+  'waitingForCode': 'Ana jiran lamba.',
+  'framesToCome': 'har yanzu za su zo',
+  'pasteCode': 'Ko manna lambar',
+  'pasteHint':
+      'Ga wayar da ba ta da kyamara: rubutun da lambar ke ɗauke da shi, ɗaya bayan ɗaya.',
+  'addCode': 'Ƙara lambar',
+  'notAVitalsCode': 'Wannan ba lambar Vitals ba ce.',
+  'codeDamaged': 'Lambar ta lalace a karatun; sake farawa.',
+  'aRecord': 'Rikodi ɗaya',
+  'noCamera': 'Babu kyamara a wannan wayar. Manna lambar a ƙasa maimakon haka.',
+  'cameraRefused':
+      'Ba a bar kyamarar ba. Manna lambar a ƙasa, ko ka bar ta a saitunan wayar.',
 };

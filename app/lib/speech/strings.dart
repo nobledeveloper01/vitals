@@ -101,6 +101,7 @@ abstract final class Strings {
   static const noSignAnsweredYes = 'Every sign answered no.';
   static const answeredYesTo = 'The nurse answered yes to:';
   static const stock = 'Stock';
+  static const receiveRecord = 'Receive a record';
   static const thisFacility = 'this facility';
   static const referralLetter = 'Referral letter';
   static const scheduleCoversChildren =

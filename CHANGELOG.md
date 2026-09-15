@@ -5,6 +5,13 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ## [Unreleased]
 
+### Added
+
+- **The receiving side of the handover.** A frame is text any camera can
+  name (`VITALS/1 …`); *Receive a record* on both faces reads frames from
+  the camera, or from a paste field on a device without one, and merges the
+  record by union — what arrives is added, nothing is overwritten.
+
 ### Fixed
 
 - From a design audit on the phone in both palettes: the QR code sits in a

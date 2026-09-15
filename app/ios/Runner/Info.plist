@@ -66,5 +66,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>To read the code on another device's screen when a record is handed over. Nothing is photographed or kept.</string>
 </dict>
 </plist>

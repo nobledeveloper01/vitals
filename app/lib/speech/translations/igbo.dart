@@ -79,4 +79,20 @@ const Map<String, String> igbo = {
   'passphrase': 'Okwu nzuzo',
   'kept': 'Edobere',
   'refused': 'ajụrụ',
+  'receiveHint':
+      "Tụọ igwefoto na koodu dị n'ihu ekwentị nke ọzọ. Ihe bịara ka a na-agbakwunye; ọ dịghị ihe a na-ehichapụ ebe a.",
+  'factsReceived': 'ihe dị na ndekọ',
+  'factsNew': 'ọhụrụ na ekwentị a',
+  'waitingForCode': 'Na-echere koodu.',
+  'framesToCome': 'ka fọdụrụ',
+  'pasteCode': 'Ma ọ bụ mado koodu ahụ',
+  'pasteHint':
+      "Maka ekwentị na-enweghị igwefoto: ederede koodu na-ebu, otu n'otu.",
+  'addCode': 'Tinye koodu ahụ',
+  'notAVitalsCode': 'Nke ahụ abụghị koodu Vitals.',
+  'codeDamaged': "Koodu ahụ mebiri n'ọgụgụ; malite ọzọ.",
+  'aRecord': 'Otu ndekọ',
+  'noCamera': "Enweghị igwefoto na ekwentị a. Mado koodu ahụ n'okpuru kama.",
+  'cameraRefused':
+      "Anabataghị igwefoto ahụ. Mado koodu ahụ n'okpuru, ma ọ bụ kwe ya na ntọala ekwentị.",
 };
