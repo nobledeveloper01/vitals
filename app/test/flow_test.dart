@@ -2,6 +2,8 @@
 // motion), the face is chosen, the clinic sees the whiteboard, the patient
 // their record, settings toggle glass and motion without a relaunch, and the
 // lock asks for the PIN and refuses a wrong one.
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vitals/app/app.dart';
@@ -9,9 +11,19 @@ import 'package:vitals/design/glass.dart';
 import 'package:vitals/design/motion.dart';
 import 'package:vitals/speech/strings.dart';
 import 'package:vitals/store/preferences.dart';
+import 'package:vitals/store/records.dart';
 
 void main() {
-  setUp(() {
+  late Directory dir;
+  late Records records;
+  // Opened before the widget: real file IO does not complete under a widget
+  // test's fake clock, so the store is handed over already open.
+  Future<Records> open() async => records;
+
+  setUp(() async {
+    dir = await Directory.systemTemp.createTemp('vitals-flow-');
+    records = await Records.at(
+        File('${dir.path}/facts.log'), List<int>.generate(32, (i) => i));
     Preferences.shared
       ..face = Face.unchosen
       ..locked = false
@@ -22,13 +34,13 @@ void main() {
   });
 
   Future<void> sweep(WidgetTester t) async {
-    await t.pumpWidget(const VitalsApp());
+    await t.pumpWidget(VitalsApp(open: open));
     await t.pump(const Duration(milliseconds: 950));
     await t.pumpAndSettle();
   }
 
   testWidgets('the splash sweeps and the face is asked', (t) async {
-    await t.pumpWidget(const VitalsApp());
+    await t.pumpWidget(VitalsApp(open: open));
     expect(find.text(Strings.tagline), findsOneWidget);
     await t.pump(const Duration(milliseconds: 950));
     await t.pumpAndSettle();
@@ -37,7 +49,7 @@ void main() {
 
   testWidgets('under reduced motion the splash cuts', (t) async {
     Motion.shared.reduced = true;
-    await t.pumpWidget(const VitalsApp());
+    await t.pumpWidget(VitalsApp(open: open));
     await t.pump();
     await t.pumpAndSettle();
     expect(find.text(Strings.chooseFace), findsOneWidget);
@@ -123,7 +135,7 @@ void main() {
     await t.pumpWidget(MediaQuery(
       data: const MediaQueryData(
           textScaler: TextScaler.linear(2.0), size: Size(400, 860)),
-      child: const VitalsApp(),
+      child: VitalsApp(open: open),
     ));
     await t.pump(const Duration(milliseconds: 950));
     await t.pumpAndSettle();

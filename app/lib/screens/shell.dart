@@ -9,10 +9,12 @@ import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
+import '../store/records.dart';
 import 'settings.dart';
 
 class Shell extends StatelessWidget {
-  const Shell({super.key});
+  const Shell({super.key, required this.records});
+  final Records records;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,11 @@ class Shell extends StatelessWidget {
     return Scaffold(
       body: Mesh(
         child: SafeArea(
-          child: clinic ? const _ClinicHome() : const _PatientHome(),
+          child: ListenableBuilder(
+            listenable: records,
+            builder: (context, _) =>
+                clinic ? _ClinicHome(records: records) : const _PatientHome(),
+          ),
         ),
       ),
     );
@@ -28,7 +34,8 @@ class Shell extends StatelessWidget {
 }
 
 class _ClinicHome extends StatelessWidget {
-  const _ClinicHome();
+  const _ClinicHome({required this.records});
+  final Records records;
 
   @override
   Widget build(BuildContext context) {

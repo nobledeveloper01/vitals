@@ -24,7 +24,9 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _c.forward().whenComplete(widget.onDone);
+    _c.forward().whenComplete(() {
+      if (mounted) widget.onDone();
+    });
   }
 
   @override

@@ -58,3 +58,33 @@ reason there are two.
 corrections; the original is hidden as superseded; and which correction is
 "latest" is a question the merge must not answer. `history` returns both and
 the record shows neither as lost. Who was right is the nurse's call.
+
+## 2026-09-15, before dawn — the store, and what a widget test's clock cannot do
+
+Phase 1's store: an append-only log of canonical single-fact records, each
+sealed with ChaCha20-Poly1305 under a key in the keychain and never in the
+file (ADR-0007, which sets aside the planned SQLCipher until Phase 2 needs
+an index). Four tests: nothing a fact says is in the file; appends union; a
+tail cut mid-frame loses that frame and nothing before it; a wrong key reads
+nothing and a flipped byte drops only its frame. `Records` over it, opened
+under the splash, and the whiteboard and the sync chip read from it. The
+domain gained `Exchange`: the delta one device hands another, and a
+fingerprint two devices compare first.
+
+### What surprised us
+
+**A widget test's clock does not turn real file IO.** The store opened
+under the splash never finished in the flow tests, because `pumpAndSettle`
+advances a fake clock and the file read waits on the real event loop. The
+tests hand the app a store that is already open; the phone opens its own.
+
+**The launch screen storyboard from the template is from 2017.** Its
+`toolsVersion` predates trait collections, so a named colour with a dark
+variant cannot be declared in it; Xcode refused to compile the patched file
+at all. It was rewritten from nothing, thirty lines, and the launch ground
+is now the splash's ground in both appearances — measured by a pixel.
+
+**Two GitHub runs failed on things the Mac did not see.** `dart analyze`
+ran before `pub get`, and a page-transition class lives in a different
+library on the runner's Flutter than on this machine's. `deps` is now a
+target `analyze` depends on, and the transition theme is the platform's own.

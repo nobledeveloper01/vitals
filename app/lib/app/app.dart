@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
 import '../brand/splash.dart';
@@ -10,9 +9,14 @@ import '../screens/lock.dart';
 import '../screens/shell.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
+import '../store/records.dart';
 
 class VitalsApp extends StatefulWidget {
-  const VitalsApp({super.key});
+  const VitalsApp({super.key, this.open = Records.open});
+
+  /// How the store is opened: the keychain-keyed log on a phone, a file with
+  /// a key in memory in the tests.
+  final Future<Records> Function() open;
 
   @override
   State<VitalsApp> createState() => _VitalsAppState();
@@ -20,6 +24,7 @@ class VitalsApp extends StatefulWidget {
 
 class _VitalsAppState extends State<VitalsApp> {
   var _swept = false;
+  Records? _records;
 
   @override
   void initState() {
@@ -37,6 +42,10 @@ class _VitalsAppState extends State<VitalsApp> {
     if (const bool.fromEnvironment('VITALS_REDUCE', defaultValue: false)) {
       Motion.shared.reduced = true;
     }
+    // The store opens while the splash is up.
+    widget.open().then((r) {
+      if (mounted) setState(() => _records = r);
+    });
   }
 
   @override
@@ -60,14 +69,15 @@ class _VitalsAppState extends State<VitalsApp> {
         home: Builder(
           builder: (context) {
             Motion.readPlatform(context);
-            if (!_swept) {
+            // The splash stays up until it has swept and the store has opened.
+            if (!_swept || _records == null) {
               return Splash(onDone: () => setState(() => _swept = true));
             }
             if (Preferences.shared.locked) return const LockScreen();
             if (Preferences.shared.face == Face.unchosen) {
               return const FacePicker();
             }
-            return const Shell();
+            return Shell(records: _records!);
           },
         ),
       ),
@@ -90,10 +100,6 @@ class _VitalsAppState extends State<VitalsApp> {
           bodyMedium: Type.body,
           titleMedium: Type.title,
           headlineSmall: Type.headline),
-      pageTransitionsTheme: const PageTransitionsTheme(builders: {
-        TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-      }),
     );
   }
 }

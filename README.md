@@ -20,9 +20,9 @@ See [`docs/00-PRODUCT-STATEMENT.md`](docs/00-PRODUCT-STATEMENT.md) for the full 
 ## Status
 
 **Phase 0 of 8 — foundation, and the merge engine that Phase 1 is.** The plan was
-written first: the roadmap in eight phases with an exit gate each, six ADRs — the
+written first: the roadmap in eight phases with an exit gate each, seven ADRs — the
 one codebase with two faces, the domain that imports nothing, facts that merge by
-union, a .NET backend with no authority, glass over a gradient with a solid floor —
+union, a .NET backend with no authority, glass over a gradient with a solid floor, an encrypted append-only store —
 and thirty more things each checked against the rules, with three refused for
 crossing into clinical judgement.
 
@@ -68,12 +68,12 @@ motion` in Settings, read at act time, and the same app either way.
 
 | | |
 |---|---|
-| Domain tests | 14 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
-| App tests | 11 — flow, contrast on every wash, lock, one primary action, 200% text |
+| Domain tests | 16 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
+| App tests | 17 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records |
 | Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
 | Blocking gates | 7 in `make gates`, each proved to fire |
 | Release gates | 6 |
-| ADRs | 6 |
+| ADRs | 7 |
 
 ## The insight
 

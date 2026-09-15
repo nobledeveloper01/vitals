@@ -9,3 +9,4 @@ export 'src/fact.dart';
 export 'src/record.dart';
 export 'src/merge.dart';
 export 'src/canonical.dart';
+export 'src/exchange.dart';

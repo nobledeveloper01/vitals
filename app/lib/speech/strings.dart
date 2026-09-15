@@ -28,6 +28,12 @@ abstract final class Strings {
   static const wrongPin = 'Not that PIN. Try again.';
   static const lastMet = 'Last met another device';
   static const never = 'never';
+  static const justNow = 'just now';
+  static const minutesAgo = 'minutes ago';
+  static const hoursAgo = 'hours ago';
+  static const daysAgo = 'days ago';
+  static const patientsRegistered = 'patients registered';
+  static const factsHeld = 'facts held';
   static const recordedBy = 'Recorded by';
   static const on = 'on';
   static const whiteboard = 'Today';
