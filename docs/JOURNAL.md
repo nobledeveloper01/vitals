@@ -119,3 +119,31 @@ handler is real file IO; the tests wrap such taps in `runAsync` and wait a
 real half-second. And the whiteboard text that never changed turned out to
 be a patch that had missed its target after the formatter reflowed the
 line — a failing test found a patch that had silently not applied.
+
+## 2026-09-15, morning — the wedge
+
+Phase 3's core: the schedule as data, versioned, so a change is a new table
+and the card records which one it was scheduled under; a dose as a fact
+with the vial's batch and expiry; the card computed from the date of birth
+and what was given, with catch-up — a late first dose pushes the second by
+its interval, and the second is never offered before the first; overdue is
+due plus twenty-eight days of grace. An expired vial is refused before a
+fact exists, which is a date compared to a date and not a judgement. GS1
+parsed with the group separator a real scanner sends, including day 00 for
+the end of a month.
+
+### What surprised us
+
+**A widget test can hang on a write outside the real loop, before it
+starts.** The setup wrote a registration to the log, the fake clock never
+turned the file IO, and the test sat for ten minutes. Every write in a
+widget test goes through `runAsync` now, and the file says so at the top.
+
+**A patched line that the formatter had reflowed.** Twice tonight a
+replacement found nothing to replace and said nothing, and a test failed
+for a reason that made no sense until the file was read. Read the file.
+
+**The copy gate refused "Record a dose".** The word list had "dose" for
+dosing advice, and a vaccine dose is the record's own word for a thing
+given, never advised. The list says *dosage* and any quantity in mg, ml or
+mcg now, and was broken on purpose with "Give 5 mg" to see it still bite.

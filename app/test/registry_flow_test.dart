@@ -84,6 +84,11 @@ void main() {
         phone: '08031234567');
     await tapAndWrite(t, find.text(Strings.register));
     expect(records.patients, 1);
+    // Registered: straight to the card, where the first doses are due.
+    expect(find.text('Adeola Okafor'), findsOneWidget);
+    expect(find.text(Strings.immunisationCard), findsOneWidget);
+    await t.tap(find.byTooltip('Back'));
+    await t.pumpAndSettle();
     expect(
         find.textContaining('1 ${Strings.patientsRegistered}'), findsOneWidget);
 
@@ -103,6 +108,8 @@ void main() {
     expect(records.patients, 1, reason: 'nothing was written yet');
     await tapAndWrite(t, find.text(Strings.registerAnyway));
     expect(records.patients, 2, reason: 'a person chose to register anyway');
+    await t.tap(find.byTooltip('Back'));
+    await t.pumpAndSettle();
     expect(
         find.textContaining('2 ${Strings.patientsRegistered}'), findsOneWidget);
   });
@@ -118,6 +125,8 @@ void main() {
       await t.pumpAndSettle();
       await fill(t, given: g, family: f, phone: ph);
       await tapAndWrite(t, find.text(Strings.register));
+      await t.tap(find.byTooltip('Back'));
+      await t.pumpAndSettle();
     }
     await t.tap(find.text(Strings.openRegistry));
     await t.pumpAndSettle();

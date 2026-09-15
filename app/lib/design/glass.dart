@@ -180,3 +180,24 @@ class SecondaryButton extends StatelessWidget {
     );
   }
 }
+
+/// The way back, on every pushed screen: 48 dp, labelled, top left. The
+/// platform's swipe works too; this is for the hand that does not know it.
+class BackButton2 extends StatelessWidget {
+  const BackButton2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    return IconButton(
+      tooltip: 'Back',
+      iconSize: 28,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(
+          minWidth: Target.standard, minHeight: Target.standard),
+      onPressed: () => Navigator.of(context).maybePop(),
+      icon: Icon(Icons.arrow_back_rounded, color: p.textPrimary),
+    );
+  }
+}

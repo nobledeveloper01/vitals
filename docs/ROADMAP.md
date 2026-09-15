@@ -54,7 +54,7 @@ From the thirty: #22 correction as a superseding fact with visible history, #28
 sync honesty ("last met another device"), #29 encrypted backup to a file that
 verifies on restore.
 
-## Phase 2 — Registry and search · **current**
+## Phase 2 — Registry and search · *cleared 2026-09-15, short of the tablet*
 
 Registration, name tokenisation and phonetics for Nigerian names, FTS plus
 trigram search, duplicate detection, households, the patient ID and its QR.
@@ -76,7 +76,7 @@ From the thirty: #13 households with a family view, #14 twins and duplicates by
 phonetics + DOB + mother, #21 the merge assistant that presents and never
 decides, #6 the paper card photographed at registration.
 
-## Phase 3 — Immunisation, the wedge
+## Phase 3 — Immunisation, the wedge · **current**
 
 The schedule engine from versioned national tables, dose recording with batch
 scanning, validity windows, catch-up, the defaulter list, the digital card, the
@@ -85,6 +85,16 @@ patient's reminders, and the stock decrement.
 **Exit gate**. *Schedules correct against published fixtures including catch-up
 and an imprecise date of birth; reminders fire with the device permanently
 offline on both platforms; the printed card matches the national layout.*
+
+**Built 2026-09-15, the core.** The national schedule as a versioned table —
+birth, six, ten and fourteen weeks, six, nine and fifteen months; a dose as a
+fact with batch and expiry; the card with catch-up (a late first dose pushes
+the second by its interval; dose two is never offered before dose one); an
+expired vial refused before anything is written; GS1 from the vial's barcode
+with the separator a scanner sends. On the screen: the card, the dose sheet,
+the history with every fact attributed, registration leading straight to the
+card. Still to build in this phase: the defaulter list, the printed A5 card,
+reminders on the patient's phone, SMS drafts, the whiteboard's due list.
 
 From the thirty: #4 the A5 card PDF in the national layout, #7 the ward
 whiteboard, #8 defaulter SMS drafts, #9 reminders naming the vaccine, #10 GS1

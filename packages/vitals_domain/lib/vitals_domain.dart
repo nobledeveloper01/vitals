@@ -13,3 +13,5 @@ export 'src/exchange.dart';
 export 'src/registration.dart';
 export 'src/names.dart';
 export 'src/registry.dart';
+export 'src/immunisation.dart';
+export 'src/gs1.dart';

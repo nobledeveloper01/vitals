@@ -10,6 +10,7 @@ import '../design/type.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
 import '../store/records.dart';
+import 'patient.dart';
 import 'register.dart';
 import 'registry.dart';
 import 'settings.dart';
@@ -80,12 +81,23 @@ class _ClinicHome extends StatelessWidget {
             children: [
               PrimaryButton(
                 label: Strings.registerPatient,
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute<List<int>?>(
-                        builder: (_) => RegisterScreen(
+                onPressed: () async {
+                  final patient = await Navigator.of(context).push(
+                      MaterialPageRoute<List<int>?>(
+                          builder: (_) => RegisterScreen(
+                              records: records,
+                              ids: Ids.shared,
+                              author: 'staff')));
+                  // Registered: straight to the card, where the first doses are due.
+                  if (patient != null && context.mounted) {
+                    await Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => PatientScreen(
                             records: records,
+                            patient: patient,
                             ids: Ids.shared,
-                            author: 'staff'))),
+                            author: 'staff')));
+                  }
+                },
               ),
               const SizedBox(height: Gap.s),
               SecondaryButton(
@@ -210,13 +222,15 @@ class AttributionChip extends StatelessWidget {
       {super.key,
       required this.author,
       required this.when,
-      required this.device});
-  final String author, when, device;
+      required this.device,
+      this.kind = ''});
+  final String author, when, device, kind;
 
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
-    return Text('${Strings.recordedBy} $author · $when · $device',
+    return Text(
+        '${kind.isEmpty ? '' : '$kind · '}${Strings.recordedBy} $author · $when · $device',
         style: Type.small.copyWith(color: p.textSecondary));
   }
 }

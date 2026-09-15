@@ -70,6 +70,23 @@ abstract final class Strings {
   static const months = 'months';
   static const years = 'years';
   static const openRegistry = 'Patients';
+  static const immunisationCard = 'Immunisation card';
+  static const nothingDueForThisChild = 'Nothing due today.';
+  static const dueNow = 'due now';
+  static const given = 'given';
+  static const due = 'due';
+  static const overdue = 'overdue';
+  static const notYet = 'not yet';
+  static const afterTheFirst = 'after the first';
+  static const history = 'History';
+  static const recordDose = 'Record a dose';
+  static const vialCode = 'Vial code';
+  static const vialCodeHint =
+      'Scan the barcode, or paste what it says. The batch and expiry fill themselves.';
+  static const batch = 'Batch';
+  static const expires = 'Expires';
+  static const expiredVial =
+      'This vial has expired. It is not recorded. Use another vial.';
   static const myRecord = 'My record';
   static const noRecordYet =
       'No record on this phone yet. A facility hands you yours.';

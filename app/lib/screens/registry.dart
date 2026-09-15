@@ -8,7 +8,9 @@ import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/strings.dart';
+import '../store/ids.dart';
 import '../store/records.dart';
+import 'patient.dart';
 
 class RegistryScreen extends StatefulWidget {
   const RegistryScreen({super.key, required this.records});
@@ -41,6 +43,7 @@ class _RegistryScreenState extends State<RegistryScreen> {
                     padding: const EdgeInsets.fromLTRB(Gap.l, Gap.l, Gap.l, 0),
                     child: Row(
                       children: [
+                        const BackButton2(),
                         Expanded(
                             child: Text(Strings.registry,
                                 style: Type.display
@@ -90,24 +93,34 @@ class _RegistryScreenState extends State<RegistryScreen> {
                               final r = shown[i].listed.registration;
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: Gap.s),
-                                child: Glass(
-                                  depth: Depth.low,
-                                  child: Semantics(
-                                    label: r.fullName,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(r.fullName,
-                                            style: Type.title.copyWith(
-                                                color: p.textPrimary)),
-                                        const SizedBox(height: Gap.xs),
-                                        Text(
-                                          '${_age(r)} · ${r.motherName.isEmpty ? Strings.motherNotRecorded : '${Strings.mother}: ${r.motherName}'}${r.phone.isEmpty ? '' : ' · ${r.phone}'}',
-                                          style: Type.secondary
-                                              .copyWith(color: p.textSecondary),
-                                        ),
-                                      ],
+                                child: GestureDetector(
+                                  onTap: () => Navigator.of(context).push(
+                                      MaterialPageRoute<void>(
+                                          builder: (_) => PatientScreen(
+                                              records: widget.records,
+                                              patient: shown[i].listed.patient,
+                                              ids: Ids.shared,
+                                              author: 'staff'))),
+                                  child: Glass(
+                                    depth: Depth.low,
+                                    child: Semantics(
+                                      button: true,
+                                      label: r.fullName,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(r.fullName,
+                                              style: Type.title.copyWith(
+                                                  color: p.textPrimary)),
+                                          const SizedBox(height: Gap.xs),
+                                          Text(
+                                            '${_age(r)} · ${r.motherName.isEmpty ? Strings.motherNotRecorded : '${Strings.mother}: ${r.motherName}'}${r.phone.isEmpty ? '' : ' · ${r.phone}'}',
+                                            style: Type.secondary.copyWith(
+                                                color: p.textSecondary),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

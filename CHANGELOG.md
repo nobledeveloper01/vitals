@@ -7,6 +7,10 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **The wedge.** The national immunisation schedule as a versioned table,
+  doses as facts with batch and expiry, the card with catch-up, an expired
+  vial refused before it is written, GS1 parsed as a scanner sends it; the
+  patient screen with the card, the dose sheet and the attributed history.
 - **The registry.** Registration as a fact; Nigerian-name phonetics; search
   by name, mother or phone; the duplicate assistant that presents and never
   merges; fifty thousand searched under half a second. Phase 2's screens on
