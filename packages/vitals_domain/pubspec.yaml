@@ -1,0 +1,13 @@
+name: vitals_domain
+description: The clinical record as facts that merge by union. Imports nothing.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+# No dependencies, by decision (ADR-0002). Time and identifiers are arguments.
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0
+  coverage: ^1.11.0

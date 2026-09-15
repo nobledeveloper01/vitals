@@ -1,6 +1,16 @@
 # Internal working documents stay local. Only the product statement is tracked.
 docs/*
 !docs/00-PRODUCT-STATEMENT.md
+!docs/ROADMAP.md
+!docs/JOURNAL.md
+!docs/FEATURE-BACKLOG.md
+!docs/RELEASE-GATES.md
+!docs/adr/
+!docs/screenshots/
+# The mark the README shows above the title. Drawn by `scripts/brandmark.py`.
+!docs/mark.png
+# The parity fixture the Dart tests write and the C# tests read.
+!docs/parity/
 
 # OS / editors
 .DS_Store
@@ -27,7 +37,6 @@ docs/*
 **/ios/Flutter/Generated.xcconfig
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/ephemeral/
-**/ios/Runner.xcworkspace/xcshareddata/
 **/*.xcuserdatad/
 **/xcuserdata/
 
@@ -38,3 +47,13 @@ docs/*
 **/android/app/profile/
 **/android/app/release/
 **/android/.kotlin/
+
+# .NET
+**/bin/
+**/obj/
+*.user
+
+# Never a record. A database from a demo is somebody's patient.
+*.db
+*.sqlite
+*.sqlite3

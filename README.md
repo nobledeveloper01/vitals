@@ -19,9 +19,45 @@ See [`docs/00-PRODUCT-STATEMENT.md`](docs/00-PRODUCT-STATEMENT.md) for the full 
 
 ## Status
 
-Specified, not yet built. Deliberately **last but one** in the build order — it is bound to a long
-institutional sales cycle, so it should not be built before the products that can validate
-themselves faster.
+**Phase 0 of 8 — foundation, and the merge engine that Phase 1 is.** The plan was
+written first: the roadmap in eight phases with an exit gate each, six ADRs — the
+one codebase with two faces, the domain that imports nothing, facts that merge by
+union, a .NET backend with no authority, glass over a gradient with a solid floor —
+and thirty more things each checked against the rules, with three refused for
+crossing into clinical judgement.
+
+Then the core, twice. A pure Dart domain — a hybrid logical clock, immutable facts,
+a record that is a set, union as the whole merge, supersession as correction, one
+byte encoding — with five invariants property-tested over three hundred generated
+worlds of three devices recording, correcting and exchanging in generated orders,
+and a harness test that runs a last-writer-wins merge through the same worlds and
+must see loss. Then the same engine in C#, held to the Dart by a checked-in fixture
+of two hundred worlds merged forward, reversed, shuffled and halved, to the byte —
+and the .NET replica that stores and relays those bytes and computes nothing
+clinical.
+
+And the design as code: the gradient mesh, glass in three depths with a solid twin
+for each, four motion tokens with a zero for each, the mark drawn by a script at
+every size, the splash with its one sweep, the two faces, the lock behind glass, the
+attribution and sync-honesty chips — with a contrast test that composites every text
+colour on every glass fill over every wash, light and dark.
+
+Seven build gates in the Makefile, each broken on purpose and watched to fire. Six gates, in [`docs/RELEASE-GATES.md`](docs/RELEASE-GATES.md), block v1.0: two tablets in a clinic,
+a nurse against a paper baseline, two handsets of each platform, the reference tablet, a
+clinician's hour, and a programme partner.
+
+<p align="center"><img src="docs/mark.png" width="112" alt="The Vitals mark: a rounded square in the brand gradient with one pulse line ending in a dot" /></p>
+
+## The numbers
+
+| | |
+|---|---|
+| Domain tests | 14 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
+| App tests | 11 — flow, contrast on every wash, lock, one primary action, 200% text |
+| Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
+| Blocking gates | 7 in `make gates`, each proved to fire |
+| Release gates | 6 |
+| ADRs | 6 |
 
 ## The insight
 

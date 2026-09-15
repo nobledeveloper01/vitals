@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The merge and the canonical encoding, translated from the Dart line for
+       line and held to it by docs/parity. No framework references. -->
+</Project>
