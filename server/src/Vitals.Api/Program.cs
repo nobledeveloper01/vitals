@@ -51,6 +51,28 @@ app.MapGet("/sync/pull", async (string facility, long after, int? limit, FactSto
         facts.Count == 0 ? after : facts[^1].Seq));
 });
 
+// Remote wipe. A supervisor with the admin token asks; the device asks at
+// every meeting whether it has been told to wipe, erases, and confirms.
+// The server never reaches into a device: the device does the erasing.
+var adminToken = builder.Configuration["ADMIN_TOKEN"] ?? Environment.GetEnvironmentVariable("ADMIN_TOKEN");
+app.MapPost("/devices/{device}/wipe", async (string device, string facility, HttpRequest http, FactStore store, CancellationToken ct) =>
+{
+    if (string.IsNullOrEmpty(adminToken) || http.Headers["X-Admin-Token"] != adminToken)
+        return Results.Problem(Messages.NotASupervisor, statusCode: 403);
+    await store.RequestWipeAsync(device, facility, ct);
+    return Results.Ok(new { device, wipe = true });
+});
+app.MapGet("/devices/{device}", async (string device, FactStore store, CancellationToken ct) =>
+{
+    var row = await store.DeviceAsync(device, ct);
+    return Results.Ok(new DeviceStatus(row?.WipeRequested ?? false, row?.WipedAt));
+});
+app.MapPost("/devices/{device}/wiped", async (string device, FactStore store, CancellationToken ct) =>
+{
+    await store.ConfirmWipedAsync(device, ct);
+    return Results.Ok(new { device, wipe = false });
+});
+
 // A patient's record as the replica holds it, as canonical bytes: the same
 // bytes the tablet would produce from the same facts.
 app.MapGet("/patients/{patient}/record", async (string patient, FactStore store, CancellationToken ct) =>

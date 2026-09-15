@@ -14,13 +14,19 @@ import '../design/type.dart';
 import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/audit.dart';
+import '../store/http_transport.dart';
+import '../store/ids.dart';
+import '../store/sync.dart';
 import '../store/backup.dart';
 import '../store/preferences.dart';
 import '../store/records.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key, required this.records});
+  const SettingsScreen({super.key, required this.records, this.makeSync});
   final Records records;
+
+  /// The sync for a replica URL; HTTP unless a test hands one in.
+  final Sync Function(Uri url)? makeSync;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -46,6 +52,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Text(PatientStrings.face('settings', Strings.settings),
                           style: Type.display.copyWith(color: p.textPrimary)),
                       const SizedBox(height: Gap.m),
+                      // Said above everything, because after a wipe the
+                      // clinic's own section is gone with the face.
+                      if (_wiped) ...[
+                        Glass(
+                          depth: Depth.high,
+                          child: Row(children: [
+                            Icon(Icons.delete_forever_outlined,
+                                color: p.danger),
+                            const SizedBox(width: Gap.s),
+                            Expanded(
+                                child: Text(Strings.wipedByReplica,
+                                    style: Type.body
+                                        .copyWith(color: p.textPrimary),
+                                    key: const Key('wipedNote'))),
+                          ]),
+                        ),
+                        const SizedBox(height: Gap.m),
+                      ],
                       Glass(
                         depth: Depth.low,
                         padding: EdgeInsets.zero,
@@ -174,6 +198,58 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           }),
                       if (Preferences.shared.face == Face.clinic) ...[
                         const SizedBox(height: Gap.m),
+                        // Enrolment with a replica (ADR-0004): a URL and a
+                        // name, typed by the facility; a meeting on demand.
+                        Glass(
+                          depth: Depth.low,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(Strings.replica,
+                                  style: Type.title
+                                      .copyWith(color: p.textPrimary)),
+                              const SizedBox(height: Gap.xs),
+                              Text(Strings.replicaHint,
+                                  style: Type.secondary
+                                      .copyWith(color: p.textSecondary)),
+                              const SizedBox(height: Gap.m),
+                              TextField(
+                                key: const Key('replicaUrl'),
+                                controller: _replicaUrl,
+                                keyboardType: TextInputType.url,
+                                style: Type.body.copyWith(color: p.textPrimary),
+                                decoration: InputDecoration(
+                                    labelText: Strings.replicaUrl,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            Radius2.input))),
+                              ),
+                              const SizedBox(height: Gap.sm),
+                              TextField(
+                                key: const Key('facilityName'),
+                                controller: _facilityName,
+                                style: Type.body.copyWith(color: p.textPrimary),
+                                decoration: InputDecoration(
+                                    labelText: Strings.facilityName,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            Radius2.input))),
+                              ),
+                              const SizedBox(height: Gap.m),
+                              SecondaryButton(
+                                  label: Strings.meetTheReplica,
+                                  onPressed: _meet),
+                              if (_meetNote != null) ...[
+                                const SizedBox(height: Gap.s),
+                                Text(_meetNote!,
+                                    style: Type.secondary
+                                        .copyWith(color: p.textSecondary),
+                                    key: const Key('meetNote')),
+                              ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: Gap.m),
                         // The signed audit export (ADR-0006 #30).
                         Glass(
                           depth: Depth.low,
@@ -247,6 +323,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   String? _publicKey;
+  late final _replicaUrl =
+      TextEditingController(text: Preferences.shared.replicaUrl);
+  late final _facilityName =
+      TextEditingController(text: Preferences.shared.facilityName);
+  String? _meetNote;
+  bool _wiped = false;
+
+  /// One meeting with the replica: enrol with what was typed, then push,
+  /// pull, and say what happened — or that the device was told to wipe.
+  Future<void> _meet() async {
+    Preferences.shared
+        .enrol(replicaUrl: _replicaUrl.text, facilityName: _facilityName.text);
+    final url = Uri.tryParse(Preferences.shared.replicaUrl);
+    if (url == null ||
+        !url.hasScheme ||
+        Preferences.shared.facilityName.isEmpty) {
+      setState(() => _meetNote = Strings.replicaNotSet);
+      return;
+    }
+    final sync = widget.makeSync?.call(url) ??
+        Sync(HttpTransport(url),
+            facility: Preferences.shared.facilityName,
+            device: Ids.shared.device);
+    try {
+      final o = await sync.run(widget.records, now: DateTime.now().toUtc());
+      if (!mounted) return;
+      setState(() {
+        _wiped = o.wiped;
+        _meetNote =
+            '${Strings.pushed} ${o.pushed} · ${Strings.pulled} ${o.pulled}';
+      });
+      if (o.wiped) Preferences.shared.face = Face.unchosen;
+    } catch (e) {
+      if (mounted) setState(() => _meetNote = '${Strings.couldNotMeet} $e');
+    }
+  }
 
   Future<void> _exportAudit() async {
     final keys = AuditKeys();

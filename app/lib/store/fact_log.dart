@@ -29,6 +29,18 @@ final class FactLog {
   final KeySource keys;
   static final _cipher = Chacha20.poly1305Aead();
 
+  /// The wipe: the file is overwritten with zeros to its length and then
+  /// deleted, so the ciphertext is gone from the disk as well as the
+  /// directory. The key stays where it was; without the file it opens nothing.
+  Future<void> wipe() async {
+    if (await file.exists()) {
+      final n = await file.length();
+      await file.writeAsBytes(List<int>.filled(n, 0), flush: true);
+      await file.delete();
+    }
+    _count = 0;
+  }
+
   /// Frames written so far, counted once from the file and kept, so an
   /// append does not re-read a log that grows with every patient.
   int? _count;

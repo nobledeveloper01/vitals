@@ -194,7 +194,14 @@ data.*
 
 From the thirty: #30 the signed audit export.
 
-**Built ahead, 2026-09-15.** Lab results as the laboratory printed them —
+**Built ahead, 2026-09-15.** Enrolment with the replica — a URL and a name
+typed into the clinic's Settings, an HTTP transport of nothing but `dart:io`,
+a meeting on demand — and remote wipe: a supervisor with the admin token asks
+the replica, the device asks at every meeting before it pushes a byte, erases
+the log from the disk (zeros to its length, then deleted) and the records from
+memory, confirms, and is a blank tablet; the replica and the other tablets keep
+what it held. The server never reaches into a device. Lab results as the
+laboratory printed them —
 text, never compared to anything, the laboratory's own report carrying its
 range — and AEFI as the national form asks it: every sign answered, the
 form's *serious* box kept as the nurse's answer, reported onward or not.

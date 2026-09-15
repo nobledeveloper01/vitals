@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Vitals.Domain;
 using Xunit;
@@ -15,7 +16,9 @@ namespace Vitals.Api.Tests;
 public class SyncTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
-    public SyncTests(WebApplicationFactory<Program> f) => _client = f.CreateClient();
+    public SyncTests(WebApplicationFactory<Program> f) => _client = f
+        .WithWebHostBuilder(b => b.UseSetting("ADMIN_TOKEN", "test-supervisor-token"))
+        .CreateClient();
 
     private static Fact MakeFact(int seed, string device, long wall, FactKind kind = FactKind.Vitals, byte[]? supersedes = null)
     {
@@ -81,5 +84,32 @@ public class SyncTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var res = await _client.GetAsync("/patients/00000000000000000000000000000000/record");
         Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
+    }
+
+    [Fact]
+    public async Task AWipeNeedsTheSupervisorsTokenAndTheDeviceSeesItThenConfirms()
+    {
+        var device = $"tab-{Guid.NewGuid():N}";
+        // Nobody has asked.
+        var status = await _client.GetFromJsonAsync<DeviceStatus>($"/devices/{device}");
+        Assert.False(status!.Wipe);
+        // Without the token: refused, and the device still sees nothing.
+        var refused = await _client.PostAsync($"/devices/{device}/wipe?facility=ikeja", null);
+        Assert.Equal(HttpStatusCode.Forbidden, refused.StatusCode);
+        status = await _client.GetFromJsonAsync<DeviceStatus>($"/devices/{device}");
+        Assert.False(status!.Wipe);
+        // With it: the device is told at its next meeting.
+        using var req = new HttpRequestMessage(HttpMethod.Post, $"/devices/{device}/wipe?facility=ikeja");
+        req.Headers.Add("X-Admin-Token", "test-supervisor-token");
+        var ok = await _client.SendAsync(req);
+        Assert.Equal(HttpStatusCode.OK, ok.StatusCode);
+        status = await _client.GetFromJsonAsync<DeviceStatus>($"/devices/{device}");
+        Assert.True(status!.Wipe);
+        // The device erased and said so.
+        var confirmed = await _client.PostAsync($"/devices/{device}/wiped", null);
+        Assert.Equal(HttpStatusCode.OK, confirmed.StatusCode);
+        status = await _client.GetFromJsonAsync<DeviceStatus>($"/devices/{device}");
+        Assert.False(status!.Wipe);
+        Assert.NotNull(status.WipedAt);
     }
 }

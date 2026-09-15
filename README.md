@@ -83,8 +83,8 @@ record.
 | | |
 |---|---|
 | Domain tests | 56 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
-| App tests | 64 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders, vitals with a draft that survives a kill, the danger-sign checklist, stock counted by tapping, the fridge, the patient face in five languages, the share grant enforced in the bytes, the animated QR, the access log, a pack checked with three outcomes, the emergency card on the lock face, the referral letter, the audit export signed and verified under Python, the record received frame by frame, lab results and AEFI, a pack's barcode, the facility list |
-| Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
+| App tests | 67 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders, vitals with a draft that survives a kill, the danger-sign checklist, stock counted by tapping, the fridge, the patient face in five languages, the share grant enforced in the bytes, the animated QR, the access log, a pack checked with three outcomes, the emergency card on the lock face, the referral letter, the audit export signed and verified under Python, the record received frame by frame, lab results and AEFI, a pack's barcode, the facility list, enrolment and a remote wipe |
+| Server tests | 5 — push, pull, the replica's bytes, a refused bundle, a wipe that needs the supervisor's token |
 | Blocking gates | 7 in `make gates`, each proved to fire |
 | Release gates | 6 |
 | ADRs | 8 |

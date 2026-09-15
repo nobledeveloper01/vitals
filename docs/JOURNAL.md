@@ -340,3 +340,17 @@ the lab card went above the immunisation card: the header's icons had
 slipped under the viewport's edge and `tap` warned and did nothing. The
 fix was a 2000-pixel surface at pixel ratio one — the phone is taller
 than the test's default — and not `warnIfMissed: false`.
+
+### Then: enrolment and the wipe
+
+Sync had a client and a server and no way to run it from the app. Now
+there is a URL in Settings, an HTTP transport with no package behind it,
+and a button. The wipe rides on it: the server keeps a flag a supervisor
+sets with a token, the device asks before it pushes, and erases itself —
+the replica never reaches in, because a server that can reach into a
+tablet is a server that can be made to. The log is overwritten with zeros
+before it is deleted; the key stays, opening nothing.
+
+**The test binding answers every HttpClient with a 400.** A real local
+server and a real client, and every call came back 400 until the
+override was cleared. It is a setter only; you cannot put it back.

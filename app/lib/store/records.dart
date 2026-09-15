@@ -72,6 +72,16 @@ final class Records extends ChangeNotifier {
 
   /// What arrived from another device: the same as recording, and the
   /// moment is remembered for the chip.
+  /// Remote wipe: every record gone from memory and from the disk. The
+  /// device is a blank tablet afterwards; what it held is on the replica
+  /// and on the other devices that met it.
+  Future<void> wipe() async {
+    await _log.wipe();
+    _records.clear();
+    _lastMet = null;
+    notifyListeners();
+  }
+
   Future<int> met(Iterable<Fact> facts, {required DateTime at}) async {
     final n = await record(facts);
     _lastMet = at;

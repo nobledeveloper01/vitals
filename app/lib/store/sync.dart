@@ -15,27 +15,49 @@ abstract interface class Transport {
 }
 
 final class SyncOutcome {
-  const SyncOutcome({required this.pushed, required this.pulled});
+  const SyncOutcome(
+      {required this.pushed, required this.pulled, this.wiped = false});
   final int pushed, pulled;
+
+  /// The replica said a supervisor asked this device to wipe; it did, and
+  /// pushed and pulled nothing.
+  final bool wiped;
   @override
   bool operator ==(Object other) =>
-      other is SyncOutcome && other.pushed == pushed && other.pulled == pulled;
+      other is SyncOutcome &&
+      other.pushed == pushed &&
+      other.pulled == pulled &&
+      other.wiped == wiped;
   @override
-  int get hashCode => Object.hash(pushed, pulled);
+  int get hashCode => Object.hash(pushed, pulled, wiped);
   @override
-  String toString() => 'pushed $pushed, pulled $pulled';
+  String toString() => wiped ? 'wiped' : 'pushed $pushed, pulled $pulled';
 }
 
 final class Sync {
-  Sync(this.transport, {required this.facility});
+  Sync(this.transport, {required this.facility, this.device = ''});
   final Transport transport;
   final String facility;
+
+  /// This device's name, for the wipe question; empty on a device that is
+  /// not enrolled and asks nothing.
+  final String device;
 
   /// The server's arrival cursor per facility, kept by the caller between
   /// runs so a pull is a delta.
   int cursor = 0;
 
   Future<SyncOutcome> run(Records records, {required DateTime now}) async {
+    // First, at every meeting: has a supervisor asked this device to wipe?
+    // If so it erases before it pushes a byte, and tells the replica.
+    if (device.isNotEmpty) {
+      final status = await transport.getJson('/devices/$device');
+      if (status['wipe'] == true) {
+        await records.wipe();
+        await transport.postJson('/devices/$device/wiped', const {});
+        return const SyncOutcome(pushed: 0, pulled: 0, wiped: true);
+      }
+    }
     // Push everything; the server ignores what it knows and says how many were new.
     final mine = records.all.values.expand((r) => r.all).toList();
     var pushed = 0;

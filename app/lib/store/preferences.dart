@@ -17,11 +17,18 @@ final class Preferences extends ChangeNotifier {
   bool _largeType = false;
   List<int> _facility = const [];
   Lang _lang = Lang.english;
+  String _replicaUrl = '';
+  String _facilityName = '';
   bool _locked = false;
   SharedPreferences? _store;
 
   Face get face => _face;
   Lang get lang => _lang;
+
+  /// The replica this facility is enrolled with; empty means none, and
+  /// nothing leaves the tablet.
+  String get replicaUrl => _replicaUrl;
+  String get facilityName => _facilityName;
 
   /// The facility's own record id — where stock and the fridge log hang.
   /// Made once on this tablet and kept; a test hands one in.
@@ -36,6 +43,8 @@ final class Preferences extends ChangeNotifier {
       _face = Face.values[_store!.getInt('face') ?? 0];
       _largeType = _store!.getBool('largeType') ?? false;
       _lang = Lang.values[_store!.getInt('lang') ?? 0];
+      _replicaUrl = _store!.getString('replicaUrl') ?? '';
+      _facilityName = _store!.getString('facilityName') ?? '';
       final hex = _store!.getString('facility');
       _facility = hex == null
           ? const []
@@ -65,6 +74,14 @@ final class Preferences extends ChangeNotifier {
           _facility.map((b) => b.toRadixString(16).padLeft(2, '0')).join());
     }
     return _facility;
+  }
+
+  void enrol({required String replicaUrl, required String facilityName}) {
+    _replicaUrl = replicaUrl.trim();
+    _facilityName = facilityName.trim();
+    _store?.setString('replicaUrl', _replicaUrl);
+    _store?.setString('facilityName', _facilityName);
+    notifyListeners();
   }
 
   set lang(Lang l) {

@@ -22,12 +22,24 @@ public sealed class FactRow
     public long Seq { get; set; }
 }
 
+/// <summary>A device the replica has heard from, and whether a supervisor asked it to wipe.</summary>
+public sealed class DeviceRow
+{
+    public string Device { get; set; } = "";
+    public string Facility { get; set; } = "";
+    public bool WipeRequested { get; set; }
+    public DateTime? WipeRequestedAt { get; set; }
+    public DateTime? WipedAt { get; set; }
+}
+
 public sealed class VitalsDbContext(DbContextOptions<VitalsDbContext> options) : DbContext(options)
 {
     public DbSet<FactRow> Facts => Set<FactRow>();
+    public DbSet<DeviceRow> Devices => Set<DeviceRow>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
+        b.Entity<DeviceRow>().HasKey(d => d.Device);
         var e = b.Entity<FactRow>();
         e.HasKey(f => f.Id);
         e.HasIndex(f => new { f.Facility, f.Seq });
@@ -42,6 +54,28 @@ public sealed class VitalsDbContext(DbContextOptions<VitalsDbContext> options) :
 /// <summary>What the API needs of storage; the in-memory provider and Postgres both serve it.</summary>
 public sealed class FactStore(VitalsDbContext db)
 {
+    /// <summary>Remote wipe: a supervisor asks; the device sees it at its next meeting and erases; then says so.</summary>
+    public async Task RequestWipeAsync(string device, string facility, CancellationToken ct)
+    {
+        var row = await db.Devices.FindAsync([device], ct);
+        if (row is null) db.Devices.Add(row = new DeviceRow { Device = device, Facility = facility });
+        row.WipeRequested = true;
+        row.WipeRequestedAt = DateTime.UtcNow;
+        row.WipedAt = null;
+        await db.SaveChangesAsync(ct);
+    }
+
+    public async Task<DeviceRow?> DeviceAsync(string device, CancellationToken ct) => await db.Devices.FindAsync([device], ct);
+
+    public async Task ConfirmWipedAsync(string device, CancellationToken ct)
+    {
+        var row = await db.Devices.FindAsync([device], ct);
+        if (row is null) return;
+        row.WipeRequested = false;
+        row.WipedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
     /// <summary>Union: insert what is new, ignore what is known. Returns how many were new.</summary>
     public async Task<int> PushAsync(string facility, IEnumerable<Fact> facts, CancellationToken ct)
     {

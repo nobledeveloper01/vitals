@@ -7,6 +7,11 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **Enrolment and remote wipe.** A replica URL and a facility name in the
+  clinic's Settings, a meeting on demand over plain `dart:io`; a supervisor
+  with the admin token asks the replica to wipe a device, the device asks at
+  its next meeting, erases the log from the disk and every record from
+  memory, confirms, and is blank. The server never reaches into a device.
 - **Lab results and events after a dose.** A result as the laboratory
   printed it, text never compared to anything; the national AEFI form with
   every sign answered and its own *serious* box kept as an answer.

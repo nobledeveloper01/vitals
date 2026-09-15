@@ -123,6 +123,18 @@ abstract final class Strings {
   static const scheduleCoversChildren =
       'The routine schedule covers children under five; no card here.';
   static const changeFace = 'Change who this device is for';
+  static const replica = 'Replica';
+  static const replicaHint =
+      'A server this facility is enrolled with. It holds a copy and decides nothing; until a URL is typed here, nothing leaves the tablet.';
+  static const replicaUrl = 'Replica URL';
+  static const facilityName = 'This facility\'s name';
+  static const meetTheReplica = 'Meet the replica now';
+  static const replicaNotSet = 'A URL and a name are needed first.';
+  static const pushed = 'Sent';
+  static const pulled = 'received';
+  static const couldNotMeet = 'Could not meet the replica:';
+  static const wipedByReplica =
+      'A supervisor asked this tablet to wipe. Every record on it is erased; the replica and the other tablets keep theirs.';
   static const auditExport = 'Audit export';
   static const auditExportHint =
       'Every write and every open, as a CSV signed by this tablet. A changed line is a failed signature; the check needs only Python.';
