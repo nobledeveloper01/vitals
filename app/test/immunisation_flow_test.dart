@@ -97,6 +97,33 @@ void main() {
     semantics.dispose();
   });
 
+  testWidgets('the print button hands over an A5 PDF named for the child',
+      (t) async {
+    final patient = await newborn(t);
+    List<int>? bytes;
+    String? name;
+    await t.pumpWidget(MaterialApp(
+        home: PatientScreen(
+            records: records,
+            patient: patient,
+            ids: ids,
+            author: 'nurse-a',
+            today: born + 2,
+            facility: 'Ikeja PHC',
+            share: (pdf, n) async {
+              bytes = pdf;
+              name = n;
+            })));
+    await t.pumpAndSettle();
+    await t.runAsync(() async {
+      await t.tap(find.byTooltip(Strings.printCard));
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+    });
+    await t.pump();
+    expect(name, 'card-ife-okafor.pdf');
+    expect(String.fromCharCodes(bytes!.sublist(0, 5)), '%PDF-');
+  });
+
   testWidgets('an expired vial is refused and nothing is written', (t) async {
     final patient = await newborn(t);
     await t.pumpWidget(app(patient, born + 2));

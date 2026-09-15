@@ -2,12 +2,18 @@
 // not yet, with catch-up — and the shutter for a dose: vaccine, batch and
 // expiry from the vial's barcode or by hand, an expired vial refused
 // before anything is written. Every dose is a fact with its attribution.
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart' hide Card;
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vitals_domain/vitals_domain.dart';
 
 import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
+import '../report/card_pdf.dart';
 import '../speech/strings.dart';
 import '../store/ids.dart';
 import '../store/records.dart';
@@ -20,7 +26,9 @@ class PatientScreen extends StatelessWidget {
       required this.patient,
       required this.ids,
       required this.author,
-      this.today});
+      this.today,
+      this.share,
+      this.facility = ''});
   final Records records;
   final List<int> patient;
   final Ids ids;
@@ -28,6 +36,11 @@ class PatientScreen extends StatelessWidget {
 
   /// Days since 1970; the phone's own unless a test pins it.
   final int? today;
+
+  /// Where the printed card goes: the platform share sheet unless a test
+  /// hands one in.
+  final Future<void> Function(Uint8List pdf, String name)? share;
+  final String facility;
 
   int get _today =>
       today ?? DateTime.now().toUtc().difference(DateTime.utc(1970)).inDays;
@@ -76,9 +89,18 @@ class PatientScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(Strings.immunisationCard,
-                                  style: Type.title
-                                      .copyWith(color: p.textPrimary)),
+                              Row(children: [
+                                Expanded(
+                                    child: Text(Strings.immunisationCard,
+                                        style: Type.title
+                                            .copyWith(color: p.textPrimary))),
+                                IconButton(
+                                  tooltip: Strings.printCard,
+                                  icon: Icon(Icons.print_outlined,
+                                      color: p.textPrimary),
+                                  onPressed: () => _print(reg, card),
+                                ),
+                              ]),
                               const SizedBox(height: Gap.xs),
                               Text(
                                 due.isEmpty
@@ -154,6 +176,18 @@ class PatientScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _print(Registration reg, List<CardLine> card) async {
+    final pdf = await CardPdf.render(
+        reg: reg, card: card, todayDays: _today, facility: facility);
+    final name =
+        'card-${reg.fullName.replaceAll(RegExp(r'[^A-Za-z0-9]+'), '-').toLowerCase()}.pdf';
+    if (share != null) return share!(pdf, name);
+    final dir = await getTemporaryDirectory();
+    final file = File('${dir.path}/$name');
+    await file.writeAsBytes(pdf);
+    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
   }
 
   String _age(Registration r) {

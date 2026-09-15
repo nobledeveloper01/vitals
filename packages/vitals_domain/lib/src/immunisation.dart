@@ -177,4 +177,16 @@ abstract final class Card {
 
   /// What is due now, in schedule order: the next thing to give.
   static List<CardLine> dueNow(List<CardLine> card) => card.where((l) => l.status == Status.due || l.status == Status.overdue).toList();
+
+  /// The reminder (ADR-0006 #9): the one line a mother's phone shows — the
+  /// earliest dose with a day and not yet given, overdue first. Null when
+  /// the card is complete or every remaining dose waits on a first.
+  static CardLine? next(List<CardLine> card) {
+    CardLine? best;
+    for (final l in card) {
+      if (l.status == Status.given || l.status == Status.seriesNotStarted) continue;
+      if (best == null || l.dueOn! < best.dueOn!) best = l;
+    }
+    return best;
+  }
 }

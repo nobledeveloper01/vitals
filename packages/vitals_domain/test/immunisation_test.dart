@@ -47,6 +47,16 @@ void main() {
     expect(a.firstWhere((l) => l.due.vaccine == Vaccine.measles && l.due.dose == 1).status, Status.due);
   });
 
+  test('the reminder is the earliest dose not given, overdue first, and nothing when the card is complete', () {
+    final atBirth = Card.of(bornDays: born, given: const [], todayDays: born);
+    expect(Card.next(atBirth)!.due.vaccine, Vaccine.bcg);
+    final lateForPenta = Card.of(bornDays: born, given: [for (final d in Schedule.v1.where((d) => d.dueDays == 0)) Given(vaccine: d.vaccine, dose: d.dose, givenDays: born)], todayDays: born + 100);
+    final n = Card.next(lateForPenta)!;
+    expect((n.due.vaccine, n.due.dose, n.status), (Vaccine.opv, 1, Status.overdue), reason: 'the six-week doses, in schedule order');
+    final complete = Card.of(bornDays: born, given: [for (final d in Schedule.v1) Given(vaccine: d.vaccine, dose: d.dose, givenDays: born + d.dueDays)], todayDays: born + 600);
+    expect(Card.next(complete), isNull);
+  });
+
   test('a dose given round-trips through its payload and out of a record', () {
     final g = Given(vaccine: Vaccine.rota, dose: 2, givenDays: born + 75, batch: 'RV-2026-0042', expiryDays: born + 400);
     final back = Given.decode(g.encode());

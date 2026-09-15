@@ -71,6 +71,17 @@ abstract final class Strings {
   static const years = 'years';
   static const openRegistry = 'Patients';
   static const immunisationCard = 'Immunisation card';
+  static const printCard = 'Print the card';
+  static const cardComplete = 'Every dose on the card is given.';
+  static const dueNowLower = 'due now';
+  static const inDays = 'in';
+  static const reminderNote =
+      'From the national schedule and the dates on the card.';
+  static const dueToday = 'due today';
+  static const defaulters = 'behind';
+  static const daysOverdue = 'days overdue';
+  static const draftSms = 'Draft a message to the mother';
+  static const smsBody = 'Good day. Please bring your child to the clinic for';
   static const nothingDueForThisChild = 'Nothing due today.';
   static const dueNow = 'due now';
   static const given = 'given';

@@ -68,8 +68,8 @@ motion` in Settings, read at act time, and the same app either way.
 
 | | |
 |---|---|
-| Domain tests | 26 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
-| App tests | 28 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up |
+| Domain tests | 29 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
+| App tests | 34 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders |
 | Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
 | Blocking gates | 7 in `make gates`, each proved to fire |
 | Release gates | 6 |

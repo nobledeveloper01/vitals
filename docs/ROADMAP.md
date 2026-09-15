@@ -93,8 +93,13 @@ the second by its interval; dose two is never offered before dose one); an
 expired vial refused before anything is written; GS1 from the vial's barcode
 with the separator a scanner sends. On the screen: the card, the dose sheet,
 the history with every fact attributed, registration leading straight to the
-card. Still to build in this phase: the defaulter list, the printed A5 card,
-reminders on the patient's phone, SMS drafts, the whiteboard's due list.
+card. Then the same night: the ward whiteboard on the clinic home with the
+furthest behind first and the defaulters counted; a message draft for a mother
+with a phone, opened in the phone's own messages and never sent by the app; the
+A5 card as a PDF in the national layout, printed in the palette's own ink; and
+the reminder on the mother's phone naming the next vaccine and its day. Still
+to build in this phase: the stock decrement, and the reminders as notifications
+with the phone offline — both of which need a device in hand (R4).
 
 From the thirty: #4 the A5 card PDF in the national layout, #7 the ward
 whiteboard, #8 defaulter SMS drafts, #9 reminders naming the vaccine, #10 GS1

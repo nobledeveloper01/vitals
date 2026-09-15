@@ -7,6 +7,12 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **The whiteboard, the card on paper, the reminder.** The clinic home lists
+  every child with a dose due, furthest behind first, and counts the ones
+  behind; a mother with a phone gets a message draft opened in the phone's
+  own messages, never sent by the app. The card prints as an A5 PDF in the
+  national layout. The patient face names the next vaccine and its day per
+  child the phone holds, and says when a card is complete.
 - **The wedge.** The national immunisation schedule as a versioned table,
   doses as facts with batch and expiry, the card with catch-up, an expired
   vial refused before it is written, GS1 parsed as a scanner sends it; the

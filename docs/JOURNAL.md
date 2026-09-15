@@ -147,3 +147,34 @@ for a reason that made no sense until the file was read. Read the file.
 dosing advice, and a vaccine dose is the record's own word for a thing
 given, never advised. The list says *dosage* and any quantity in mg, ml or
 mcg now, and was broken on purpose with "Give 5 mg" to see it still bite.
+
+## 2026-09-15, later — the whiteboard, paper, and the mother's phone
+
+### What we did
+
+Phase 3's edges. `Whiteboard.today` over every record: the children with a
+dose due today, sorted by how far behind, the defaulters counted; on the
+clinic home in the largest type, each row opening the child. A message draft
+for a mother with a phone, through the phone's own messages app — the app
+composes and never sends, so nothing leaves a facility without a hand on it.
+The A5 card as a PDF in the national layout, one row per scheduled dose with
+the date given and the batch. `Card.next` in the domain — the earliest dose
+not given, overdue first — and the reminder on the patient face naming it,
+in the attention colour when overdue, with the day when not.
+
+### What surprised us
+
+**The design gate refused paper.** `PdfColors.grey700` on the printed card
+tripped the palette check, and the check was right: the card is the
+product's face on paper, and it prints in the light palette's ink now.
+The gate did not know about PDFs; it did not need to.
+
+**A test that asserted the wrong number and I believed the test.** A child
+born a hundred days ago is fifty-eight days late for a six-week dose, not
+thirty; the assertion was written from the grace period, not the schedule.
+The widget was right. Work the arithmetic from the table before writing the
+expectation.
+
+**The PDF's metadata is a plain string only when it is ASCII.** An em-dash
+in the title turned the whole string into UTF-16 hex, and the assertion that
+the child's name was in the file found only the header. A colon, then.
