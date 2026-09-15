@@ -17,6 +17,8 @@ import '../design/type.dart';
 import '../speech/patient_strings.dart';
 import '../store/ids.dart';
 import '../store/records.dart';
+import '../transport/ble.dart';
+import '../transport/link.dart';
 
 class ShareScreen extends StatefulWidget {
   const ShareScreen(
@@ -39,6 +41,37 @@ class _ShareScreenState extends State<ShareScreen> {
   final _kinds = <FactKind>{FactKind.immunisation};
   int _days = 30;
   List<Frame>? _frames;
+  List<int>? _payload;
+  String? _bleNote;
+  BlePeripheralLink? _ble;
+
+  /// The same bytes over the air (R3): advertise, wait for the clinic's
+  /// tablet to subscribe, send every frame twice.
+  Future<void> _sendOverBluetooth() async {
+    final payload = _payload;
+    if (payload == null) return;
+    setState(() => _bleNote = PatientStrings.t('bleWaiting'));
+    final link = _ble = BlePeripheralLink();
+    try {
+      await link.open();
+      await Handover.send(link, payload, repeats: 2);
+      if (mounted) setState(() => _bleNote = PatientStrings.t('bleSent'));
+    } catch (e) {
+      if (mounted) {
+        setState(() => _bleNote = '${PatientStrings.t('bleFailed')} $e');
+      }
+    } finally {
+      await link.close();
+      _ble = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _ble?.close();
+    _grantee.dispose();
+    super.dispose();
+  }
 
   static const _choices = [
     FactKind.immunisation,
@@ -144,6 +177,17 @@ class _ShareScreenState extends State<ShareScreen> {
                     textAlign: TextAlign.center),
                 const SizedBox(height: Gap.m),
                 SecondaryButton(
+                    label: PatientStrings.t('sendOverBluetooth'),
+                    onPressed: _ble == null ? _sendOverBluetooth : null),
+                if (_bleNote != null) ...[
+                  const SizedBox(height: Gap.s),
+                  Text(_bleNote!,
+                      style: Type.secondary.copyWith(color: p.textSecondary),
+                      textAlign: TextAlign.center,
+                      key: const Key('bleNote')),
+                ],
+                const SizedBox(height: Gap.s),
+                SecondaryButton(
                     label: PatientStrings.t('done'),
                     onPressed: () => Navigator.of(context).pop()),
               ],
@@ -177,7 +221,12 @@ class _ShareScreenState extends State<ShareScreen> {
     final facts =
         Scope.payload(record, grantee: grantee, todayDays: widget.today);
     final bytes = Canonical.bytesOf(Record.of(widget.patient, facts));
-    if (mounted) setState(() => _frames = Frame.cut(bytes));
+    if (mounted) {
+      setState(() {
+        _payload = bytes;
+        _frames = Frame.cut(bytes);
+      });
+    }
   }
 
   static String _hex(List<int> b) =>

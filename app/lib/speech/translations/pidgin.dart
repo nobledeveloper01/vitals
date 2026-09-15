@@ -104,4 +104,11 @@ const Map<String, String> pidgin = {
   'reportIt': 'Report this pack',
   'reportKept':
       'Dem don report am to the replica, no name inside. If two clinics report the same product within thirty days, na signal make person go check.',
+  'sendOverBluetooth': 'Send am with Bluetooth instead',
+  'bleWaiting': 'Dey wait make clinic tablet see this phone…',
+  'bleSent': 'E don go. The tablet go talk when e get everything.',
+  'bleFailed': 'Bluetooth no work here:',
+  'receiveOverBluetooth': 'Collect with Bluetooth',
+  'bleLooking': 'Dey find phone wey dey send…',
+  'bleReceiving': 'Dey collect…',
 };

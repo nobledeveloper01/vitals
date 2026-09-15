@@ -104,4 +104,11 @@ const Map<String, String> igbo = {
   'reportIt': 'Kọọ ngwugwu a',
   'reportKept':
       "Akọọla ya na nnomi, na-enweghị aha na ya. Ụlọ ọgwụ abụọ na-akọ otu ngwaahịa n'ime ụbọchị iri atọ bụ ihe ịrịba ama ka mmadụ lelee.",
+  'sendOverBluetooth': 'Zipu site na Bluetooth kama',
+  'bleWaiting': 'Na-echere ka tablet ụlọ ọgwụ chọta ekwentị a…',
+  'bleSent': 'Ezipụla. Tablet ahụ ga-ekwu mgbe o nwetara ihe niile.',
+  'bleFailed': 'Bluetooth arụghị ọrụ ebe a:',
+  'receiveOverBluetooth': 'Nata site na Bluetooth',
+  'bleLooking': 'Na-achọ ekwentị na-ezipu…',
+  'bleReceiving': 'Na-anata…',
 };

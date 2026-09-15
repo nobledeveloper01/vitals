@@ -179,8 +179,16 @@ number printed in a code, or a GTIN the list knows, the printed number
 winning — and the facility list (#18): a bundled sample with its date, sorted
 from the phone's position asked once and never kept, or from the centre of an
 area the person picks, with the words saying which. All thirty are built.
-Still to build: BLE (R3, hardware); a mixed Android↔iOS QR transfer watched on
-real handsets (R3).
+Then the peer transport façade: a link carries frames and knows nothing about
+records, the handover protocol on top is the same over BLE, over an in-memory
+pair in a test, and — one frame through a camera — over the animated QR, and
+the bytes a receiver assembles are the domain's `Frame` and `Gather` either
+way. BLE behind it: the phone a peripheral advertising one service and
+notifying frames, the tablet a central that finds it, subscribes and gathers;
+built against the plugin's interface, held to the in-memory link by tests,
+and proved on nothing else until two handsets are in hand. Nothing of Phase 5
+is left to write. Still to watch (R3): a mixed Android↔iOS transfer over
+both paths on real handsets, timed against fifteen seconds.
 
 ## Phase 6 — Pilot hardening → **v1.0**
 

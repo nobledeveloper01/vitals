@@ -13,6 +13,7 @@ import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/patient_strings.dart';
 import '../store/records.dart';
+import '../transport/ble.dart';
 
 class ReceiveScreen extends StatefulWidget {
   const ReceiveScreen(
@@ -38,9 +39,35 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   final _paste = TextEditingController();
   String? _refusal;
   (String name, int facts, int added)? _done;
+  BleCentralLink? _ble;
+  String? _bleNote;
+
+  /// The same gather over the air (R3): find a Vitals device advertising,
+  /// subscribe, and take every frame as it is notified.
+  Future<void> _receiveOverBluetooth() async {
+    setState(() => _bleNote = PatientStrings.shared('bleLooking'));
+    final link = _ble = BleCentralLink();
+    try {
+      await link.open();
+      if (!mounted) return;
+      setState(() => _bleNote = PatientStrings.shared('bleReceiving'));
+      await for (final f in link.incoming) {
+        await _takeFrame(f);
+        if (_done != null) break;
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _bleNote = '${PatientStrings.shared('bleFailed')} $e');
+      }
+    } finally {
+      await link.close();
+      _ble = null;
+    }
+  }
 
   @override
   void dispose() {
+    _ble?.close();
     _camera?.dispose();
     _paste.dispose();
     super.dispose();
@@ -58,14 +85,10 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             children: [
               const Align(
                   alignment: Alignment.centerLeft, child: BackButton2()),
-              Text(
-                  PatientStrings.face('receiveRecord',
-                      PatientStrings.english['receiveRecord']!),
+              Text(PatientStrings.shared('receiveRecord'),
                   style: Type.display.copyWith(color: p.textPrimary)),
               const SizedBox(height: Gap.xs),
-              Text(
-                  PatientStrings.face(
-                      'receiveHint', PatientStrings.english['receiveHint']!),
+              Text(PatientStrings.shared('receiveHint'),
                   style: Type.secondary.copyWith(color: p.textSecondary)),
               const SizedBox(height: Gap.m),
               if (done != null)
@@ -131,8 +154,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                     children: [
                       Text(
                           _gather.total == 0
-                              ? PatientStrings.face('waitingForCode',
-                                  PatientStrings.english['waitingForCode']!)
+                              ? PatientStrings.shared('waitingForCode')
                               : '${_gather.have} / ${_gather.total} · ${_gather.missing.length} ${PatientStrings.shared('framesToCome')}',
                           style: Type.title.copyWith(color: p.textPrimary),
                           key: const Key('progress')),
@@ -154,10 +176,8 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                         maxLines: 3,
                         style: Type.small.copyWith(color: p.textPrimary),
                         decoration: InputDecoration(
-                            labelText: PatientStrings.face('pasteCode',
-                                PatientStrings.english['pasteCode']!),
-                            helperText: PatientStrings.face('pasteHint',
-                                PatientStrings.english['pasteHint']!),
+                            labelText: PatientStrings.shared('pasteCode'),
+                            helperText: PatientStrings.shared('pasteHint'),
                             helperMaxLines: 2,
                             border: OutlineInputBorder(
                                 borderRadius:
@@ -165,8 +185,19 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                       ),
                       const SizedBox(height: Gap.s),
                       SecondaryButton(
-                          label: PatientStrings.face(
-                              'addCode', PatientStrings.english['addCode']!),
+                          label: PatientStrings.shared('receiveOverBluetooth'),
+                          onPressed:
+                              _ble == null ? _receiveOverBluetooth : null),
+                      if (_bleNote != null) ...[
+                        const SizedBox(height: Gap.s),
+                        Text(_bleNote!,
+                            style:
+                                Type.secondary.copyWith(color: p.textSecondary),
+                            key: const Key('bleNote')),
+                      ],
+                      const SizedBox(height: Gap.s),
+                      SecondaryButton(
+                          label: PatientStrings.shared('addCode'),
                           onPressed: () {
                             _take(_paste.text);
                             _paste.clear();
@@ -193,10 +224,13 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   Future<void> _take(String text) async {
     final frame = Frame.fromText(text);
     if (frame == null) {
-      setState(() => _refusal = PatientStrings.face(
-          'notAVitalsCode', PatientStrings.english['notAVitalsCode']!));
+      setState(() => _refusal = PatientStrings.shared('notAVitalsCode'));
       return;
     }
+    await _takeFrame(frame);
+  }
+
+  Future<void> _takeFrame(Frame frame) async {
     final added = _gather.add(frame);
     setState(() => _refusal = null);
     if (!added || !_gather.complete) return;
@@ -204,8 +238,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     try {
       received = Canonical.recordFrom(_gather.payload);
     } on Object {
-      setState(() => _refusal = PatientStrings.face(
-          'codeDamaged', PatientStrings.english['codeDamaged']!));
+      setState(() => _refusal = PatientStrings.shared('codeDamaged'));
       return;
     }
     final before = widget.records.all[_hex(received.patient)]?.length ?? 0;
@@ -215,9 +248,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     final reg = Registration.of(received.current);
     if (mounted) {
       setState(() => _done = (
-            reg?.fullName ??
-                PatientStrings.face(
-                    'aRecord', PatientStrings.english['aRecord']!),
+            reg?.fullName ?? PatientStrings.shared('aRecord'),
             received.length,
             after - before
           ));

@@ -128,6 +128,13 @@ abstract final class PatientStrings {
     'reportIt': 'Report this pack',
     'reportKept':
         'Reported to the replica, with no name in it. Two facilities reporting the same product within thirty days is a signal for a person to look at.',
+    'sendOverBluetooth': 'Send over Bluetooth instead',
+    'bleWaiting': "Waiting for the clinic's tablet to find this phone…",
+    'bleSent': 'Sent. The tablet says when it has everything.',
+    'bleFailed': 'Bluetooth did not work here:',
+    'receiveOverBluetooth': 'Receive over Bluetooth',
+    'bleLooking': 'Looking for a phone sending…',
+    'bleReceiving': 'Receiving…',
   };
 
   static const Map<Lang, Map<String, String>> tables = {

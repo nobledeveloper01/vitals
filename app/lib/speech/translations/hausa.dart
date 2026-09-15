@@ -105,4 +105,11 @@ const Map<String, String> hausa = {
   'reportIt': 'Kai rahoton wannan fakitin',
   'reportKept':
       'An kai rahoto zuwa kwafin, ba tare da suna a ciki ba. Asibitoci biyu da suka kai rahoton kaya ɗaya cikin kwanaki talatin alama ce da mutum zai duba.',
+  'sendOverBluetooth': 'Aika ta Bluetooth maimakon haka',
+  'bleWaiting': 'Ana jiran kwamfutar asibiti ta samo wannan wayar…',
+  'bleSent': 'An aika. Kwamfutar za ta ce lokacin da ta samu duka.',
+  'bleFailed': 'Bluetooth bai yi aiki a nan ba:',
+  'receiveOverBluetooth': 'Karɓa ta Bluetooth',
+  'bleLooking': 'Ana neman wayar da ke aikawa…',
+  'bleReceiving': 'Ana karɓa…',
 };

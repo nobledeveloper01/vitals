@@ -70,5 +70,7 @@
 	<string>To read the code on another device's screen when a record is handed over. Nothing is photographed or kept.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To sort the bundled list of facilities by distance from you. The position is used once, on the phone, and not kept.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>To hand a record to another Vitals device nearby, when the patient asks. Only the parts the patient chose cross; nothing is kept from the air.</string>
 </dict>
 </plist>

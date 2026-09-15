@@ -7,6 +7,12 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **BLE behind a transport façade.** A link carries frames and knows
+  nothing about records; the handover protocol is the same over BLE, an
+  in-memory pair, and the QR. The phone advertises and notifies frames, the
+  tablet subscribes and gathers; proved over the in-memory pair, including
+  a lossy one made whole by a repeat, and compiled against the plugin
+  until two handsets can watch it.
 - **The supervisor's side (Phase 7).** Aggregates by facility, month and
   kind with no patient identifiable, as JSON and as a plain page; LGAs
   declared with the admin token; the outbreak signal from packs reported

@@ -105,4 +105,11 @@ const Map<String, String> yoruba = {
   'reportIt': 'Ròyìn páálí yìí',
   'reportKept':
       'A ti ròyìn rẹ̀ sí àfìdípò, láìsí orúkọ nínú rẹ̀. Ilé ìwòsàn méjì tí ó bá ròyìn ọjà kan náà láàárín ọgbọ̀n ọjọ́ jẹ́ àmì fún ẹnìkan láti wò.',
+  'sendOverBluetooth': 'Fi Bluetooth ránṣẹ́ dípò rẹ̀',
+  'bleWaiting': 'Ń dúró kí tábúlẹ́ẹ̀tì ilé ìwòsàn rí fóònù yìí…',
+  'bleSent': 'A ti ránṣẹ́. Tábúlẹ́ẹ̀tì yóò sọ nígbà tí ó bá gba gbogbo rẹ̀.',
+  'bleFailed': 'Bluetooth kò ṣiṣẹ́ níbí:',
+  'receiveOverBluetooth': 'Gba pẹ̀lú Bluetooth',
+  'bleLooking': 'Ń wá fóònù tó ń ránṣẹ́…',
+  'bleReceiving': 'Ń gbà…',
 };

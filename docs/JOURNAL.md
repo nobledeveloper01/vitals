@@ -367,3 +367,18 @@ greps the JSON for *interpretation* and *referenceRange* and finds neither.
 **An in-memory database is one database.** The aggregate test pushed facts
 for the patient the sync test uses, and the sync test's byte-for-byte
 comparison failed for the first time in the project. Its own patient now.
+
+### Then: BLE, as far as a desk reaches
+
+The useful decision was the façade: a `PeerLink` carries `Frame`s and
+nothing else, so the handover protocol was written once and proved over
+an in-memory pair — including a pair that drops a frame, which the
+receiver waits through and a repeat makes whole, counted once by
+`Gather`. The BLE adapter sits behind that interface and is the only code
+in the repo I have not watched run. It says so at the top of its file and
+in the roadmap, and the release gate that would clear it needs two phones
+in one room.
+
+**What the user's list came to:** all five items are code now, and every
+one of them landed with its test the same day. What remains is the same
+wall as before, exactly: hardware, people, and a pilot.

@@ -7,6 +7,7 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  bluetooth_low_energy: ^6.2.1
   cryptography: ^2.9.0
   file_picker: ^13.0.0
   flutter:
