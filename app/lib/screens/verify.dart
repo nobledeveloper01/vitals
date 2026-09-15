@@ -11,6 +11,9 @@ import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/patient_strings.dart';
+import '../store/http_transport.dart';
+import '../store/preferences.dart';
+import '../store/sync.dart';
 
 /// The bundled list: a sample until NAFDAC's published register is loaded
 /// as data with its date. The prefixes it covers are declared with it.
@@ -33,10 +36,14 @@ abstract final class BundledList {
 }
 
 class VerifyScreen extends StatefulWidget {
-  const VerifyScreen({super.key, this.camera = true});
+  const VerifyScreen({super.key, this.camera = true, this.report});
 
   /// False where there is no camera (a test): the field alone.
   final bool camera;
+
+  /// Where a not-on-the-list report goes: the enrolled replica over HTTP,
+  /// or nowhere when none is enrolled; a test hands one in.
+  final Transport? report;
 
   @override
   State<VerifyScreen> createState() => _VerifyScreenState();
@@ -47,6 +54,32 @@ class _VerifyScreenState extends State<VerifyScreen> {
   Verification? _result;
   late final MobileScannerController? _camera =
       widget.camera ? MobileScannerController() : null;
+  bool _reported = false;
+
+  Transport? get _transport {
+    if (widget.report != null) return widget.report;
+    final url = Uri.tryParse(Preferences.shared.replicaUrl);
+    return url == null || !url.hasScheme ? null : HttpTransport(url);
+  }
+
+  /// The report carries the number, the product the list knows for its
+  /// prefix if any, and the facility — never a patient, because none is
+  /// involved in checking a pack.
+  Future<void> _report() async {
+    final r = _result;
+    final t = _transport;
+    if (r == null || t == null) return;
+    try {
+      await t.postJson('/reports/counterfeit', {
+        'facility': Preferences.shared.facilityName,
+        'product': r.product.isEmpty ? r.number.substring(0, 2) : r.product,
+        'number': r.number,
+      });
+      if (mounted) setState(() => _reported = true);
+    } catch (_) {
+      // Offline: the report waits for a hand that tries again.
+    }
+  }
 
   @override
   void dispose() {
@@ -144,6 +177,19 @@ class _VerifyScreenState extends State<VerifyScreen> {
               if (r != null) ...[
                 const SizedBox(height: Gap.m),
                 _OutcomeCard(result: r),
+                if (r.outcome == Outcome.notOnTheList &&
+                    _transport != null) ...[
+                  const SizedBox(height: Gap.s),
+                  SecondaryButton(
+                      label: PatientStrings.t('reportIt'),
+                      onPressed: _reported ? null : _report),
+                  if (_reported) ...[
+                    const SizedBox(height: Gap.s),
+                    Text(PatientStrings.t('reportKept'),
+                        style: Type.secondary.copyWith(color: p.textSecondary),
+                        key: const Key('reportKept')),
+                  ],
+                ],
               ],
             ],
           ),

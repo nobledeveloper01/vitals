@@ -354,3 +354,16 @@ before it is deleted; the key stays, opening nothing.
 **The test binding answers every HttpClient with a 400.** A real local
 server and a real client, and every call came back 400 until the
 override was cleared. It is a setter only; you cannot put it back.
+
+### Then: Phase 7's code half
+
+The kind became a column so the replica can count without opening a
+payload — a supervisor's page that had to open bytes to count them would
+be a page that could read them. The signal is a count over a window across
+two facilities; three reports from one facility are one worried nurse, not
+a signal. FHIR as a table of codes and a bundle builder with a test that
+greps the JSON for *interpretation* and *referenceRange* and finds neither.
+
+**An in-memory database is one database.** The aggregate test pushed facts
+for the patient the sync test uses, and the sync test's byte-for-byte
+comparison failed for the first time in the project. Its own patient now.

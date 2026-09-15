@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Vitals.Domain;
+using Vitals.Infrastructure;
 using Xunit;
 using Record = Vitals.Domain.Record;
 
@@ -20,10 +21,10 @@ public class SyncTests : IClassFixture<WebApplicationFactory<Program>>
         .WithWebHostBuilder(b => b.UseSetting("ADMIN_TOKEN", "test-supervisor-token"))
         .CreateClient();
 
-    private static Fact MakeFact(int seed, string device, long wall, FactKind kind = FactKind.Vitals, byte[]? supersedes = null)
+    private static Fact MakeFact(int seed, string device, long wall, FactKind kind = FactKind.Vitals, byte[]? supersedes = null, int patientSeed = 13)
     {
         var id = Enumerable.Range(0, 32).Select(i => (byte)((seed * 31 + i * 7) & 0xff)).ToArray();
-        var patient = Enumerable.Range(0, 16).Select(i => (byte)((13 + i) & 0xff)).ToArray();
+        var patient = Enumerable.Range(0, 16).Select(i => (byte)((patientSeed + i) & 0xff)).ToArray();
         return new Fact(id, patient, kind, new Stamp(wall, seed % 3, device), "nurse-a", [(byte)seed, 0x42], supersedes);
     }
 
@@ -111,5 +112,67 @@ public class SyncTests : IClassFixture<WebApplicationFactory<Program>>
         status = await _client.GetFromJsonAsync<DeviceStatus>($"/devices/{device}");
         Assert.False(status!.Wipe);
         Assert.NotNull(status.WipedAt);
+    }
+
+    [Fact]
+    public async Task TheSupervisorSeesTwoFacilitiesAggregatesWithNoPatientIdentifiable()
+    {
+        var lga = $"lga-{Guid.NewGuid():N}";
+        var a = $"fac-a-{Guid.NewGuid():N}";
+        var b = $"fac-b-{Guid.NewGuid():N}";
+        foreach (var (fac, seed) in new[] { (a, 1), (a, 2), (b, 3) })
+        {
+            // Its own patient, so the sync test's record is not touched.
+            var f = MakeFact(seed * 100 + 7, "tab", 1_760_000_000_000L + seed, seed == 2 ? FactKind.Immunisation : FactKind.Registration, patientSeed: 200);
+            var res = await _client.PostAsJsonAsync("/sync/push", new PushRequest(fac, [Bundle(f)]));
+            Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        }
+        foreach (var fac in new[] { a, b })
+        {
+            using var req = new HttpRequestMessage(HttpMethod.Post, $"/facilities/{fac}/lga?lga={lga}");
+            req.Headers.Add("X-Admin-Token", "test-supervisor-token");
+            Assert.Equal(HttpStatusCode.OK, (await _client.SendAsync(req)).StatusCode);
+        }
+        var rows = await _client.GetFromJsonAsync<List<AggregateRow>>($"/reports/aggregate?lga={lga}");
+        Assert.NotNull(rows);
+        Assert.Equal(3, rows!.Count);
+        Assert.Contains(rows, r => r.Facility == a && r.Kind == "Registration" && r.Facts == 1 && r.Patients == 1);
+        Assert.Contains(rows, r => r.Facility == a && r.Kind == "Immunisation" && r.Facts == 1);
+        Assert.Contains(rows, r => r.Facility == b && r.Facts == 1);
+        // The page: both facilities, the counts, and no patient id anywhere on it.
+        var html = await _client.GetStringAsync($"/dashboard?lga={lga}");
+        Assert.Contains(a, html);
+        Assert.Contains(b, html);
+        Assert.Contains("Immunisation", html);
+        Assert.DoesNotContain("c8c9cacb", html); // the patient bytes' hex
+        Assert.DoesNotContain("nurse-a", html);
+    }
+
+    [Fact]
+    public async Task ThreeReportsFromTwoFacilitiesOfAnLgaAreASignalAndOneFacilityIsNot()
+    {
+        var lga = $"lga-{Guid.NewGuid():N}";
+        var a = $"fac-a-{Guid.NewGuid():N}";
+        var b = $"fac-b-{Guid.NewGuid():N}";
+        foreach (var fac in new[] { a, b })
+        {
+            using var req = new HttpRequestMessage(HttpMethod.Post, $"/facilities/{fac}/lga?lga={lga}");
+            req.Headers.Add("X-Admin-Token", "test-supervisor-token");
+            await _client.SendAsync(req);
+        }
+        // Three from one facility: not a signal.
+        for (var i = 0; i < 3; i++)
+            await _client.PostAsJsonAsync("/reports/counterfeit", new CounterfeitReport(a, "Paracetamol", "A4-9999"));
+        var none = await _client.GetFromJsonAsync<List<SignalRow>>($"/signals?lga={lga}");
+        Assert.Empty(none!);
+        // One more from the other facility: a signal.
+        await _client.PostAsJsonAsync("/reports/counterfeit", new CounterfeitReport(b, "Paracetamol", "A4-9998"));
+        var signals = await _client.GetFromJsonAsync<List<SignalRow>>($"/signals?lga={lga}");
+        var s = Assert.Single(signals!);
+        Assert.Equal(("Paracetamol", 4, 2), (s.Product, s.Reports, s.Facilities));
+        var html = await _client.GetStringAsync($"/dashboard?lga={lga}");
+        Assert.Contains("Paracetamol: 4 reports from 2 facilities", html);
+        Assert.DoesNotContain("genuine", html);
+        Assert.DoesNotContain("counterfeit", html.ToLowerInvariant().Replace("/reports/counterfeit", ""));
     }
 }

@@ -104,6 +104,7 @@ abstract final class Strings {
   static const receiveRecord = 'Receive a record';
   static const thisFacility = 'this facility';
   static const referralLetter = 'Referral letter';
+  static const exportFhir = 'Export as FHIR';
   static const labResults = 'Lab results';
   static const noLabResults = 'None recorded.';
   static const addLabResult = 'Add a lab result';

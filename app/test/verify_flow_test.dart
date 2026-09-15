@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vitals/screens/verify.dart';
 import 'package:vitals/speech/patient_strings.dart';
+import 'package:vitals/store/sync.dart';
 
 void main() {
   Future<void> check(WidgetTester t, String text) async {
@@ -34,6 +35,25 @@ void main() {
         reason: 'a barcode the list does not know is not a number');
   });
 
+  testWidgets('a pack not on the list can be reported, with no patient in it',
+      (t) async {
+    final posted = <(String, Map<String, Object?>)>[];
+    final fake = _Fake(posted);
+    await t.pumpWidget(
+        MaterialApp(home: VerifyScreen(camera: false, report: fake)));
+    await t.pumpAndSettle();
+    await check(t, 'A4-1234');
+    expect(find.text(PatientStrings.t('reportIt')), findsNothing,
+        reason: 'on the list: nothing to report');
+    await check(t, 'A4-7777');
+    await t.tap(find.text(PatientStrings.t('reportIt')));
+    await t.pumpAndSettle();
+    expect(find.byKey(const Key('reportKept')), findsOneWidget);
+    expect(posted.single.$1, '/reports/counterfeit');
+    expect(posted.single.$2['number'], 'A4-7777');
+    expect(posted.single.$2.keys, isNot(contains('patient')));
+  });
+
   test('no language says genuine, authentic, fake or counterfeit', () {
     final banned = RegExp(
         r'\b(genuine|authentic|fake|counterfeit\w*|original|gidi|fake)\b',
@@ -45,4 +65,17 @@ void main() {
       }
     }
   });
+}
+
+final class _Fake implements Transport {
+  _Fake(this.posted);
+  final List<(String, Map<String, Object?>)> posted;
+  @override
+  Future<Map<String, Object?>> getJson(String path) async => const {};
+  @override
+  Future<Map<String, Object?>> postJson(
+      String path, Map<String, Object?> body) async {
+    posted.add((path, body));
+    return const {'ok': true};
+  }
 }

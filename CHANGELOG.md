@@ -7,6 +7,11 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **The supervisor's side (Phase 7).** Aggregates by facility, month and
+  kind with no patient identifiable, as JSON and as a plain page; LGAs
+  declared with the admin token; the outbreak signal from packs reported
+  not on the list by two or more facilities in thirty days; FHIR R4 export
+  of a record with CVX, LOINC and UCUM codes and no interpretation.
 - **Enrolment and remote wipe.** A replica URL and a facility name in the
   clinic's Settings, a meeting on demand over plain `dart:io`; a supervisor
   with the admin token asks the replica to wipe a device, the device asks at

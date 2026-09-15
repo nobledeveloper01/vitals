@@ -102,4 +102,7 @@ const Map<String, String> hausa = {
   'noPosition': 'Wayar ba ta iya cewa inda take ba. Zaɓi yankinka:',
   'fromWhereYouAre': 'Daga inda kake',
   'fromTheCentreOf': 'Daga tsakiyar',
+  'reportIt': 'Kai rahoton wannan fakitin',
+  'reportKept':
+      'An kai rahoto zuwa kwafin, ba tare da suna a ciki ba. Asibitoci biyu da suka kai rahoton kaya ɗaya cikin kwanaki talatin alama ce da mutum zai duba.',
 };

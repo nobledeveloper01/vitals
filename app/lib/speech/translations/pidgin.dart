@@ -101,4 +101,7 @@ const Map<String, String> pidgin = {
   'noPosition': 'The phone no fit talk where e dey. Choose your area:',
   'fromWhereYouAre': 'From where you dey',
   'fromTheCentreOf': 'From the middle of',
+  'reportIt': 'Report this pack',
+  'reportKept':
+      'Dem don report am to the replica, no name inside. If two clinics report the same product within thirty days, na signal make person go check.',
 };

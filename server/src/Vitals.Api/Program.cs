@@ -73,6 +73,39 @@ app.MapPost("/devices/{device}/wiped", async (string device, FactStore store, Ca
     return Results.Ok(new { device, wipe = false });
 });
 
+// Phase 7: the supervisor's view. Counts by facility, month and kind — a
+// count of facts and of distinct patients, never a name, never a payload
+// opened. An LGA is a set of facilities a supervisor declared.
+app.MapPost("/facilities/{facility}/lga", async (string facility, string lga, HttpRequest http, FactStore store, CancellationToken ct) =>
+{
+    if (string.IsNullOrEmpty(adminToken) || http.Headers["X-Admin-Token"] != adminToken)
+        return Results.Problem(Messages.NotASupervisor, statusCode: 403);
+    await store.SetLgaAsync(facility, lga, ct);
+    return Results.Ok(new { facility, lga });
+});
+app.MapGet("/reports/aggregate", async (string? facility, string? lga, FactStore store, CancellationToken ct) =>
+    Results.Ok(await store.AggregateAsync(facility, lga, ct)));
+
+// The outbreak signal: a pack not on the list, reported by a facility with
+// no patient in the report; a product reported from two or more facilities
+// of an LGA within thirty days is a signal for a person to look at.
+app.MapPost("/reports/counterfeit", async (CounterfeitReport req, FactStore store, CancellationToken ct) =>
+{
+    await store.ReportCounterfeitAsync(req.Facility, req.Product, req.Number, DateTime.UtcNow, ct);
+    return Results.Ok(new { ok = true, note = Messages.ReportKept });
+});
+app.MapGet("/signals", async (string lga, int? days, int? threshold, FactStore store, CancellationToken ct) =>
+    Results.Ok(await store.SignalsAsync(lga, DateTime.UtcNow.AddDays(-(days ?? 30)), threshold ?? 3, ct)));
+
+// The dashboard: the aggregates as a page a supervisor opens in a browser,
+// with nothing on it that names a patient.
+app.MapGet("/dashboard", async (string? lga, FactStore store, CancellationToken ct) =>
+{
+    var rows = await store.AggregateAsync(null, lga, ct);
+    var signals = lga is null ? [] : await store.SignalsAsync(lga, DateTime.UtcNow.AddDays(-30), 3, ct);
+    return Results.Content(Dashboard.Render(rows, signals, lga), "text/html; charset=utf-8");
+});
+
 // A patient's record as the replica holds it, as canonical bytes: the same
 // bytes the tablet would produce from the same facts.
 app.MapGet("/patients/{patient}/record", async (string patient, FactStore store, CancellationToken ct) =>
@@ -89,3 +122,4 @@ public sealed record PulledFact(long Seq, string Bundle);
 public sealed record PullResponse(List<PulledFact> Facts, bool More, long Cursor);
 
 public partial class Program;
+public sealed record CounterfeitReport(string Facility, string Product, string Number);

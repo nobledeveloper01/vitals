@@ -101,4 +101,7 @@ const Map<String, String> igbo = {
   'noPosition': 'Ekwentị enweghị ike ikwu ebe ọ nọ. Họrọ mpaghara gị:',
   'fromWhereYouAre': 'Site ebe ị nọ',
   'fromTheCentreOf': 'Site na etiti',
+  'reportIt': 'Kọọ ngwugwu a',
+  'reportKept':
+      "Akọọla ya na nnomi, na-enweghị aha na ya. Ụlọ ọgwụ abụọ na-akọ otu ngwaahịa n'ime ụbọchị iri atọ bụ ihe ịrịba ama ka mmadụ lelee.",
 };

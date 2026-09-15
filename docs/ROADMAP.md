@@ -220,3 +220,18 @@ counterfeit reports.
 **Exit gate**. *A supervisor sees two facilities' aggregates without any patient
 identifiable; a FHIR bundle exported from Vitals imports into a reference
 server unchanged.*
+
+**Built 2026-09-15, the code half.** The replica counts facts and distinct
+patients by facility, month and kind without opening a payload — the kind is
+a column now — and serves them as JSON and as a plain HTML page a supervisor
+opens in any browser; an LGA is a set of facilities a supervisor declares with
+the admin token; a test pushes two facilities' facts and reads the page back
+with no patient's bytes and no author on it. The outbreak signal: a pack not
+on the list is reported by the app to the enrolled replica with no patient in
+it, and a product reported from two or more facilities of an LGA within thirty
+days is listed as *a signal for a person to look at* — three from one facility
+are not. FHIR export from the patient screen: an R4 Bundle with Patient,
+Immunization (CVX), Observation (LOINC, UCUM) and laboratory Observations, no
+note, and no interpretation or referenceRange element, proved by a test on the
+JSON. Still to do: the reference server import (HAPI or the programme's own)
+and a supervisor reading the page — a person and a server.

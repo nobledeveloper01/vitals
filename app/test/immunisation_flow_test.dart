@@ -1,6 +1,7 @@
 // Phase 3 on the screen: a newborn's card with three doses due at birth;
 // BCG recorded from a scanned vial and shown as given with its batch; an
 // expired vial refused before anything is written; every dose attributed.
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide Card;
@@ -180,6 +181,34 @@ void main() {
     await t.pump();
     expect(name, 'referral-ife-okafor.pdf');
     expect(String.fromCharCodes(bytes!.sublist(0, 5)), '%PDF-');
+  });
+
+  testWidgets('the FHIR export hands over a bundle named for the record',
+      (t) async {
+    tall(t);
+    final patient = await newborn(t);
+    List<int>? bytes;
+    String? name;
+    await t.pumpWidget(MaterialApp(
+        home: PatientScreen(
+            records: records,
+            patient: patient,
+            ids: ids,
+            author: 'nurse-a',
+            today: born + 2,
+            facility: 'Ikeja PHC',
+            share: (pdf, n) async {
+              bytes = pdf;
+              name = n;
+            })));
+    await t.pumpAndSettle();
+    await t.tap(find.byTooltip(Strings.exportFhir));
+    await t.pump();
+    expect(name, endsWith('.fhir.json'));
+    final bundle = jsonDecode(utf8.decode(bytes!)) as Map;
+    expect(bundle['resourceType'], 'Bundle');
+    expect(((bundle['entry'] as List).first as Map)['resource'],
+        containsPair('resourceType', 'Patient'));
   });
 
   testWidgets('an expired vial is refused and nothing is written', (t) async {

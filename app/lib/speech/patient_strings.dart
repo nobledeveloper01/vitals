@@ -125,6 +125,9 @@ abstract final class PatientStrings {
     'noPosition': 'The phone could not say where it is. Pick your area:',
     'fromWhereYouAre': 'From where you are',
     'fromTheCentreOf': 'From the centre of',
+    'reportIt': 'Report this pack',
+    'reportKept':
+        'Reported to the replica, with no name in it. Two facilities reporting the same product within thirty days is a signal for a person to look at.',
   };
 
   static const Map<Lang, Map<String, String>> tables = {

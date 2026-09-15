@@ -2,6 +2,7 @@
 // not yet, with catch-up — and the shutter for a dose: vaccine, batch and
 // expiry from the vial's barcode or by hand, an expired vial refused
 // before anything is written. Every dose is a fact with its attribution.
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -14,6 +15,7 @@ import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
 import '../report/card_pdf.dart';
+import '../report/fhir.dart';
 import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/ids.dart';
@@ -209,6 +211,12 @@ class _PatientScreenState extends State<PatientScreen> {
                                       ),
                                     ),
                                   IconButton(
+                                    tooltip: Strings.exportFhir,
+                                    icon: Icon(Icons.data_object,
+                                        color: p.textPrimary),
+                                    onPressed: () => _exportFhir(record),
+                                  ),
+                                  IconButton(
                                     tooltip: Strings.referralLetter,
                                     icon: Icon(Icons.outgoing_mail,
                                         color: p.textPrimary),
@@ -376,6 +384,19 @@ class _PatientScreenState extends State<PatientScreen> {
         ),
       ),
     );
+  }
+
+  /// The record as a FHIR bundle, handed over as a file like the card.
+  Future<void> _exportFhir(Record record) async {
+    final json = const JsonEncoder.withIndent('  ')
+        .convert(Fhir.bundle(record, facility: facility));
+    final bytes = Uint8List.fromList(utf8.encode(json));
+    final name = 'vitals-${_hex(patient).substring(0, 8)}.fhir.json';
+    if (share != null) return share!(bytes, name);
+    final dir = await getTemporaryDirectory();
+    final file = File('${dir.path}/$name');
+    await file.writeAsBytes(bytes);
+    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
   }
 
   Future<void> _print(Registration reg, List<CardLine> card) async {
