@@ -72,6 +72,7 @@ class _ShareScreenState extends State<ShareScreen> {
                       TextField(
                         key: const Key('grantee'),
                         controller: _grantee,
+                        onChanged: (_) => setState(() {}),
                         style: Type.body.copyWith(color: p.textPrimary),
                         decoration: InputDecoration(
                             labelText: PatientStrings.t('toWhom'),
@@ -251,7 +252,7 @@ class _AnimatedQrState extends State<AnimatedQr> {
                   colours: [p.accent, p.accentEnd],
                   track: p.hairline),
               child: Padding(
-                padding: const EdgeInsets.all(Gap.l),
+                padding: const EdgeInsets.all(Gap.xl + Gap.s),
                 child: Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(Gap.s),
@@ -310,7 +311,8 @@ class _RingPainter extends CustomPainter {
         false,
         Paint()
           ..shader = SweepGradient(
-                  colors: colours, startAngle: 0, endAngle: math.pi * 2)
+                  colors: [...colours, colours.first],
+                  transform: const GradientRotation(-math.pi / 2))
               .createShader(rect)
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round

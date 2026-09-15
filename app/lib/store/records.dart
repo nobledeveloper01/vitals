@@ -19,7 +19,13 @@ final class Records extends ChangeNotifier {
 
   bool get ready => _ready;
   Map<String, Record> get all => Map.unmodifiable(_records);
+
   int get patients => _records.length;
+
+  /// The facility's own record, where stock and the fridge log hang, is
+  /// not a patient.
+  int patientsBesides(List<int> facility) =>
+      _records.length - (_records.containsKey(_hex(facility)) ? 1 : 0);
   int get facts => _records.values.fold(0, (n, r) => n + r.length);
 
   /// When another device was last met — never "synced" (ADR-0006 #28).

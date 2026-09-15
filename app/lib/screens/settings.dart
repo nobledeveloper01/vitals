@@ -151,6 +151,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: Gap.m),
+                      SecondaryButton(
+                          label: Strings.changeFace,
+                          onPressed: () {
+                            Preferences.shared.face = Face.unchosen;
+                            Navigator.of(context).pop();
+                          }),
                       if (Preferences.shared.face == Face.clinic) ...[
                         const SizedBox(height: Gap.m),
                         // The signed audit export (ADR-0006 #30).

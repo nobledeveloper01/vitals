@@ -85,4 +85,27 @@ void main() {
         isEmpty,
         reason: 'no registration, no card');
   });
+
+  test('an adult is on no whiteboard: the schedule covers children under five',
+      () {
+    final adult = Record.of(List.filled(16, 9), [
+      Fact(
+          id: List.filled(32, 9),
+          patient: List.filled(16, 9),
+          kind: FactKind.registration,
+          stamp: const Stamp(wallMillis: 1000, counter: 0, device: 'a'),
+          author: 'nurse',
+          payload: Registration(
+                  givenName: 'Adaobi',
+                  familyName: 'Eze',
+                  sex: 0,
+                  bornDays: 0,
+                  dobEstimated: false)
+              .encode(),
+          supersedes: null)
+    ]);
+    expect(Whiteboard.today([adult], todayDays: 365 * 27), isEmpty);
+    expect(Schedule.covers(bornDays: 0, todayDays: 365 * 5 - 1), isTrue);
+    expect(Schedule.covers(bornDays: 0, todayDays: 365 * 5), isFalse);
+  });
 }

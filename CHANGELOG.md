@@ -5,8 +5,17 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- The routine schedule is a child's: an adult is on no whiteboard, gets no
+  reminder and no card. The facility's own record is not a patient in the
+  count. The share screen's button enables as the clinic's name is typed.
+  One gradient action per screen on the stock screen.
+
 ### Added
 
+- **A synthetic demo clinic** behind `--dart-define=VITALS_DEMO=true`, for
+  the screenshots and a phone in a hand; never a record.
 - **Handing the record over.** A share grant — which kinds, to whom, until
   when — as a fact, enforced where the payload is built; the payload cut
   into checksummed frames and shown as an animated QR with the ring in the

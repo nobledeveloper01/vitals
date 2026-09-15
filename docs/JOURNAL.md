@@ -280,3 +280,18 @@ A CSV, a public key line, a signature line, and a verifier in plain Python
 — the reference Ed25519 arithmetic, slow and dependency-free, the same
 shape as Snag's second verifier. The test runs the script three times: a
 good file, a byte flipped, the wrong key. Two of the three must fail.
+
+### Then the phone, and what it found
+
+A synthetic clinic behind `VITALS_DEMO`, built to the simulator, and four
+screens read with eyes. The whiteboard listed a twenty-seven-year-old mother
+as overdue for every childhood vaccine by 9,855 days: the schedule had no
+idea it was a child's. `Schedule.covers` — under five — is a domain rule
+now, the whiteboard, the reminders and the patient face all ask it, and an
+adult's record says *the routine schedule covers children under five; no
+card here* where the card would be. The header counted the facility's own
+stock record as a patient. The share screen's button never enabled because
+the field had no `onChanged`. The stock screen had two gradient buttons.
+The trend line ran past its tile. Five defects, none of which fifty-eight
+widget tests had asked about, all found in twenty minutes with a phone.
+The exit gates that say *on a real device* are there for a reason.

@@ -79,6 +79,9 @@ void main() {
     await t.pumpWidget(app(patient));
     await t.pumpAndSettle();
     expect(find.text(Strings.noVitalsYet), findsOneWidget);
+    expect(find.byKey(const Key('noCard')), findsOneWidget,
+        reason: 'an adult has no immunisation card');
+    expect(find.text(Strings.immunisationCard), findsNothing);
     await io(t, () => t.tap(find.text(Strings.recordVitals)));
     await io(t, () async {
       await t.enterText(find.byKey(const Key('field-pulse')), '88');

@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vitals/design/glass.dart';
 import 'package:vitals/design/motion.dart';
 import 'package:vitals/screens/share.dart';
 import 'package:vitals/speech/patient_strings.dart';
@@ -82,8 +83,13 @@ void main() {
         home: ShareScreen(
             records: records, patient: patient, ids: ids, today: today)));
     await t.pumpAndSettle();
+    expect(
+        t.widget<PrimaryButton>(find.byType(PrimaryButton)).onPressed, isNull,
+        reason: 'no grantee, no code');
     await t.enterText(find.byKey(const Key('grantee')), 'Ikeja PHC');
     await t.pump();
+    expect(t.widget<PrimaryButton>(find.byType(PrimaryButton)).onPressed,
+        isNotNull);
     // Immunisations are on by default; add vitals, leave notes off.
     await t.tap(find.byKey(const Key('kind-vitals')));
     await t.tap(find.byKey(const Key('days-30')));

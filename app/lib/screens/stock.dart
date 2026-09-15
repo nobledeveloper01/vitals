@@ -354,7 +354,7 @@ class _FridgeCard extends StatelessWidget {
               ),
               const SizedBox(width: Gap.s),
               Expanded(
-                  child: PrimaryButton(
+                  child: SecondaryButton(
                       label: Strings.record, onPressed: onRecord)),
             ]),
           ],

@@ -155,58 +155,68 @@ class _PatientScreenState extends State<PatientScreen> {
                             observations: observations,
                             ageDays: _today - reg.bornDays),
                         const SizedBox(height: Gap.m),
-                        Glass(
-                          depth: Depth.low,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                Expanded(
-                                    child: Text(Strings.immunisationCard,
-                                        style: Type.title
-                                            .copyWith(color: p.textPrimary))),
-                                IconButton(
-                                  tooltip: Strings.printCard,
-                                  icon: Icon(Icons.print_outlined,
-                                      color: p.textPrimary),
-                                  onPressed: () => _print(reg, card),
-                                ),
-                                IconButton(
-                                  tooltip: Strings.referralLetter,
-                                  icon: Icon(Icons.outgoing_mail,
-                                      color: p.textPrimary),
-                                  onPressed: () => showModalBottomSheet<void>(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (_) => ReferralSheet(
-                                        reg: reg,
-                                        current: record.current,
-                                        author: author,
-                                        facility: facility,
-                                        today: _today,
-                                        share: share),
+                        if (Schedule.covers(
+                            bornDays: reg.bornDays, todayDays: _today))
+                          Glass(
+                            depth: Depth.low,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(children: [
+                                  Expanded(
+                                      child: Text(Strings.immunisationCard,
+                                          style: Type.title
+                                              .copyWith(color: p.textPrimary))),
+                                  IconButton(
+                                    tooltip: Strings.printCard,
+                                    icon: Icon(Icons.print_outlined,
+                                        color: p.textPrimary),
+                                    onPressed: () => _print(reg, card),
                                   ),
+                                  IconButton(
+                                    tooltip: Strings.referralLetter,
+                                    icon: Icon(Icons.outgoing_mail,
+                                        color: p.textPrimary),
+                                    onPressed: () => showModalBottomSheet<void>(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (_) => ReferralSheet(
+                                          reg: reg,
+                                          current: record.current,
+                                          author: author,
+                                          facility: facility,
+                                          today: _today,
+                                          share: share),
+                                    ),
+                                  ),
+                                ]),
+                                const SizedBox(height: Gap.xs),
+                                Text(
+                                  due.isEmpty
+                                      ? Strings.nothingDueForThisChild
+                                      : '${due.length} ${Strings.dueNow}',
+                                  style: Type.secondary.copyWith(
+                                      color: due.any(
+                                              (l) => l.status == Status.overdue)
+                                          ? p.attention
+                                          : p.textSecondary),
+                                  key: const Key('dueCount'),
                                 ),
-                              ]),
-                              const SizedBox(height: Gap.xs),
-                              Text(
-                                due.isEmpty
-                                    ? Strings.nothingDueForThisChild
-                                    : '${due.length} ${Strings.dueNow}',
-                                style: Type.secondary.copyWith(
-                                    color: due.any(
-                                            (l) => l.status == Status.overdue)
-                                        ? p.attention
-                                        : p.textSecondary),
-                                key: const Key('dueCount'),
-                              ),
-                              const SizedBox(height: Gap.s),
-                              for (final line in card)
-                                _CardRow(line: line, today: _today),
-                            ],
+                                const SizedBox(height: Gap.s),
+                                for (final line in card)
+                                  _CardRow(line: line, today: _today),
+                              ],
+                            ),
+                          )
+                        else
+                          Glass(
+                            depth: Depth.low,
+                            child: Text(Strings.scheduleCoversChildren,
+                                style: Type.secondary
+                                    .copyWith(color: p.textSecondary),
+                                key: const Key('noCard')),
                           ),
-                        ),
                         const SizedBox(height: Gap.m),
                         Glass(
                           depth: Depth.low,
@@ -240,25 +250,30 @@ class _PatientScreenState extends State<PatientScreen> {
                   Padding(
                     padding: const EdgeInsets.all(Gap.l),
                     child: Column(children: [
-                      PrimaryButton(
-                        label: Strings.recordDose,
-                        onPressed: due.isEmpty
-                            ? null
-                            : () => showModalBottomSheet<void>(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (_) => DoseSheet(
-                                      records: records,
-                                      patient: patient,
-                                      ids: ids,
-                                      author: author,
-                                      due: due,
-                                      today: _today,
-                                      facility: facilityRecord),
-                                ),
-                      ),
-                      const SizedBox(height: Gap.s),
+                      if (Schedule.covers(
+                          bornDays: reg.bornDays, todayDays: _today)) ...[
+                        PrimaryButton(
+                          label: Strings.recordDose,
+                          onPressed: due.isEmpty ||
+                                  !Schedule.covers(
+                                      bornDays: reg.bornDays, todayDays: _today)
+                              ? null
+                              : () => showModalBottomSheet<void>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (_) => DoseSheet(
+                                        records: records,
+                                        patient: patient,
+                                        ids: ids,
+                                        author: author,
+                                        due: due,
+                                        today: _today,
+                                        facility: facilityRecord),
+                                  ),
+                        ),
+                        const SizedBox(height: Gap.s),
+                      ],
                       if (reg.sex == 0)
                         Padding(
                           padding: const EdgeInsets.only(bottom: Gap.s),

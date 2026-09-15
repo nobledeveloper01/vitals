@@ -4,6 +4,7 @@ import '../brand/splash.dart';
 import '../design/motion.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
+import '../fixtures/demo.dart';
 import '../screens/face_picker.dart';
 import '../screens/lock.dart';
 import '../screens/shell.dart';
@@ -44,7 +45,10 @@ class _VitalsAppState extends State<VitalsApp> {
     }
     // What the app remembers, then the store, while the splash is up.
     Preferences.shared.load();
-    widget.open().then((r) {
+    widget.open().then((r) async {
+      if (const bool.fromEnvironment('VITALS_DEMO', defaultValue: false)) {
+        await Demo.seed(r);
+      }
       if (mounted) setState(() => _records = r);
     });
   }

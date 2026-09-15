@@ -28,6 +28,9 @@ abstract final class Whiteboard {
     for (final r in records) {
       final reg = Registration.of(r.current);
       if (reg == null) continue;
+      if (!Schedule.covers(bornDays: reg.bornDays, todayDays: todayDays)) {
+        continue;
+      }
       final card = Card.of(
           bornDays: reg.bornDays,
           given: Given.of(r.current),

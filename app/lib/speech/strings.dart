@@ -103,6 +103,9 @@ abstract final class Strings {
   static const stock = 'Stock';
   static const thisFacility = 'this facility';
   static const referralLetter = 'Referral letter';
+  static const scheduleCoversChildren =
+      'The routine schedule covers children under five; no card here.';
+  static const changeFace = 'Change who this device is for';
   static const auditExport = 'Audit export';
   static const auditExportHint =
       'Every write and every open, as a CSV signed by this tablet. A changed line is a failed signature; the check needs only Python.';
@@ -119,8 +122,8 @@ abstract final class Strings {
   static const receiveStock = 'Receive stock';
   static const counted = 'counted';
   static const lowStock = 'low stock';
-  static const expiringSoon = 'a batch expires within 90 days';
-  static const lastCountDiffered = 'last count differed by';
+  static const expiringSoon = 'expiring within 90 d';
+  static const lastCountDiffered = 'count off by';
   static const fridge = 'Fridge';
   static const noFridgeReading = 'No reading yet.';
   static const lastReading = 'Last reading';

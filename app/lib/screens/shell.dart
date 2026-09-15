@@ -69,15 +69,17 @@ class _ClinicHome extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      records.patients == 0
-                          ? Strings.nothingDue
-                          : '${records.patients} ${Strings.patientsRegistered} · ${records.facts} ${Strings.factsHeld}',
-                      style: Type.body.copyWith(
-                          color: records.patients == 0
-                              ? p.textSecondary
-                              : p.textPrimary),
-                    ),
+                    Builder(builder: (context) {
+                      final n =
+                          records.patientsBesides(Preferences.shared.facility);
+                      return Text(
+                        n == 0
+                            ? Strings.nothingDue
+                            : '$n ${Strings.patientsRegistered} · ${records.facts} ${Strings.factsHeld}',
+                        style: Type.body.copyWith(
+                            color: n == 0 ? p.textSecondary : p.textPrimary),
+                      );
+                    }),
                     const SizedBox(height: Gap.m),
                     SyncChip(lastMet: records.lastMet),
                   ],
@@ -241,6 +243,9 @@ class Reminders extends StatelessWidget {
     for (final e in records.all.entries) {
       final reg = Registration.of(e.value.current);
       if (reg == null) continue;
+      if (!Schedule.covers(bornDays: reg.bornDays, todayDays: todayDays)) {
+        continue;
+      }
       final card = Card.of(
           bornDays: reg.bornDays,
           given: Given.of(e.value.current),

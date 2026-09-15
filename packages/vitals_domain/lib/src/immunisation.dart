@@ -43,6 +43,12 @@ abstract final class Schedule {
   /// published): birth, 6, 10 and 14 weeks, 6, 9 and 15 months.
   static const int version = 1;
 
+  /// The routine schedule is a child's: under five, the programme's own
+  /// catch-up limit. An older patient has no card and is on no whiteboard.
+  static const int coversUnderDays = 365 * 5;
+  static bool covers({required int bornDays, required int todayDays}) =>
+      todayDays - bornDays < coversUnderDays;
+
   static const List<Due> v1 = [
     Due(Vaccine.bcg, 1, 0, earliestDays: 0),
     Due(Vaccine.opv, 0, 0, earliestDays: 0),

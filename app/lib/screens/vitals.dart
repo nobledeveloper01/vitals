@@ -87,11 +87,13 @@ class _Tile extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: CustomPaint(
-                    painter: _TrendPainter(
-                        trend.map((o) => o.value).toList(),
-                        (outside ? p.attention : p.accent)
-                            .withValues(alpha: 0.35)))),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(Radius2.chip),
+                    child: CustomPaint(
+                        painter: _TrendPainter(
+                            trend.map((o) => o.value).toList(),
+                            (outside ? p.attention : p.accent)
+                                .withValues(alpha: 0.3))))),
             Padding(
               padding: const EdgeInsets.all(Gap.s),
               child: Column(
@@ -140,7 +142,7 @@ class _TrendPainter extends CustomPainter {
     final path = Path();
     for (var i = 0; i < values.length; i++) {
       final x = size.width * i / (values.length - 1);
-      final y = size.height * (0.85 - 0.6 * (values[i] - lo) / span);
+      final y = size.height * (0.92 - 0.4 * (values[i] - lo) / span);
       i == 0 ? path.moveTo(x, y) : path.lineTo(x, y);
     }
     canvas.drawPath(

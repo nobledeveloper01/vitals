@@ -53,7 +53,7 @@ clinician's hour, and a programme partner.
 <p align="center">
   <img src="docs/screenshots/01-splash.png" width="230" alt="The splash: the mark on the gradient mesh, the brand gradient sweeping through it once" />
   <img src="docs/screenshots/02-faces.png" width="230" alt="Who is this device for: two glass cards, Clinic and My record" />
-  <img src="docs/screenshots/03-whiteboard.png" width="230" alt="The clinic's whiteboard: a glass card on the mesh, the sync-honesty chip saying last met another device: never, and the gradient primary action" />
+  <img src="docs/screenshots/03-whiteboard.png" width="230" alt="The clinic's whiteboard: six patients registered, two children due today, one marked behind by 88 days with a message draft for the mother" />
 </p>
 
 Glass over a gradient mesh, in three depths that each mean one thing; one gradient-filled
@@ -62,13 +62,23 @@ motion` in Settings, read at act time, and the same app either way.
 
 <p align="center">
   <img src="docs/screenshots/04-settings.png" width="230" alt="Settings: Plain surfaces, Less motion, Large type for the ward, each with its sentence" />
+  <img src="docs/screenshots/05-stock.png" width="230" alt="Stock: the fridge asking for its morning reading with the range printed, tiles per product with a count off by minus three and a batch expiring within ninety days marked" />
+  <img src="docs/screenshots/06-patient-yoruba.png" width="230" alt="The patient face in Yorùbá: three children, each with the next vaccine and its day, one overdue in the attention colour" />
 </p>
+
+<p align="center">
+  <img src="docs/screenshots/07-share.png" width="230" alt="Handing the record over: a QR code inside the progress ring in the brand gradient, one of one, until 2026-10-15, for Ikeja PHC" />
+</p>
+
+The demo clinic in the screenshots is synthetic — invented names, invented dates —
+seeded behind `--dart-define=VITALS_DEMO=true` into an empty store, and never a
+record.
 
 ## The numbers
 
 | | |
 |---|---|
-| Domain tests | 50 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
+| Domain tests | 51 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
 | App tests | 58 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders, vitals with a draft that survives a kill, the danger-sign checklist, stock counted by tapping, the fridge, the patient face in five languages, the share grant enforced in the bytes, the animated QR, the access log, a pack checked with three outcomes, the emergency card on the lock face, the referral letter, the audit export signed and verified under Python |
 | Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
 | Blocking gates | 7 in `make gates`, each proved to fire |
