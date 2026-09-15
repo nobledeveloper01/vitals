@@ -16,6 +16,7 @@ import '../store/records.dart';
 import 'patient.dart';
 import 'register.dart';
 import 'registry.dart';
+import 'emergency.dart';
 import 'settings.dart';
 import 'share.dart';
 import 'stock.dart';
@@ -188,6 +189,19 @@ class _PatientHome extends StatelessWidget {
                       builder: (_) => const VerifyScreen())),
             ),
             if (records.all.isNotEmpty) ...[
+              const SizedBox(height: Gap.s),
+              SecondaryButton(
+                label: PatientStrings.t('emergencyCard'),
+                onPressed: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => EmergencySheet(
+                      records: records,
+                      patient: records.all.values.first.patient,
+                      ids: Ids.shared),
+                ),
+              ),
               const SizedBox(height: Gap.s),
               SecondaryButton(
                 label: PatientStrings.t('shareRecord'),

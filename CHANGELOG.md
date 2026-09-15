@@ -12,7 +12,9 @@ is pre-release, so everything is under Unreleased until v1.0.
   into checksummed frames and shown as an animated QR with the ring in the
   brand gradient, stepped by hand under less motion. The access log the
   patient sees. A pack checked against a bundled list with three outcomes
-  and never a fourth word.
+  and never a fourth word. The emergency card on the lock face while the
+  patient opts in, never on a clinic tablet. The referral letter with the
+  sections the nurse chose.
 - **Five languages on the patient face.** English, Naijá, Yorùbá, Hausa and
   Igbo, each a complete table of the same keys held complete by a gate;
   every table but English marked a draft where it is chosen, until a

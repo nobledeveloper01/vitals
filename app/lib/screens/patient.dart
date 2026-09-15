@@ -20,6 +20,7 @@ import '../store/ids.dart';
 import '../store/drafts.dart';
 import '../store/records.dart';
 import 'anc.dart';
+import 'referral.dart';
 import 'shell.dart' show AttributionChip, Dates;
 import 'vitals.dart';
 
@@ -169,6 +170,23 @@ class _PatientScreenState extends State<PatientScreen> {
                                   icon: Icon(Icons.print_outlined,
                                       color: p.textPrimary),
                                   onPressed: () => _print(reg, card),
+                                ),
+                                IconButton(
+                                  tooltip: Strings.referralLetter,
+                                  icon: Icon(Icons.outgoing_mail,
+                                      color: p.textPrimary),
+                                  onPressed: () => showModalBottomSheet<void>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (_) => ReferralSheet(
+                                        reg: reg,
+                                        current: record.current,
+                                        author: author,
+                                        facility: facility,
+                                        today: _today,
+                                        share: share),
+                                  ),
                                 ),
                               ]),
                               const SizedBox(height: Gap.xs),

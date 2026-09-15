@@ -48,4 +48,13 @@ const Map<String, String> hausa = {
   'cannotSay': 'Jerin ba zai iya cewa ba',
   'cannotSayMeans':
       'Ba a karanta lamba ba, ko jerin bai ƙunshi lambobi masu farawa haka ba. Sabon jerin na iya.',
+  'emergencyCard': 'Katin gaggawa',
+  'emergencyHint':
+      'Ana nuna shi a fuskar kulle muddin ka ce, ga duk wanda ya sami wayar. Abin da ka rubuta a nan kawai.',
+  'bloodGroup': 'Rukunin jini',
+  'allergies': 'Abubuwan da ba su yi maka ba',
+  'pregnantNow': 'Ina da ciki yanzu',
+  'showOnLockFace': 'Nuna a fuskar kulle',
+  'save': 'Ajiye',
+  'cancel': 'Soke',
 };

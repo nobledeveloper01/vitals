@@ -3,15 +3,22 @@
 // record is simply not drawn. Phase 0 accepts one fixed PIN for the tests;
 // Phase 1 attributes it to a staff member from the encrypted store.
 import 'package:flutter/material.dart';
+import 'package:vitals_domain/vitals_domain.dart';
 
 import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
+import '../store/records.dart';
+import 'emergency.dart';
 
 class LockScreen extends StatefulWidget {
-  const LockScreen({super.key});
+  const LockScreen({super.key, this.records});
+
+  /// For the emergency card (ADR-0006 #17): shown on the lock face only
+  /// while the patient has opted in, and only what they typed for it.
+  final Records? records;
 
   @override
   State<LockScreen> createState() => _LockScreenState();
@@ -20,6 +27,16 @@ class LockScreen extends StatefulWidget {
 class _LockScreenState extends State<LockScreen> {
   final _pin = TextEditingController();
   String? _error;
+
+  Emergency? get _emergency {
+    final r = widget.records;
+    if (r == null || Preferences.shared.face != Face.patient) return null;
+    for (final record in r.all.values) {
+      final e = Emergency.of(record.current);
+      if (e != null && e.shown) return e;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +55,10 @@ class _LockScreenState extends State<LockScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    if (_emergency != null) ...[
+                      EmergencyCard(card: _emergency!),
+                      const SizedBox(height: Gap.m),
+                    ],
                     Icon(Icons.lock_outline, color: p.accent, size: 40),
                     const SizedBox(height: Gap.m),
                     Text(Strings.locked,

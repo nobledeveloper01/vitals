@@ -72,6 +72,15 @@ abstract final class PatientStrings {
     'cannotSay': 'The list cannot say',
     'cannotSayMeans':
         'No number was read, or the list does not cover numbers starting this way. A newer list may.',
+    'emergencyCard': 'Emergency card',
+    'emergencyHint':
+        'Shown on the lock face while you say so, for whoever finds the phone. Only what you type here.',
+    'bloodGroup': 'Blood group',
+    'allergies': 'Allergies',
+    'pregnantNow': 'Pregnant now',
+    'showOnLockFace': 'Show on the lock face',
+    'save': 'Save',
+    'cancel': 'Cancel',
   };
 
   static const Map<Lang, Map<String, String>> tables = {

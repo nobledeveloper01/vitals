@@ -47,4 +47,13 @@ const Map<String, String> pidgin = {
   'cannotSay': 'The list no fit talk',
   'cannotSayMeans':
       'Number no read, or the list no cover numbers wey start like this. New list fit cover am.',
+  'emergencyCard': 'Emergency card',
+  'emergencyHint':
+      'E go show for lock screen as long as you talk say make e show, for anybody wey see the phone. Na only wetin you type here.',
+  'bloodGroup': 'Blood group',
+  'allergies': 'Wetin dey react for your body',
+  'pregnantNow': 'I get belle now',
+  'showOnLockFace': 'Show am for lock screen',
+  'save': 'Keep am',
+  'cancel': 'Leave am',
 };

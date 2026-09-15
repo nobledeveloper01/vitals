@@ -259,3 +259,17 @@ translation had to know how many.** Fifteen of forty-four keys were
 identical, some rightly (*days*, *of*), some lazily (*Done*, *Next*). The
 lazy ones are Naijá now and the threshold is a sixth of the keys; a table
 that is English under another name would fail it by a mile.
+
+### Later: the card on the lock face, the letter
+
+The emergency card is a fact in the note slot with its own version byte;
+opting out is another fact with *shown* false, so the record keeps that it
+was once shown. The lock face reads it only on the patient face — a clinic
+tablet's lock never shows a patient's blood group, and a test says so. The
+referral letter computes its lines once, as data, so the test reads the
+lines and finds the private note absent before the PDF is rendered.
+
+**A sheet that pops the route pops the test's only route.** The emergency
+sheet's save ended with `Navigator.pop`, and in a test whose whole tree
+was that sheet, the navigator had nothing left and said so on the next
+pump. A fresh tree between steps; the widget was right.

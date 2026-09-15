@@ -68,8 +68,8 @@ motion` in Settings, read at act time, and the same app either way.
 
 | | |
 |---|---|
-| Domain tests | 49 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
-| App tests | 53 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders, vitals with a draft that survives a kill, the danger-sign checklist, stock counted by tapping, the fridge, the patient face in five languages, the share grant enforced in the bytes, the animated QR, the access log, a pack checked with three outcomes |
+| Domain tests | 50 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
+| App tests | 57 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders, vitals with a draft that survives a kill, the danger-sign checklist, stock counted by tapping, the fridge, the patient face in five languages, the share grant enforced in the bytes, the animated QR, the access log, a pack checked with three outcomes, the emergency card on the lock face, the referral letter |
 | Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
 | Blocking gates | 7 in `make gates`, each proved to fire |
 | Release gates | 6 |

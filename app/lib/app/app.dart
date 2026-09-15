@@ -74,7 +74,9 @@ class _VitalsAppState extends State<VitalsApp> {
             if (!_swept || _records == null) {
               return Splash(onDone: () => setState(() => _swept = true));
             }
-            if (Preferences.shared.locked) return const LockScreen();
+            if (Preferences.shared.locked) {
+              return LockScreen(records: _records);
+            }
             if (Preferences.shared.face == Face.unchosen) {
               return const FacePicker();
             }

@@ -48,4 +48,13 @@ const Map<String, String> yoruba = {
   'cannotSay': 'Àkójọ kò lè sọ',
   'cannotSayMeans':
       'A kò kà nọ́mbà kankan, tàbí àkójọ kò bo àwọn nọ́mbà tó bẹ̀rẹ̀ báyìí. Àkójọ tuntun lè bo o.',
+  'emergencyCard': 'Káàdì pàjáwìrì',
+  'emergencyHint':
+      'Yóò hàn lórí ojú títì fóònù níwọ̀n ìgbà tí o bá fẹ́, fún ẹnikẹ́ni tó bá rí fóònù náà. Ohun tí o tẹ̀ síbí nìkan.',
+  'bloodGroup': 'Irú ẹ̀jẹ̀',
+  'allergies': 'Àwọn ohun tí ara rẹ kò gbà',
+  'pregnantNow': 'Mo lóyún lọ́wọ́lọ́wọ́',
+  'showOnLockFace': 'Fi hàn lórí ojú títì',
+  'save': 'Fi pamọ́',
+  'cancel': 'Fagilé',
 };

@@ -102,6 +102,11 @@ abstract final class Strings {
   static const answeredYesTo = 'The nurse answered yes to:';
   static const stock = 'Stock';
   static const thisFacility = 'this facility';
+  static const referralLetter = 'Referral letter';
+  static const referTo = 'To which facility';
+  static const reasonInYourWords = 'The reason, in your words';
+  static const sectionsToInclude = 'Sections to include';
+  static const writeTheLetter = 'Write the letter';
   static const countHint = 'Tap a tile once for each unit on the shelf.';
   static const countTheShelf = 'Count the shelf';
   static const recordCount = 'Record the count';

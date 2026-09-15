@@ -47,4 +47,13 @@ const Map<String, String> igbo = {
   'cannotSay': 'Ndepụta enweghị ike ịsị',
   'cannotSayMeans':
       'Agụghị nọmba ọ bụla, ma ọ bụ ndepụta ahụ anaghị ekpuchi nọmba ndị na-amalite otu a. Ndepụta ọhụrụ nwere ike.',
+  'emergencyCard': 'Kaadị mberede',
+  'emergencyHint':
+      'A na-egosi ya na ihu mkpọchi ogologo oge ị kwuru, maka onye ọ bụla hụrụ ekwentị ahụ. Naanị ihe ị pịnyere ebe a.',
+  'bloodGroup': 'Ụdị ọbara',
+  'allergies': 'Ihe ndị ahụ gị anaghị anabata',
+  'pregnantNow': 'Adị m ime ugbu a',
+  'showOnLockFace': 'Gosi na ihu mkpọchi',
+  'save': 'Chekwaa',
+  'cancel': 'Kagbuo',
 };

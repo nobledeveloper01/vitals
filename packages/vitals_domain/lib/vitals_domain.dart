@@ -24,3 +24,4 @@ export 'src/grant.dart';
 export 'src/access.dart';
 export 'src/frames.dart';
 export 'src/verification.dart';
+export 'src/emergency.dart';

@@ -206,6 +206,9 @@ final class Note {
 
   static List<Note> of(Iterable<Fact> current) => [
         for (final f in current)
-          if (f.kind == FactKind.note) decode(f.payload)
+          if (f.kind == FactKind.note &&
+              f.payload.isNotEmpty &&
+              f.payload[0] == 1)
+            decode(f.payload)
       ];
 }

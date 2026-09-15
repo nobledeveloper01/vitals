@@ -165,9 +165,12 @@ stepping by hand with a count under less motion. The access log: a clinic
 opening a record writes an attributed fact to it, and the patient's phone
 lists every open newest first. Verification with three outcomes — *on the
 list*, *not on the list*, *the list cannot say* — and a test over every
-language for the fourth word. Still to build: the camera side of the QR and
-BLE (R3, hardware), the emergency card (#17), the facility map (#18), the
-referral letter (#19), the pack photographed (#20's camera half).
+language for the fourth word. Then the emergency card (#17) on the lock face
+while the patient says so and never on a clinic tablet, opting out a fact and
+not a deletion; and the referral letter (#19) with the sections the nurse
+chose and the unchosen ones never in the bytes. Still to build: the camera
+side of the QR and BLE (R3, hardware), the facility map (#18), the pack
+photographed (#20's camera half).
 
 ## Phase 6 — Pilot hardening → **v1.0**
 
