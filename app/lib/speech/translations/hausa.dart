@@ -57,4 +57,27 @@ const Map<String, String> hausa = {
   'showOnLockFace': 'Nuna a fuskar kulle',
   'save': 'Ajiye',
   'cancel': 'Soke',
+  'settings': 'Saituna',
+  'plainSurfaces': 'Fuska mai sauƙi',
+  'plainSurfacesHint':
+      'Babu gilashi, babu ɓoyewa. Manhajar cikakkiya ce ba tare da su ba; tsofaffin wayoyi sun fi sauri.',
+  'lessMotion': 'Ƙarancin motsi',
+  'lessMotionHint':
+      'Babu abin da ke motsi. Shafin farko yana yankewa. Ci gaba ƙidaya ce.',
+  'largeType': 'Manyan haruffa',
+  'largeTypeHint': 'An saita don nisan hannu da hannu ɗaya.',
+  'backup': 'Ajiyar kwafi',
+  'backupHint':
+      "Kowane bayani a fayil guda ƙarƙashin kalmar sirri, zuwa na'urar ajiyarka. A dawowa ana duba kowanne kafin a ajiye shi.",
+  'backUp': 'Ajiye kwafin duk bayanai',
+  'restore': 'Dawo da daga kwafi',
+  'changeFace': 'Canza wanda wannan wayar take',
+  'locked': 'Vitals a kulle take.',
+  'lockedHint': 'Shigar da PIN ɗinka.',
+  'pin': 'PIN',
+  'unlock': 'Buɗe',
+  'wrongPin': 'Ba wannan PIN ba. Sake gwadawa.',
+  'passphrase': 'Kalmar sirri',
+  'kept': 'An ajiye',
+  'refused': 'an ƙi',
 };

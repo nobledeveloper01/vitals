@@ -57,4 +57,27 @@ const Map<String, String> yoruba = {
   'showOnLockFace': 'Fi hàn lórí ojú títì',
   'save': 'Fi pamọ́',
   'cancel': 'Fagilé',
+  'settings': 'Ètò',
+  'plainSurfaces': 'Ojú pẹ̀tẹ́lẹ̀',
+  'plainSurfacesHint':
+      'Kò sí gíláàsì, kò sí ìbòjú. Ìṣàmúlò náà pé láìsí wọn; fóònù àtijọ́ yára jù.',
+  'lessMotion': 'Ìṣíkiri díẹ̀',
+  'lessMotionHint':
+      'Kò sí ohun tó ń mira. Ojú ìbẹ̀rẹ̀ ń gé. Ìlọsíwájú jẹ́ kíkà.',
+  'largeType': 'Lẹ́tà ńlá',
+  'largeTypeHint': 'Fún ìgbà tí a fi apá kan mú un.',
+  'backup': 'Àfipamọ́',
+  'backupHint':
+      'Gbogbo àkọsílẹ̀ nínú fáìlì kan lábẹ́ ọ̀rọ̀ìpamọ́, sí dráìfù tìrẹ. Nígbà ìpadà, a máa ṣàyẹ̀wò ọ̀kọ̀ọ̀kan kí a tó tọ́jú rẹ̀.',
+  'backUp': 'Fi gbogbo àkọsílẹ̀ pamọ́',
+  'restore': 'Mú padà láti àfipamọ́',
+  'changeFace': 'Yí ẹni tí fóònù yìí wà fún padà',
+  'locked': 'Vitals ti tì.',
+  'lockedHint': 'Tẹ PIN rẹ.',
+  'pin': 'PIN',
+  'unlock': 'Ṣí',
+  'wrongPin': 'Kì í ṣe PIN yẹn. Tún gbìyànjú.',
+  'passphrase': 'Ọ̀rọ̀ìpamọ́',
+  'kept': 'A tọ́jú',
+  'refused': 'a kọ̀',
 };

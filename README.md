@@ -67,8 +67,12 @@ motion` in Settings, read at act time, and the same app either way.
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/07-share.png" width="230" alt="Handing the record over: a QR code inside the progress ring in the brand gradient, one of one, until 2026-10-15, for Ikeja PHC" />
+  <img src="docs/screenshots/07-share.png" width="230" alt="Handing the record over: a QR code inside a rounded frame whose edge fills in the brand gradient, one of one, until 2026-10-15, for Ikeja PHC" />
+  <img src="docs/screenshots/08-patient-light.png" width="230" alt="The patient face in Yorùbá on the light palette: the same three children, the same reminders, on a pale mesh" />
 </p>
+
+Light and dark are both authored — the app follows the system — and every text colour
+on every fill over every wash is contrast-asserted in CI.
 
 The demo clinic in the screenshots is synthetic — invented names, invented dates —
 seeded behind `--dart-define=VITALS_DEMO=true` into an empty store, and never a

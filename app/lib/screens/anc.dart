@@ -226,7 +226,7 @@ class _PregnancySheetState extends State<PregnancySheet> {
       child: Glass(
         depth: Depth.high,
         radius: Radius2.sheet,
-        padding: const EdgeInsets.all(Gap.l),
+        padding: sheetPadding(context),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -384,7 +384,7 @@ class _VisitSheetState extends State<VisitSheet> {
       child: Glass(
         depth: Depth.high,
         radius: Radius2.sheet,
-        padding: const EdgeInsets.all(Gap.l),
+        padding: sheetPadding(context),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,

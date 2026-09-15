@@ -236,7 +236,7 @@ class _VitalsSheetState extends State<VitalsSheet> {
       child: Glass(
         depth: Depth.high,
         radius: Radius2.sheet,
-        padding: const EdgeInsets.all(Gap.l),
+        padding: sheetPadding(context),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -252,32 +252,33 @@ class _VitalsSheetState extends State<VitalsSheet> {
                       key: const Key('draftRestored')),
                 ),
               const SizedBox(height: Gap.m),
-              Wrap(
-                spacing: Gap.s,
-                runSpacing: Gap.s,
-                children: [
-                  for (final m in widget.measures)
-                    SizedBox(
-                      width: 150,
-                      child: TextField(
-                        key: Key('field-${m.name}'),
-                        controller: _c[m],
-                        onChanged: (_) => _draft(),
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))
-                        ],
-                        style: Type.body.copyWith(color: p.textPrimary),
-                        decoration: InputDecoration(
-                            labelText: m.label,
-                            suffixText: m.unit,
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(Radius2.input))),
+              LayoutBuilder(
+                builder: (context, c) => Wrap(
+                  spacing: Gap.s,
+                  runSpacing: Gap.s,
+                  children: [
+                    for (final m in widget.measures)
+                      SizedBox(
+                        width: (c.maxWidth - Gap.s) / 2,
+                        child: TextField(
+                          key: Key('field-${m.name}'),
+                          controller: _c[m],
+                          onChanged: (_) => _draft(),
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))
+                          ],
+                          style: Type.body.copyWith(color: p.textPrimary),
+                          decoration: InputDecoration(
+                              labelText: '${m.label} (${m.unit})',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(Radius2.input))),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: Gap.l),
               PrimaryButton(label: Strings.recordVitals, onPressed: _record),

@@ -56,4 +56,27 @@ const Map<String, String> pidgin = {
   'showOnLockFace': 'Show am for lock screen',
   'save': 'Keep am',
   'cancel': 'Leave am',
+  'settings': 'Settings',
+  'plainSurfaces': 'Plain screen',
+  'plainSurfacesHint':
+      'No glass, no blur. The app dey complete without dem; old phone go fast pass.',
+  'lessMotion': 'Less movement',
+  'lessMotionHint':
+      'Nothing go animate. The splash go just cut. Progress na count.',
+  'largeType': 'Big letters',
+  'largeTypeHint': 'Set am for arm length and one hand.',
+  'backup': 'Backup',
+  'backupHint':
+      'Every record inside one file under passphrase, go your own drive. When e come back, dem go check each one before dem keep am.',
+  'backUp': 'Back up all records',
+  'restore': 'Bring back from backup',
+  'changeFace': 'Change who this phone be for',
+  'locked': 'Vitals don lock.',
+  'lockedHint': 'Put your PIN.',
+  'pin': 'PIN',
+  'unlock': 'Open am',
+  'wrongPin': 'No be that PIN. Try again.',
+  'passphrase': 'Passphrase',
+  'kept': 'Kept',
+  'refused': 'refused',
 };

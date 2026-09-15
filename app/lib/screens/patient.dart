@@ -353,6 +353,32 @@ class _CardRow extends StatelessWidget {
   final CardLine line;
   final int today;
 
+  /// The dose number where the vaccine is a series; BCG is BCG.
+  static String labelOf(Due d) =>
+      Schedule.v1.where((x) => x.vaccine == d.vaccine).length > 1
+          ? '${d.vaccine.label} ${d.dose}'
+          : d.vaccine.label;
+
+  /// The day a dose was given, short: 9 May.
+  static String given(int days) {
+    final d = DateTime.utc(1970).add(Duration(days: days));
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return '${d.day} ${months[d.month - 1]}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
@@ -371,12 +397,7 @@ class _CardRow extends StatelessWidget {
           Strings.afterTheFirst
         ),
     };
-    // The dose number where the vaccine is a series; BCG is BCG.
-    final series =
-        Schedule.v1.where((d) => d.vaccine == line.due.vaccine).length > 1;
-    final label = series
-        ? '${line.due.vaccine.label} ${line.due.dose}'
-        : line.due.vaccine.label;
+    final label = labelOf(line.due);
     return Semantics(
       container: true,
       excludeSemantics: true,
@@ -394,9 +415,7 @@ class _CardRow extends StatelessWidget {
                             ? p.textSecondary
                             : p.textPrimary))),
             Text(
-              line.status == Status.given
-                  ? '${line.given!.givenDays - (line.dueOn! - line.due.dueDays)} d'
-                  : word,
+              line.status == Status.given ? given(line.given!.givenDays) : word,
               style: Type.small.copyWith(color: colour),
             ),
           ],
@@ -448,7 +467,7 @@ class _DoseSheetState extends State<DoseSheet> {
       child: Glass(
         depth: Depth.high,
         radius: Radius2.sheet,
-        padding: const EdgeInsets.all(Gap.l),
+        padding: sheetPadding(context),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -463,7 +482,7 @@ class _DoseSheetState extends State<DoseSheet> {
                 for (final l in widget.due)
                   ChoiceChip(
                     key: Key('dose-${l.due.vaccine.name}-${l.due.dose}'),
-                    label: Text('${l.due.vaccine.label} ${l.due.dose}'),
+                    label: Text(_CardRow.labelOf(l.due)),
                     selected: identical(l, _chosen),
                     onSelected: (_) => setState(() => _chosen = l),
                     selectedColor: p.accent,
@@ -483,6 +502,7 @@ class _DoseSheetState extends State<DoseSheet> {
               decoration: InputDecoration(
                   labelText: Strings.vialCode,
                   helperText: Strings.vialCodeHint,
+                  helperMaxLines: 3,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Radius2.input))),
             ),

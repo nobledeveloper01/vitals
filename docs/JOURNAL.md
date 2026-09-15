@@ -295,3 +295,22 @@ the field had no `onChanged`. The stock screen had two gradient buttons.
 The trend line ran past its tile. Five defects, none of which fifty-eight
 widget tests had asked about, all found in twenty minutes with a phone.
 The exit gates that say *on a real device* are there for a reason.
+
+## 2026-09-15, mid-morning — the design audit, with the user
+
+The user looked at the share screen and saw what I had not: a square code
+inside a round ring, the corners poking through. The frame is a rounded
+rectangle now, the same shape as what it holds, with the progress drawn
+along its edge from twelve o'clock. Then the rest of the screens, in both
+palettes, with the simulator switched to light for the first time all
+night. Found and fixed: every bottom sheet's last button sat on the home
+indicator (a shared `sheetPadding`); the dose sheet's helper text truncated
+and IPV was offered as "IPV 1"; a given dose said "1 d" where it now says
+the day; the vitals sheet's units only appeared on focus and the fields
+ran ragged (units in the labels, two columns); the patient face's Settings
+and lock were English under a chosen language (they are the patient's
+language now, and the clinic face is not offered a picker at all).
+
+**A rule the tests could not have held:** *the patient's language applies
+to every screen the patient sees*, including the two the faces share. The
+l10n gate counts keys; it cannot know which screens are the patient's.

@@ -43,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: ListView(
                     padding: const EdgeInsets.all(Gap.l),
                     children: [
-                      Text(Strings.settings,
+                      Text(PatientStrings.face('settings', Strings.settings),
                           style: Type.display.copyWith(color: p.textPrimary)),
                       const SizedBox(height: Gap.m),
                       Glass(
@@ -52,22 +52,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           children: [
                             _Row(
-                                title: Strings.plainSurfaces,
-                                hint: Strings.plainSurfacesHint,
+                                title: PatientStrings.face(
+                                    'plainSurfaces', Strings.plainSurfaces),
+                                hint: PatientStrings.face('plainSurfacesHint',
+                                    Strings.plainSurfacesHint),
                                 value: !Motion.shared.glass,
                                 onChanged: (v) => Motion.shared.glass = !v,
                                 key: const Key('plain')),
                             Divider(height: 1, color: p.hairline),
                             _Row(
-                                title: Strings.lessMotion,
-                                hint: Strings.lessMotionHint,
+                                title: PatientStrings.face(
+                                    'lessMotion', Strings.lessMotion),
+                                hint: PatientStrings.face(
+                                    'lessMotionHint', Strings.lessMotionHint),
                                 value: Motion.shared.reduced,
                                 onChanged: (v) => Motion.shared.reduced = v,
                                 key: const Key('reduce')),
                             Divider(height: 1, color: p.hairline),
                             _Row(
-                                title: Strings.largeType,
-                                hint: Strings.largeTypeHint,
+                                title: PatientStrings.face(
+                                    'largeType', Strings.largeType),
+                                hint: PatientStrings.face(
+                                    'largeTypeHint', Strings.largeTypeHint),
                                 value: Preferences.shared.largeType,
                                 onChanged: (v) =>
                                     Preferences.shared.largeType = v,
@@ -75,48 +81,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: Gap.m),
                       // The patient face's language (ADR-0006 #27); a draft
-                      // says it is one.
-                      Glass(
-                        depth: Depth.low,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(PatientStrings.t('language'),
-                                style:
-                                    Type.title.copyWith(color: p.textPrimary)),
-                            const SizedBox(height: Gap.s),
-                            Wrap(
-                              spacing: Gap.s,
-                              runSpacing: Gap.s,
-                              children: [
-                                for (final l in Lang.values)
-                                  ChoiceChip(
-                                    key: Key('lang-${l.name}'),
-                                    label: Text(l.own),
-                                    selected: Preferences.shared.lang == l,
-                                    selectedColor: p.accent,
-                                    labelStyle: Type.small.copyWith(
-                                        color: Preferences.shared.lang == l
-                                            ? p.textOnAccent
-                                            : p.textPrimary),
-                                    onSelected: (_) => setState(
-                                        () => Preferences.shared.lang = l),
-                                  ),
-                              ],
-                            ),
-                            if (!Preferences.shared.lang.reviewed) ...[
+                      // says it is one. The clinic face stays English and
+                      // is not offered a choice.
+                      if (Preferences.shared.face == Face.patient) ...[
+                        const SizedBox(height: Gap.m),
+                        Glass(
+                          depth: Depth.low,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(PatientStrings.t('language'),
+                                  style: Type.title
+                                      .copyWith(color: p.textPrimary)),
                               const SizedBox(height: Gap.s),
-                              Text(
-                                  '${Preferences.shared.lang.own}: ${PatientStrings.t('draftLanguage')}',
-                                  style: Type.small
-                                      .copyWith(color: p.textSecondary),
-                                  key: const Key('draftNote')),
+                              Wrap(
+                                spacing: Gap.s,
+                                runSpacing: Gap.s,
+                                children: [
+                                  for (final l in Lang.values)
+                                    ChoiceChip(
+                                      key: Key('lang-${l.name}'),
+                                      label: Text(l.own),
+                                      selected: Preferences.shared.lang == l,
+                                      selectedColor: p.accent,
+                                      labelStyle: Type.small.copyWith(
+                                          color: Preferences.shared.lang == l
+                                              ? p.textOnAccent
+                                              : p.textPrimary),
+                                      onSelected: (_) => setState(
+                                          () => Preferences.shared.lang = l),
+                                    ),
+                                ],
+                              ),
+                              if (!Preferences.shared.lang.reviewed) ...[
+                                const SizedBox(height: Gap.s),
+                                Text(
+                                    '${Preferences.shared.lang.own}: ${PatientStrings.t('draftLanguage')}',
+                                    style: Type.small
+                                        .copyWith(color: p.textSecondary),
+                                    key: const Key('draftNote')),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                       const SizedBox(height: Gap.m),
                       // Backup (ADR-0006 #29): every fact into one file under a
                       // passphrase, and every fact checked on the way back.
@@ -125,22 +134,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(Strings.backup,
+                            Text(PatientStrings.face('backup', Strings.backup),
                                 style:
                                     Type.title.copyWith(color: p.textPrimary)),
                             const SizedBox(height: Gap.xs),
-                            Text(Strings.backupHint,
+                            Text(
+                                PatientStrings.face(
+                                    'backupHint', Strings.backupHint),
                                 style: Type.secondary
                                     .copyWith(color: p.textSecondary)),
                             const SizedBox(height: Gap.m),
                             SecondaryButton(
                                 label:
-                                    '${Strings.backUp} (${widget.records.facts})',
+                                    '${PatientStrings.face('backUp', Strings.backUp)} (${widget.records.facts})',
                                 onPressed:
                                     widget.records.facts == 0 ? null : _backUp),
                             const SizedBox(height: Gap.s),
                             SecondaryButton(
-                                label: Strings.restore, onPressed: _restore),
+                                label: PatientStrings.face(
+                                    'restore', Strings.restore),
+                                onPressed: _restore),
                             if (_note != null) ...[
                               const SizedBox(height: Gap.m),
                               Text(_note!,
@@ -153,7 +166,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       const SizedBox(height: Gap.m),
                       SecondaryButton(
-                          label: Strings.changeFace,
+                          label: PatientStrings.face(
+                              'changeFace', Strings.changeFace),
                           onPressed: () {
                             Preferences.shared.face = Face.unchosen;
                             Navigator.of(context).pop();
@@ -196,7 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Padding(
                   padding: const EdgeInsets.all(Gap.l),
                   child: PrimaryButton(
-                      label: Strings.done,
+                      label: PatientStrings.face('done', Strings.done),
                       onPressed: () => Navigator.of(context).pop()),
                 ),
               ],
@@ -217,14 +231,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             controller: c,
             obscureText: true,
             autofocus: true,
-            decoration: const InputDecoration(labelText: Strings.passphrase)),
+            decoration: InputDecoration(
+                labelText:
+                    PatientStrings.face('passphrase', Strings.passphrase))),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(Strings.cancel)),
+              child: Text(PatientStrings.face('cancel', Strings.cancel))),
           TextButton(
               onPressed: () => Navigator.pop(context, c.text),
-              child: const Text(Strings.done)),
+              child: Text(PatientStrings.face('done', Strings.done))),
         ],
       ),
     );
@@ -244,7 +260,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _backUp() async {
-    final pass = await _passphrase(Strings.backUp);
+    final pass =
+        await _passphrase(PatientStrings.face('backUp', Strings.backUp));
     if (pass == null || pass.isEmpty) return;
     final dir = await getTemporaryDirectory();
     final file = File(
@@ -259,12 +276,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final picked = await FilePicker.pickFiles();
     final path = picked.isEmpty ? null : picked.single.path;
     if (path == null) return;
-    final pass = await _passphrase(Strings.restore);
+    final pass =
+        await _passphrase(PatientStrings.face('restore', Strings.restore));
     if (pass == null || pass.isEmpty) return;
     final r =
         await Backup.restore(widget.records, File(path), passphrase: pass);
     setState(() => _note =
-        '${Strings.restored} ${r.kept} · ${Strings.refused} ${r.refused}');
+        '${PatientStrings.face('kept', Strings.restored)} ${r.kept} · ${PatientStrings.face('refused', Strings.refused)} ${r.refused}');
   }
 }
 

@@ -56,4 +56,27 @@ const Map<String, String> igbo = {
   'showOnLockFace': 'Gosi na ihu mkpọchi',
   'save': 'Chekwaa',
   'cancel': 'Kagbuo',
+  'settings': 'Ntọala',
+  'plainSurfaces': 'Ihu dị larịị',
+  'plainSurfacesHint':
+      'Enweghị iko, enweghị ekpuchi. Ngwa ahụ zuru oke na-enweghị ha; ekwentị ochie na-adị ngwa karịa.',
+  'lessMotion': 'Mmegharị dị nta',
+  'lessMotionHint':
+      'Ọ dịghị ihe na-emegharị. Ihu mmalite na-ebipụ. Ọganihu bụ ọnụ ọgụgụ.',
+  'largeType': 'Mkpụrụedemede buru ibu',
+  'largeTypeHint': 'Edobere maka ogologo aka na otu aka.',
+  'backup': 'Nchekwa',
+  'backupHint':
+      "Ihe niile edere n'otu faịlụ n'okpuru okwu nzuzo, na draịvụ nke gị. Mgbe ọ na-alọta, a na-elele nke ọ bụla tupu edobe ya.",
+  'backUp': 'Chekwaa ndekọ niile',
+  'restore': 'Weghachite site na nchekwa',
+  'changeFace': 'Gbanwee onye ekwentị a bụ maka ya',
+  'locked': 'Vitals kpọchiri.',
+  'lockedHint': 'Tinye PIN gị.',
+  'pin': 'PIN',
+  'unlock': 'Mepee',
+  'wrongPin': 'Ọ bụghị PIN ahụ. Nwaa ọzọ.',
+  'passphrase': 'Okwu nzuzo',
+  'kept': 'Edobere',
+  'refused': 'ajụrụ',
 };

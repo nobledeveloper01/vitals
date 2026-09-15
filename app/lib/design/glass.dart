@@ -60,6 +60,11 @@ class _MeshPainter extends CustomPainter {
 }
 
 /// A glass panel at one of the three depths, or its solid twin.
+/// A bottom sheet's inner padding: the usual all round, and the home
+/// indicator's height added underneath so the last button clears it.
+EdgeInsets sheetPadding(BuildContext context) => EdgeInsets.fromLTRB(
+    Gap.l, Gap.l, Gap.l, Gap.l + MediaQuery.viewPaddingOf(context).bottom);
+
 class Glass extends StatelessWidget {
   const Glass(
       {super.key,

@@ -81,6 +81,28 @@ abstract final class PatientStrings {
     'showOnLockFace': 'Show on the lock face',
     'save': 'Save',
     'cancel': 'Cancel',
+    'settings': 'Settings',
+    'plainSurfaces': 'Plain surfaces',
+    'plainSurfacesHint':
+        'No glass, no blur. The app is complete without them; older phones are faster.',
+    'lessMotion': 'Less motion',
+    'lessMotionHint': 'Nothing animates. The splash cuts. Progress is a count.',
+    'largeType': 'Large type',
+    'largeTypeHint': "Set for arm's length and one hand.",
+    'backup': 'Backup',
+    'backupHint':
+        'Every fact in one file under a passphrase, to a drive of yours. On the way back each one is checked before it is kept.',
+    'backUp': 'Back up all records',
+    'restore': 'Restore from a backup',
+    'changeFace': 'Change who this device is for',
+    'locked': 'Vitals is locked.',
+    'lockedHint': 'Enter your PIN.',
+    'pin': 'PIN',
+    'unlock': 'Unlock',
+    'wrongPin': 'Not that PIN. Try again.',
+    'passphrase': 'Passphrase',
+    'kept': 'Kept',
+    'refused': 'refused',
   };
 
   static const Map<Lang, Map<String, String>> tables = {
@@ -93,6 +115,12 @@ abstract final class PatientStrings {
 
   /// The string in the phone's chosen language; English where a table has
   /// no entry, which the gate keeps from happening.
+  /// A string that is the patient's on the patient face and the clinic's
+  /// English on the clinic face — the settings and the lock, which both
+  /// faces share.
+  static String face(String key, String clinic) =>
+      Preferences.shared.face == Face.patient ? t(key) : clinic;
+
   static String t(String key, {Lang? lang}) {
     final l = lang ?? Preferences.shared.lang;
     return tables[l]?[key] ?? english[key] ?? key;

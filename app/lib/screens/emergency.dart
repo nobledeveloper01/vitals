@@ -83,7 +83,7 @@ class _EmergencySheetState extends State<EmergencySheet> {
       child: Glass(
         depth: Depth.high,
         radius: Radius2.sheet,
-        padding: const EdgeInsets.all(Gap.l),
+        padding: sheetPadding(context),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,

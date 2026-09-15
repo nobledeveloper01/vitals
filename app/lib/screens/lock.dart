@@ -8,6 +8,7 @@ import 'package:vitals_domain/vitals_domain.dart';
 import '../design/glass.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
+import '../speech/patient_strings.dart';
 import '../speech/strings.dart';
 import '../store/preferences.dart';
 import '../store/records.dart';
@@ -61,10 +62,10 @@ class _LockScreenState extends State<LockScreen> {
                     ],
                     Icon(Icons.lock_outline, color: p.accent, size: 40),
                     const SizedBox(height: Gap.m),
-                    Text(Strings.locked,
+                    Text(PatientStrings.face('locked', Strings.locked),
                         style: Type.headline.copyWith(color: p.textPrimary)),
                     const SizedBox(height: Gap.s),
-                    Text(Strings.lockedHint,
+                    Text(PatientStrings.face('lockedHint', Strings.lockedHint),
                         style: Type.secondary.copyWith(color: p.textSecondary)),
                     const SizedBox(height: Gap.l),
                     TextField(
@@ -73,14 +74,16 @@ class _LockScreenState extends State<LockScreen> {
                       keyboardType: TextInputType.number,
                       style: Type.value.copyWith(color: p.textPrimary),
                       decoration: InputDecoration(
-                        labelText: Strings.pin,
+                        labelText: PatientStrings.face('pin', Strings.pin),
                         errorText: _error,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(Radius2.input)),
                       ),
                     ),
                     const SizedBox(height: Gap.l),
-                    PrimaryButton(label: Strings.unlock, onPressed: _unlock),
+                    PrimaryButton(
+                        label: PatientStrings.face('unlock', Strings.unlock),
+                        onPressed: _unlock),
                   ],
                 ),
               ),
@@ -95,7 +98,8 @@ class _LockScreenState extends State<LockScreen> {
     if (_pin.text == '1234') {
       Preferences.shared.locked = false;
     } else {
-      setState(() => _error = Strings.wrongPin);
+      setState(
+          () => _error = PatientStrings.face('wrongPin', Strings.wrongPin));
     }
   }
 }

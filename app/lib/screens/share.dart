@@ -190,7 +190,7 @@ class _ShareScreenState extends State<ShareScreen> {
   }
 }
 
-/// The frames as QR codes, one after another, with the ring around them
+/// The frames as QR codes, one after another, with the frame around them
 /// filling as the frames go by. With less motion: one frame, stepped by
 /// hand, the ring still counting.
 class AnimatedQr extends StatefulWidget {
@@ -244,21 +244,24 @@ class _AnimatedQrState extends State<AnimatedQr> {
       child: Column(
         children: [
           SizedBox(
-            width: 300,
-            height: 300,
+            width: 296,
+            height: 296,
             child: CustomPaint(
-              painter: _RingPainter(
+              painter: _FramePainter(
                   progress: (_i + 1) / n,
                   colours: [p.accent, p.accentEnd],
                   track: p.hairline),
               child: Padding(
-                padding: const EdgeInsets.all(Gap.xl + Gap.s),
-                child: Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(Gap.s),
-                  child: CustomPaint(
-                      painter: _QrPainter(image, p.code),
-                      key: Key('frame-$_i')),
+                padding: const EdgeInsets.all(Gap.m),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(Radius2.card - Gap.s),
+                  child: Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(Gap.sm),
+                    child: CustomPaint(
+                        painter: _QrPainter(image, p.code),
+                        key: Key('frame-$_i')),
+                  ),
                 ),
               ),
             ),
@@ -284,8 +287,11 @@ class _AnimatedQrState extends State<AnimatedQr> {
   }
 }
 
-class _RingPainter extends CustomPainter {
-  _RingPainter(
+/// The frame around the code: a rounded rectangle, the same shape as the
+/// code it holds, with the track in hairline and the progress drawn along
+/// its edge in the brand gradient, from the top centre, clockwise.
+class _FramePainter extends CustomPainter {
+  _FramePainter(
       {required this.progress, required this.colours, required this.track});
   final double progress;
   final List<Color> colours;
@@ -293,22 +299,33 @@ class _RingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-    final r = rect.deflate(6);
-    canvas.drawArc(
-        r,
-        0,
-        math.pi * 2,
-        false,
+    final rect = (Offset.zero & size).deflate(4);
+    final rrect =
+        RRect.fromRectAndRadius(rect, const Radius.circular(Radius2.card));
+    canvas.drawRRect(
+        rrect,
         Paint()
           ..color = track
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 6);
-    canvas.drawArc(
-        r,
-        -math.pi / 2,
-        math.pi * 2 * progress,
-        false,
+          ..strokeWidth = 4);
+    if (progress <= 0) return;
+    // A path that starts at the top centre, so the fill grows clockwise
+    // from twelve like a clock hand.
+    final full = Path()..addRRect(rrect);
+    final metric = full.computeMetrics().first;
+    final start = metric.length * 0.125; // the top edge's midpoint on a
+    // path that begins at the top-left corner's arc
+    final total = metric.length * progress.clamp(0.0, 1.0);
+    final path = Path();
+    final first =
+        metric.extractPath(start, math.min(metric.length, start + total));
+    path.addPath(first, Offset.zero);
+    if (start + total > metric.length) {
+      path.addPath(
+          metric.extractPath(0, start + total - metric.length), Offset.zero);
+    }
+    canvas.drawPath(
+        path,
         Paint()
           ..shader = SweepGradient(
                   colors: [...colours, colours.first],
@@ -316,11 +333,11 @@ class _RingPainter extends CustomPainter {
               .createShader(rect)
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
-          ..strokeWidth = 6);
+          ..strokeWidth = 4);
   }
 
   @override
-  bool shouldRepaint(_RingPainter old) => old.progress != progress;
+  bool shouldRepaint(_FramePainter old) => old.progress != progress;
 }
 
 class _QrPainter extends CustomPainter {

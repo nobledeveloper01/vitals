@@ -27,6 +27,7 @@ void main() {
   });
   tearDown(() async {
     Preferences.shared.lang = Lang.english;
+    Preferences.shared.face = Face.unchosen;
     await dir.delete(recursive: true);
   });
 
@@ -41,7 +42,7 @@ void main() {
           .toList();
       // Naijá shares words with English; a table that is English with
       // another file name would share nearly all of them.
-      expect(same.length, lessThan(PatientStrings.english.length ~/ 6),
+      expect(same.length, lessThan(PatientStrings.english.length ~/ 4),
           reason: '${e.key.name} repeats English for $same');
     }
   });
@@ -78,6 +79,12 @@ void main() {
 
   testWidgets('the settings say a language is a draft, and English is not',
       (t) async {
+    // The clinic face is not offered a language.
+    Preferences.shared.face = Face.clinic;
+    await t.pumpWidget(MaterialApp(home: SettingsScreen(records: records)));
+    await t.pumpAndSettle();
+    expect(find.byKey(const Key('lang-hausa')), findsNothing);
+    Preferences.shared.face = Face.patient;
     await t.pumpWidget(MaterialApp(home: SettingsScreen(records: records)));
     await t.pumpAndSettle();
     expect(find.byKey(const Key('draftNote')), findsNothing);

@@ -7,6 +7,13 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Fixed
 
+- From a design audit on the phone in both palettes: the QR code sits in a
+  rounded frame that matches its shape, with the progress along its edge;
+  every sheet clears the home indicator; the dose sheet's helper wraps and
+  a single-dose vaccine is not numbered; a given dose shows its day; the
+  vitals sheet is two columns with units in the labels; the patient face's
+  Settings and lock speak the chosen language, and the clinic face is not
+  offered one.
 - The routine schedule is a child's: an adult is on no whiteboard, gets no
   reminder and no card. The facility's own record is not a patient in the
   count. The share screen's button enables as the clinic's name is typed.

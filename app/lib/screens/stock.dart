@@ -391,7 +391,7 @@ class _ReceiptSheetState extends State<ReceiptSheet> {
       child: Glass(
         depth: Depth.high,
         radius: Radius2.sheet,
-        padding: const EdgeInsets.all(Gap.l),
+        padding: sheetPadding(context),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
