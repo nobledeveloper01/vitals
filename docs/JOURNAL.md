@@ -178,3 +178,45 @@ expectation.
 **The PDF's metadata is a plain string only when it is ASCII.** An em-dash
 in the title turned the whole string into UTF-16 hex, and the assertion that
 the child's name was in the file found only the header. A colon, then.
+
+## 2026-09-15, before dawn — Phase 4's core
+
+### What we did
+
+ADR-0008 first, because every widget in this phase sits on the line rule 1
+draws: a range is printed beside a number and the mark is a comparison; a
+checklist is answered by a person and never summed; a convention's
+arithmetic is allowed and says where it came from. Then the domain —
+observations, notes, the pregnancy and the visit, the stock ledger, the
+fridge — and the screens on top: the pulse card, the vitals sheet, the
+antenatal screen, stock tiles and the fridge prompt. A draft store that
+writes on every keystroke, beside-then-rename, one write at a time per form.
+
+### What surprised us
+
+**The formatter reflowed the domain and the linter found twelve things.**
+The package had never been through `dart format` at eighty columns; the
+one-line `if` bodies became two-line ones, and the recommended lints want
+braces on those. Wrapped them. The analyzer runs with infos fatal, so it
+was the gate that found it, which is what it is for.
+
+**The purity gate refused `show`.** `import 'registration.dart' show
+utf8Of` is still the package's own file, and the gate's pattern is the
+plain form only. The helpers went into `text.dart` and the imports are
+plain. The gate did not need to learn a new form; the code needed to use
+the one it knows.
+
+**Two draft writes raced for one temporary file.** Every keystroke wrote,
+the second rename found the first had taken the file, and the test threw
+a path error after it had finished. Writes chain per form now.
+
+**A tap that writes a file has to run through the real loop, even when
+the write is a side effect.** The answer chips draft to disk; tapping them
+outside `runAsync` left the writes pending in the fake zone, and the
+record button then waited on them forever. Same lesson as last night,
+one layer further in.
+
+**The search had a `score`.** The guard that greps the domain for the
+words a judgement would use found the registry's relevance score, which
+is not clinical and was renamed anyway — a guard with an exception list
+is a guard with a hole.

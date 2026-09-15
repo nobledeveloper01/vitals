@@ -26,6 +26,8 @@ void main() {
         if (r.length != w.everRecorded.toSet().length) lost++;
       }
     }
-    expect(lost, greaterThan(0), reason: 'a merge that overwrites lost nothing, so the harness cannot see loss');
+    expect(lost, greaterThan(0),
+        reason:
+            'a merge that overwrites lost nothing, so the harness cannot see loss');
   });
 }

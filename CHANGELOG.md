@@ -7,6 +7,14 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **Vitals, antenatal, stock, the fridge.** Readings as integer facts with
+  the pulse card, the printed range and the trend behind the number; forms
+  drafted on every keystroke and restored after a kill; the pregnancy and
+  the visit with its mandatory ten-sign checklist, answers listed and never
+  counted; the stock ledger with the count by tapping, the difference shown,
+  a unit issued with every dose; the fridge asked twice a day. ADR-0008
+  draws the line between printing a range and judging a number, and the
+  copy gate and a domain source test hold it.
 - **The whiteboard, the card on paper, the reminder.** The clinic home lists
   every child with a dose due, furthest behind first, and counts the ones
   behind; a mother with a phone gets a message draft opened in the phone's

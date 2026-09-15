@@ -6,7 +6,8 @@ import 'registration.dart';
 /// the phonetic keys the search and the duplicate check use.
 final class Listed {
   Listed(this.patient, this.registration)
-      : nameKeys = Names.keys('${registration.givenName} ${registration.otherNames} ${registration.familyName}'),
+      : nameKeys = Names.keys(
+            '${registration.givenName} ${registration.otherNames} ${registration.familyName}'),
         motherKeys = Names.keys(registration.motherName);
   final List<int> patient;
   final Registration registration;
@@ -14,12 +15,12 @@ final class Listed {
   final List<String> motherKeys;
 }
 
-/// A search hit: the patient and why they matched, with a score a list can
-/// sort by. The score is for order, never for a decision.
+/// A search hit: the patient and why they matched, with a rank a list can
+/// sort by. The rank is for order, never for a decision.
 final class Hit {
-  const Hit(this.listed, this.score);
+  const Hit(this.listed, this.rank);
   final Listed listed;
-  final int score;
+  final int rank;
 }
 
 /// Why two patients might be one. Presented side by side; a person decides.
@@ -49,26 +50,33 @@ abstract final class Registry {
     final qKeys = Names.keys(q);
     final hits = <Hit>[];
     for (final l in listed) {
-      var score = 0;
-      if (digits.length >= 4 && l.registration.phone.replaceAll(RegExp(r'\D'), '').contains(digits)) score += 50;
+      var rank = 0;
+      if (digits.length >= 4 &&
+          l.registration.phone.replaceAll(RegExp(r'\D'), '').contains(digits)) {
+        rank += 50;
+      }
       if (qKeys.isNotEmpty) {
         var all = true;
         for (final k in qKeys) {
           if (l.nameKeys.contains(k)) {
-            score += 20;
-          } else if (l.nameKeys.any((n) => n.startsWith(k)) || l.motherKeys.contains(k)) {
-            score += 8;
+            rank += 20;
+          } else if (l.nameKeys.any((n) => n.startsWith(k)) ||
+              l.motherKeys.contains(k)) {
+            rank += 8;
           } else {
             all = false;
           }
         }
-        if (!all) score = digits.length >= 4 ? score : 0;
+        if (!all) rank = digits.length >= 4 ? rank : 0;
       }
-      if (score > 0) hits.add(Hit(l, score));
+      if (rank > 0) hits.add(Hit(l, rank));
     }
     hits.sort((a, b) {
-      final c = b.score.compareTo(a.score);
-      return c != 0 ? c : a.listed.registration.fullName.compareTo(b.listed.registration.fullName);
+      final c = b.rank.compareTo(a.rank);
+      return c != 0
+          ? c
+          : a.listed.registration.fullName
+              .compareTo(b.listed.registration.fullName);
     });
     return hits;
   }
@@ -83,14 +91,25 @@ abstract final class Registry {
     for (final l in listed) {
       if (_same(l.patient, candidate.patient)) continue;
       final reasons = <String>[];
-      final sameGiven = l.nameKeys.isNotEmpty && candidate.nameKeys.isNotEmpty && l.nameKeys.first == candidate.nameKeys.first;
+      final sameGiven = l.nameKeys.isNotEmpty &&
+          candidate.nameKeys.isNotEmpty &&
+          l.nameKeys.first == candidate.nameKeys.first;
       final sameFamily = l.nameKeys.last == candidate.nameKeys.last;
-      final daysApart = (l.registration.bornDays - candidate.registration.bornDays).abs();
-      final sameMother = l.motherKeys.isNotEmpty && l.motherKeys.join(' ') == candidate.motherKeys.join(' ');
-      final samePhone = l.registration.phone.isNotEmpty && l.registration.phone == candidate.registration.phone;
-      if (sameGiven && sameFamily && daysApart <= 366) reasons.add('same name, born within a year');
-      if (sameGiven && sameFamily && sameMother) reasons.add('same name and mother');
-      if (samePhone && sameFamily && sameGiven) reasons.add('same name and phone');
+      final daysApart =
+          (l.registration.bornDays - candidate.registration.bornDays).abs();
+      final sameMother = l.motherKeys.isNotEmpty &&
+          l.motherKeys.join(' ') == candidate.motherKeys.join(' ');
+      final samePhone = l.registration.phone.isNotEmpty &&
+          l.registration.phone == candidate.registration.phone;
+      if (sameGiven && sameFamily && daysApart <= 366) {
+        reasons.add('same name, born within a year');
+      }
+      if (sameGiven && sameFamily && sameMother) {
+        reasons.add('same name and mother');
+      }
+      if (samePhone && sameFamily && sameGiven) {
+        reasons.add('same name and phone');
+      }
       if (reasons.isNotEmpty) out.add(Candidate(l, candidate, reasons));
     }
     return out;

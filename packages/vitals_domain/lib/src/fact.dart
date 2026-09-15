@@ -15,7 +15,8 @@ enum FactKind {
   const FactKind(this.code);
   final int code;
 
-  static FactKind fromCode(int code) => FactKind.values.firstWhere((k) => k.code == code);
+  static FactKind fromCode(int code) =>
+      FactKind.values.firstWhere((k) => k.code == code);
 }
 
 /// One immutable observation. Who, when, on which device, about whom, what.

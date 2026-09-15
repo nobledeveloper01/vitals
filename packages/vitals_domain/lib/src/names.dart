@@ -32,7 +32,11 @@ abstract final class Names {
     // Igbo: Chukwu- prefix folds the same way (Chukwuemeka → Emeka).
     if (t.startsWith('chukwu') && t.length > 8) t = t.substring(6);
     // Hausa/Arabic spellings of one name.
-    t = t.replaceAll('muhammad', 'mohamed').replaceAll('muhammed', 'mohamed').replaceAll('mohammed', 'mohamed').replaceAll('mohammad', 'mohamed');
+    t = t
+        .replaceAll('muhammad', 'mohamed')
+        .replaceAll('muhammed', 'mohamed')
+        .replaceAll('mohammed', 'mohamed')
+        .replaceAll('mohammad', 'mohamed');
     // Sounds that spell two ways.
     t = t
         .replaceAll('ph', 'f')
@@ -53,11 +57,14 @@ abstract final class Names {
     t = sb.toString();
     t = t.replaceAll(RegExp(r'[aeiou]+$'), '');
     // Vowels inside the word are the least stable part of a spelling.
-    if (t.length > 3) t = t[0] + t.substring(1).replaceAll(RegExp(r'[aeiou]'), '');
+    if (t.length > 3) {
+      t = t[0] + t.substring(1).replaceAll(RegExp(r'[aeiou]'), '');
+    }
     return t;
   }
 
-  static List<String> keys(String s) => tokens(s).map(key).where((k) => k.isNotEmpty).toList();
+  static List<String> keys(String s) =>
+      tokens(s).map(key).where((k) => k.isNotEmpty).toList();
 
   static String _fold(String s) {
     final sb = StringBuffer();
@@ -70,9 +77,33 @@ abstract final class Names {
 
   /// Precomposed Yorùbá and Igbo letters to their plain base.
   static const _plain = <int, int>{
-    0xe1: 0x61, 0xe0: 0x61, 0xe2: 0x61, 0xe9: 0x65, 0xe8: 0x65, 0xea: 0x65, 0xed: 0x69, 0xec: 0x69,
-    0xf3: 0x6f, 0xf2: 0x6f, 0xf4: 0x6f, 0xfa: 0x75, 0xf9: 0x75, 0x1ecd: 0x6f, 0x1eb9: 0x65, 0x1e63: 0x73,
-    0x1ecb: 0x69, 0x1ee5: 0x75, 0x1e45: 0x6e, 0x1e44: 0x6e, 0x144: 0x6e, 0x1e5b: 0x72, 0x1e43: 0x6d,
-    0x1ecc: 0x6f, 0x1eb8: 0x65, 0x1e62: 0x73, 0x1eca: 0x69, 0x1ee4: 0x75,
+    0xe1: 0x61,
+    0xe0: 0x61,
+    0xe2: 0x61,
+    0xe9: 0x65,
+    0xe8: 0x65,
+    0xea: 0x65,
+    0xed: 0x69,
+    0xec: 0x69,
+    0xf3: 0x6f,
+    0xf2: 0x6f,
+    0xf4: 0x6f,
+    0xfa: 0x75,
+    0xf9: 0x75,
+    0x1ecd: 0x6f,
+    0x1eb9: 0x65,
+    0x1e63: 0x73,
+    0x1ecb: 0x69,
+    0x1ee5: 0x75,
+    0x1e45: 0x6e,
+    0x1e44: 0x6e,
+    0x144: 0x6e,
+    0x1e5b: 0x72,
+    0x1e43: 0x6d,
+    0x1ecc: 0x6f,
+    0x1eb8: 0x65,
+    0x1e62: 0x73,
+    0x1eca: 0x69,
+    0x1ee4: 0x75,
   };
 }

@@ -172,10 +172,14 @@ final class _Reader {
         out.add(((b & 0x1f) << 6) | (u[i + 1] & 0x3f));
         i += 2;
       } else if (b < 0xf0) {
-        out.add(((b & 0x0f) << 12) | ((u[i + 1] & 0x3f) << 6) | (u[i + 2] & 0x3f));
+        out.add(
+            ((b & 0x0f) << 12) | ((u[i + 1] & 0x3f) << 6) | (u[i + 2] & 0x3f));
         i += 3;
       } else {
-        out.add(((b & 0x07) << 18) | ((u[i + 1] & 0x3f) << 12) | ((u[i + 2] & 0x3f) << 6) | (u[i + 3] & 0x3f));
+        out.add(((b & 0x07) << 18) |
+            ((u[i + 1] & 0x3f) << 12) |
+            ((u[i + 2] & 0x3f) << 6) |
+            (u[i + 3] & 0x3f));
         i += 4;
       }
     }

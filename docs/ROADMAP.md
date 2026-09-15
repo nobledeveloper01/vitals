@@ -98,8 +98,8 @@ furthest behind first and the defaulters counted; a message draft for a mother
 with a phone, opened in the phone's own messages and never sent by the app; the
 A5 card as a PDF in the national layout, printed in the palette's own ink; and
 the reminder on the mother's phone naming the next vaccine and its day. Still
-to build in this phase: the stock decrement, and the reminders as notifications
-with the phone offline — both of which need a device in hand (R4).
+to build in this phase: the reminders as notifications with the phone offline,
+which needs a device in hand (R4). The stock decrement landed with Phase 4.
 
 From the thirty: #4 the A5 card PDF in the national layout, #7 the ward
 whiteboard, #8 defaulter SMS drafts, #9 reminders naming the vaccine, #10 GS1
@@ -118,6 +118,22 @@ clinical interpretation anywhere, reviewed line by line.*
 From the thirty: #1 the pulse card on the patient header, #5 voice notes kept
 local, #11 the cold-chain log with its twice-daily prompt, #12 stock count by
 tapping tiles, #27 the four patient-face languages.
+
+**Built 2026-09-15, the core.** Vital signs as facts — integers in fixed
+units — with the pulse card showing the last of each measure, the published
+range printed beside it, the trend drawn behind the number and *outside range*
+the only mark (ADR-0008); the vitals sheet drafted on every keystroke and
+proved to come back after the tree is thrown away. Antenatal: the pregnancy
+with its expected day labelled *from the last period + 280 days*; the visit
+that cannot be recorded until all ten danger signs are answered, the yeses
+shown one by one in the danger colour and never counted; a source test that
+fails on the words *score*, *risk*, *triage*, *diagnos-* or *severity* in the
+domain. Stock: every movement a fact on the facility's record, the count by
+tapping tiles with the difference from the ledger shown and never absorbed,
+low stock and expiring batches marked, a unit issued with every dose in the
+same write. The fridge: morning and evening prompts, a reading outside the
+printed range marked. Still to do in this phase: voice notes (#5), the four
+patient-face languages (#27), and the exit gate's supervised timing (R2).
 
 ## Phase 5 — Exchange and verification
 

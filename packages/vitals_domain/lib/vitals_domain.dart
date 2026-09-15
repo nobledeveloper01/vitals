@@ -16,3 +16,7 @@ export 'src/registry.dart';
 export 'src/immunisation.dart';
 export 'src/gs1.dart';
 export 'src/whiteboard.dart';
+export 'src/observations.dart';
+export 'src/anc.dart';
+export 'src/stock.dart';
+export 'src/coldchain.dart';

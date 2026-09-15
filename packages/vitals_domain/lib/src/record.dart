@@ -31,9 +31,13 @@ final class Record {
   List<Fact> get current {
     final superseded = <String>{
       for (final f in _facts.values)
-        if (f.kind == FactKind.supersession && f.supersedes != null) _key(f.supersedes!),
+        if (f.kind == FactKind.supersession && f.supersedes != null)
+          _key(f.supersedes!),
     };
-    return all.where((f) => f.kind != FactKind.supersession && !superseded.contains(f.key)).toList();
+    return all
+        .where((f) =>
+            f.kind != FactKind.supersession && !superseded.contains(f.key))
+        .toList();
   }
 
   /// Everything that corrected a fact, and everything that corrected those,
@@ -47,7 +51,9 @@ final class Record {
     while (frontier.isNotEmpty) {
       final next = <String>{};
       for (final s in all) {
-        if (s.kind == FactKind.supersession && s.supersedes != null && frontier.contains(_key(s.supersedes!))) {
+        if (s.kind == FactKind.supersession &&
+            s.supersedes != null &&
+            frontier.contains(_key(s.supersedes!))) {
           out.add(s);
           next.add(s.key);
         }

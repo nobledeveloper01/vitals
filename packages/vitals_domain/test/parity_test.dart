@@ -18,22 +18,32 @@ void main() {
     }
     final out = Directory(dir);
     if (out.existsSync() && out.listSync().isNotEmpty) {
-      fail('$dir is not empty; a fixture is replaced deliberately, not by a rerun');
+      fail(
+          '$dir is not empty; a fixture is replaced deliberately, not by a rerun');
     }
     out.createSync(recursive: true);
     final index = StringBuffer();
     for (var seed = 1; seed <= 200; seed++) {
-      final w = World(seed)..run()..settle();
+      final w = World(seed)
+        ..run()
+        ..settle();
       final facts = w.everRecorded.toSet().toList()..sort();
       final factsBytes = <int>[];
       for (final f in facts) {
         final b = Canonical.bytesOf(Record.of(f.patient, [f]));
-        factsBytes.addAll([(b.length >> 24) & 0xff, (b.length >> 16) & 0xff, (b.length >> 8) & 0xff, b.length & 0xff]);
+        factsBytes.addAll([
+          (b.length >> 24) & 0xff,
+          (b.length >> 16) & 0xff,
+          (b.length >> 8) & 0xff,
+          b.length & 0xff
+        ]);
         factsBytes.addAll(b);
       }
       File('$dir/$seed.facts').writeAsBytesSync(factsBytes);
-      File('$dir/$seed.merged').writeAsBytesSync(Canonical.bytesOf(w.held.values.first));
-      index.writeln('$seed ${facts.length} ${Canonical.bytesOf(w.held.values.first).length}');
+      File('$dir/$seed.merged')
+          .writeAsBytesSync(Canonical.bytesOf(w.held.values.first));
+      index.writeln(
+          '$seed ${facts.length} ${Canonical.bytesOf(w.held.values.first).length}');
     }
     File('$dir/INDEX').writeAsStringSync(index.toString());
   }, tags: ['fixture']);

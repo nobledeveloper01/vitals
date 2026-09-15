@@ -27,19 +27,25 @@ final class Gs1 {
       switch (ai) {
         case '01':
           if (i + 14 > s.length) {
-            return any ? Gs1(gtin: gtin, batch: batch, expiryDays: expiry) : null;
+            return any
+                ? Gs1(gtin: gtin, batch: batch, expiryDays: expiry)
+                : null;
           }
           gtin = s.substring(i, i + 14);
           i += 14;
           any = true;
         case '17':
           if (i + 6 > s.length) {
-            return any ? Gs1(gtin: gtin, batch: batch, expiryDays: expiry) : null;
+            return any
+                ? Gs1(gtin: gtin, batch: batch, expiryDays: expiry)
+                : null;
           }
           final y = int.tryParse(s.substring(i, i + 2));
           final m = int.tryParse(s.substring(i + 2, i + 4));
           final d = int.tryParse(s.substring(i + 4, i + 6));
-          if (y == null || m == null || d == null || m < 1 || m > 12) return null;
+          if (y == null || m == null || d == null || m < 1 || m > 12) {
+            return null;
+          }
           // Day 00 means the end of the month.
           expiry = daysOf(2000 + y, m, d == 0 ? _daysIn(2000 + y, m) : d);
           i += 6;

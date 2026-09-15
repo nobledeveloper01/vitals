@@ -1,4 +1,5 @@
 import 'fact.dart';
+import 'text.dart';
 
 /// What a registration fact says, and its own canonical encoding inside the
 /// fact's payload: the patient's names, sex, date of birth (a day, and
@@ -102,48 +103,17 @@ final class Registration {
   static Registration? of(Iterable<Fact> current) {
     Fact? latest;
     for (final f in current) {
-      if (f.kind == FactKind.registration && (latest == null || f.compareTo(latest) > 0)) latest = f;
+      if (f.kind == FactKind.registration &&
+          (latest == null || f.compareTo(latest) > 0)) {
+        latest = f;
+      }
     }
     return latest == null ? null : decode(latest.payload);
   }
 
-  String get fullName => [givenName, otherNames, familyName].where((s) => s.isNotEmpty).join(' ');
+  String get fullName =>
+      [givenName, otherNames, familyName].where((s) => s.isNotEmpty).join(' ');
 
-  static List<int> _utf8(String s) {
-    final out = <int>[];
-    for (final c in s.runes) {
-      if (c < 0x80) {
-        out.add(c);
-      } else if (c < 0x800) {
-        out.addAll([0xc0 | (c >> 6), 0x80 | (c & 0x3f)]);
-      } else if (c < 0x10000) {
-        out.addAll([0xe0 | (c >> 12), 0x80 | ((c >> 6) & 0x3f), 0x80 | (c & 0x3f)]);
-      } else {
-        out.addAll([0xf0 | (c >> 18), 0x80 | ((c >> 12) & 0x3f), 0x80 | ((c >> 6) & 0x3f), 0x80 | (c & 0x3f)]);
-      }
-    }
-    return out;
-  }
-
-  static String _fromUtf8(List<int> u) {
-    final out = <int>[];
-    var i = 0;
-    while (i < u.length) {
-      final b = u[i];
-      if (b < 0x80) {
-        out.add(b);
-        i++;
-      } else if (b < 0xe0) {
-        out.add(((b & 0x1f) << 6) | (u[i + 1] & 0x3f));
-        i += 2;
-      } else if (b < 0xf0) {
-        out.add(((b & 0x0f) << 12) | ((u[i + 1] & 0x3f) << 6) | (u[i + 2] & 0x3f));
-        i += 3;
-      } else {
-        out.add(((b & 0x07) << 18) | ((u[i + 1] & 0x3f) << 12) | ((u[i + 2] & 0x3f) << 6) | (u[i + 3] & 0x3f));
-        i += 4;
-      }
-    }
-    return String.fromCharCodes(out);
-  }
+  static List<int> _utf8(String s) => utf8Of(s);
+  static String _fromUtf8(List<int> u) => stringOf(u);
 }

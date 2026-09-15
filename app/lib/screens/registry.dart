@@ -11,6 +11,7 @@ import '../speech/strings.dart';
 import '../store/ids.dart';
 import '../store/records.dart';
 import 'patient.dart';
+import 'shell.dart' show facilityRecord;
 
 class RegistryScreen extends StatefulWidget {
   const RegistryScreen({super.key, required this.records});
@@ -100,7 +101,9 @@ class _RegistryScreenState extends State<RegistryScreen> {
                                               records: widget.records,
                                               patient: shown[i].listed.patient,
                                               ids: Ids.shared,
-                                              author: 'staff'))),
+                                              author: 'staff',
+                                              facilityRecord:
+                                                  facilityRecord()))),
                                   child: Glass(
                                     depth: Depth.low,
                                     child: Semantics(

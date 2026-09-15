@@ -20,7 +20,7 @@ See [`docs/00-PRODUCT-STATEMENT.md`](docs/00-PRODUCT-STATEMENT.md) for the full 
 ## Status
 
 **Phase 3 of 8 — immunisation, the wedge; Phases 0 to 2 cleared the same day, short of the tablet.** The plan was
-written first: the roadmap in eight phases with an exit gate each, seven ADRs — the
+written first: the roadmap in eight phases with an exit gate each, eight ADRs — the
 one codebase with two faces, the domain that imports nothing, facts that merge by
 union, a .NET backend with no authority, glass over a gradient with a solid floor, an encrypted append-only store —
 and thirty more things each checked against the rules, with three refused for
@@ -68,12 +68,12 @@ motion` in Settings, read at act time, and the same app either way.
 
 | | |
 |---|---|
-| Domain tests | 29 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
-| App tests | 34 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders |
+| Domain tests | 40 in Dart, over 300 generated worlds; 4 in C# over the 200-world parity fixture |
+| App tests | 43 — flow, contrast on every wash, lock, one primary action, 200% text, the encrypted log, the records, backup and restore, the mirror, registration, the duplicate assistant, search across 50,000, the card, a scanned vial, an expired vial refused, catch-up, the whiteboard, the printed card, the reminders, vitals with a draft that survives a kill, the danger-sign checklist, stock counted by tapping, the fridge |
 | Server tests | 4 — push, pull, the replica's bytes, a refused bundle |
 | Blocking gates | 7 in `make gates`, each proved to fire |
 | Release gates | 6 |
-| ADRs | 7 |
+| ADRs | 8 |
 
 ## The insight
 

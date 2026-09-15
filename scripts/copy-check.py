@@ -19,7 +19,7 @@ FILES = [
     *sorted((ROOT / "server/src/Vitals.Api").glob("**/Messages.cs")),
 ]
 BANNED = re.compile(
-    r"\b(diagnos\w*|risk\w*|triage\w*|recommend\w*|prescri\w*|dosage|\d+\s?(mg|ml|mcg)\b|genuine|safe|unsafe|verified|verify|synced|sync'?d|cured?|treat\w*)\b",
+    r"\b(diagnos\w*|risk\w*|triage\w*|recommend\w*|prescri\w*|dosage|\d+\s?(mg|ml|mcg)\b|genuine|safe|unsafe|verified|verify|synced|sync'?d|cured?|treat\w*|abnormal|normal|tachy\w*|brady\w*|hypo\w*|hyper\w*|elevated|critical)\b",
     re.IGNORECASE,
 )
 RED, GRN, OFF = "\033[0;31m", "\033[0;32m", "\033[0m"

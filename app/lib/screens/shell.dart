@@ -16,6 +16,7 @@ import 'patient.dart';
 import 'register.dart';
 import 'registry.dart';
 import 'settings.dart';
+import 'stock.dart';
 import '../store/ids.dart';
 
 class Shell extends StatelessWidget {
@@ -39,6 +40,10 @@ class Shell extends StatelessWidget {
     );
   }
 }
+
+/// The facility's record id, made once on this tablet and kept.
+List<int> facilityRecord() =>
+    Preferences.shared.facilityOrMake(Ids.shared.patient);
 
 class _ClinicHome extends StatelessWidget {
   const _ClinicHome({required this.records});
@@ -102,7 +107,8 @@ class _ClinicHome extends StatelessWidget {
                             records: records,
                             patient: patient,
                             ids: Ids.shared,
-                            author: 'staff')));
+                            author: 'staff',
+                            facilityRecord: facilityRecord())));
                   }
                 },
               ),
@@ -112,6 +118,21 @@ class _ClinicHome extends StatelessWidget {
                 onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
                         builder: (_) => RegistryScreen(records: records))),
+              ),
+              const SizedBox(height: Gap.s),
+              SecondaryButton(
+                label: Strings.stock,
+                onPressed: () {
+                  final now = DateTime.now().toUtc();
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+                      builder: (_) => StockScreen(
+                          records: records,
+                          facility: facilityRecord(),
+                          ids: Ids.shared,
+                          author: 'staff',
+                          today: now.difference(DateTime.utc(1970)).inDays,
+                          nowMinutes: now.millisecondsSinceEpoch ~/ 60000)));
+                },
               ),
             ],
           ),
@@ -308,7 +329,8 @@ class WhiteboardList extends StatelessWidget {
                         records: records,
                         patient: c.patient,
                         ids: Ids.shared,
-                        author: 'staff'))),
+                        author: 'staff',
+                        facilityRecord: facilityRecord()))),
                 child: Glass(
                   depth: Depth.low,
                   child: Row(

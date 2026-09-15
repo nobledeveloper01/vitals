@@ -18,7 +18,8 @@ enum Vaccine {
   const Vaccine(this.code, this.label);
   final int code;
   final String label;
-  static Vaccine fromCode(int c) => Vaccine.values.firstWhere((v) => v.code == c);
+  static Vaccine fromCode(int c) =>
+      Vaccine.values.firstWhere((v) => v.code == c);
 }
 
 /// One dose on the schedule: the vaccine, which dose in its series, the age
@@ -26,7 +27,8 @@ enum Vaccine {
 /// schedule as data, versioned, so a change is a new table and the version
 /// a patient was scheduled under is recorded on their card.
 final class Due {
-  const Due(this.vaccine, this.dose, this.dueDays, {required this.earliestDays, this.intervalDays = 28});
+  const Due(this.vaccine, this.dose, this.dueDays,
+      {required this.earliestDays, this.intervalDays = 28});
   final Vaccine vaccine;
   final int dose;
   final int dueDays;
@@ -65,13 +67,22 @@ abstract final class Schedule {
     Due(Vaccine.measles, 2, 456, earliestDays: 456),
   ];
 
-  static List<Due> table(int version) => switch (version) { 1 => v1, _ => throw ArgumentError('schedule version $version') };
+  static List<Due> table(int version) => switch (version) {
+        1 => v1,
+        _ => throw ArgumentError('schedule version $version')
+      };
 }
 
 /// A dose given, as a fact's payload: vaccine, dose number, the day it was
 /// given, the batch and its expiry, and the schedule version in force.
 final class Given {
-  const Given({required this.vaccine, required this.dose, required this.givenDays, this.batch = '', this.expiryDays = 0, this.scheduleVersion = Schedule.version});
+  const Given(
+      {required this.vaccine,
+      required this.dose,
+      required this.givenDays,
+      this.batch = '',
+      this.expiryDays = 0,
+      this.scheduleVersion = Schedule.version});
   final Vaccine vaccine;
   final int dose;
   final int givenDays;
@@ -116,11 +127,19 @@ final class Given {
     i += n;
     final expiry = i32();
     final sv = u8();
-    return Given(vaccine: vaccine, dose: dose, givenDays: given, batch: batch, expiryDays: expiry, scheduleVersion: sv);
+    return Given(
+        vaccine: vaccine,
+        dose: dose,
+        givenDays: given,
+        batch: batch,
+        expiryDays: expiry,
+        scheduleVersion: sv);
   }
 
-  static List<Given> of(Iterable<Fact> current) =>
-      [for (final f in current) if (f.kind == FactKind.immunisation) decode(f.payload)];
+  static List<Given> of(Iterable<Fact> current) => [
+        for (final f in current)
+          if (f.kind == FactKind.immunisation) decode(f.payload)
+      ];
 }
 
 /// One line of the card: a scheduled dose and what happened to it.
@@ -143,18 +162,30 @@ abstract final class Card {
   /// its series waits the minimum interval after the last one actually
   /// given. Overdue is due plus a grace of 28 days. An estimated date of
   /// birth changes nothing here; the card says it is estimated.
-  static List<CardLine> of({required int bornDays, required List<Given> given, required int todayDays, int version = Schedule.version, int graceDays = 28}) {
+  static List<CardLine> of(
+      {required int bornDays,
+      required List<Given> given,
+      required int todayDays,
+      int version = Schedule.version,
+      int graceDays = 28}) {
     final table = Schedule.table(version);
     final lines = <CardLine>[];
     for (final d in table) {
-      final match = given.where((g) => g.vaccine == d.vaccine && g.dose == d.dose).toList()..sort((a, b) => a.givenDays.compareTo(b.givenDays));
+      final match = given
+          .where((g) => g.vaccine == d.vaccine && g.dose == d.dose)
+          .toList()
+        ..sort((a, b) => a.givenDays.compareTo(b.givenDays));
       if (match.isNotEmpty) {
-        lines.add(CardLine(d, Status.given, given: match.first, dueOn: bornDays + d.dueDays));
+        lines.add(CardLine(d, Status.given,
+            given: match.first, dueOn: bornDays + d.dueDays));
         continue;
       }
       var dueOn = bornDays + d.dueDays;
       // Catch-up: after the previous dose in the series, if that was late.
-      final previous = given.where((g) => g.vaccine == d.vaccine && g.dose == d.dose - 1).toList()..sort((a, b) => a.givenDays.compareTo(b.givenDays));
+      final previous = given
+          .where((g) => g.vaccine == d.vaccine && g.dose == d.dose - 1)
+          .toList()
+        ..sort((a, b) => a.givenDays.compareTo(b.givenDays));
       if (previous.isNotEmpty) {
         final earliestAfter = previous.first.givenDays + d.intervalDays;
         if (earliestAfter > dueOn) dueOn = earliestAfter;
@@ -176,7 +207,9 @@ abstract final class Card {
   }
 
   /// What is due now, in schedule order: the next thing to give.
-  static List<CardLine> dueNow(List<CardLine> card) => card.where((l) => l.status == Status.due || l.status == Status.overdue).toList();
+  static List<CardLine> dueNow(List<CardLine> card) => card
+      .where((l) => l.status == Status.due || l.status == Status.overdue)
+      .toList();
 
   /// The reminder (ADR-0006 #9): the one line a mother's phone shows — the
   /// earliest dose with a day and not yet given, overdue first. Null when
@@ -184,7 +217,9 @@ abstract final class Card {
   static CardLine? next(List<CardLine> card) {
     CardLine? best;
     for (final l in card) {
-      if (l.status == Status.given || l.status == Status.seriesNotStarted) continue;
+      if (l.status == Status.given || l.status == Status.seriesNotStarted) {
+        continue;
+      }
       if (best == null || l.dueOn! < best.dueOn!) best = l;
     }
     return best;

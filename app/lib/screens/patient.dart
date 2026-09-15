@@ -16,8 +16,11 @@ import '../design/type.dart';
 import '../report/card_pdf.dart';
 import '../speech/strings.dart';
 import '../store/ids.dart';
+import '../store/drafts.dart';
 import '../store/records.dart';
+import 'anc.dart';
 import 'shell.dart' show AttributionChip, Dates;
+import 'vitals.dart';
 
 class PatientScreen extends StatelessWidget {
   const PatientScreen(
@@ -28,7 +31,10 @@ class PatientScreen extends StatelessWidget {
       required this.author,
       this.today,
       this.share,
-      this.facility = ''});
+      this.facility = '',
+      this.drafts,
+      this.nowMinutes,
+      this.facilityRecord = const []});
   final Records records;
   final List<int> patient;
   final Ids ids;
@@ -41,6 +47,17 @@ class PatientScreen extends StatelessWidget {
   /// hands one in.
   final Future<void> Function(Uint8List pdf, String name)? share;
   final String facility;
+
+  /// Where forms keep what was typed; the app's own directory unless a test
+  /// hands one in.
+  final Drafts? drafts;
+  final int? nowMinutes;
+
+  /// The facility's record id for the stock decrement; empty on a phone.
+  final List<int> facilityRecord;
+
+  int get _nowMinutes =>
+      nowMinutes ?? DateTime.now().toUtc().millisecondsSinceEpoch ~/ 60000;
 
   int get _today =>
       today ?? DateTime.now().toUtc().difference(DateTime.utc(1970)).inDays;
@@ -66,6 +83,7 @@ class PatientScreen extends StatelessWidget {
               final card = Card.of(
                   bornDays: reg.bornDays, given: given, todayDays: _today);
               final due = Card.dueNow(card);
+              final observations = Observation.of(record.current);
               return Column(
                 children: [
                   Expanded(
@@ -83,6 +101,12 @@ class PatientScreen extends StatelessWidget {
                           style:
                               Type.secondary.copyWith(color: p.textSecondary),
                         ),
+                        const SizedBox(height: Gap.m),
+                        // The pulse card (ADR-0006 #1): the last vitals with
+                        // the trend behind the numbers, by ADR-0008's rules.
+                        PulseCard(
+                            observations: observations,
+                            ageDays: _today - reg.bornDays),
                         const SizedBox(height: Gap.m),
                         Glass(
                           depth: Depth.low,
@@ -151,23 +175,66 @@ class PatientScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(Gap.l),
-                    child: PrimaryButton(
-                      label: Strings.recordDose,
-                      onPressed: due.isEmpty
-                          ? null
-                          : () => showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) => DoseSheet(
-                                    records: records,
-                                    patient: patient,
-                                    ids: ids,
-                                    author: author,
-                                    due: due,
-                                    today: _today),
-                              ),
-                    ),
+                    child: Column(children: [
+                      PrimaryButton(
+                        label: Strings.recordDose,
+                        onPressed: due.isEmpty
+                            ? null
+                            : () => showModalBottomSheet<void>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (_) => DoseSheet(
+                                      records: records,
+                                      patient: patient,
+                                      ids: ids,
+                                      author: author,
+                                      due: due,
+                                      today: _today,
+                                      facility: facilityRecord),
+                                ),
+                      ),
+                      const SizedBox(height: Gap.s),
+                      if (reg.sex == 0)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: Gap.s),
+                          child: SecondaryButton(
+                            label: Strings.antenatal,
+                            onPressed: () async {
+                              final drafts = this.drafts ?? await Drafts.open();
+                              if (!context.mounted) return;
+                              await Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                      builder: (_) => AncScreen(
+                                          records: records,
+                                          patient: patient,
+                                          ids: ids,
+                                          author: author,
+                                          drafts: drafts,
+                                          today: _today)));
+                            },
+                          ),
+                        ),
+                      SecondaryButton(
+                        label: Strings.recordVitals,
+                        onPressed: () async {
+                          final drafts = this.drafts ?? await Drafts.open();
+                          if (!context.mounted) return;
+                          await showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => VitalsSheet(
+                                records: records,
+                                patient: patient,
+                                ids: ids,
+                                author: author,
+                                drafts: drafts,
+                                nowMinutes: _nowMinutes),
+                          );
+                        },
+                      ),
+                    ]),
                   ),
                 ],
               );
@@ -270,13 +337,18 @@ class DoseSheet extends StatefulWidget {
       required this.ids,
       required this.author,
       required this.due,
-      required this.today});
+      required this.today,
+      this.facility = const []});
   final Records records;
   final List<int> patient;
   final Ids ids;
   final String author;
   final List<CardLine> due;
   final int today;
+
+  /// The facility's record, where one unit leaves the stock ledger with
+  /// every dose; empty for a phone that keeps no stock.
+  final List<int> facility;
 
   @override
   State<DoseSheet> createState() => _DoseSheetState();
@@ -407,6 +479,23 @@ class _DoseSheetState extends State<DoseSheet> {
           author: widget.author,
           payload: given.encode(),
           supersedes: null),
+      // The stock decrement: one unit issued, on the facility's own record,
+      // in the same write as the dose so neither exists without the other.
+      if (widget.facility.isNotEmpty)
+        Fact(
+            id: widget.ids.fact(),
+            patient: widget.facility,
+            kind: FactKind.stockMovement,
+            stamp: widget.ids.stamp(),
+            author: widget.author,
+            payload: StockMove(
+                    product: _chosen.due.vaccine.label,
+                    movement: Movement.issue,
+                    units: 1,
+                    days: widget.today,
+                    batch: _batch.text.trim())
+                .encode(),
+            supersedes: null),
     ]);
     if (mounted) Navigator.of(context).pop();
   }

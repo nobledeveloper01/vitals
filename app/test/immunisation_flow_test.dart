@@ -48,13 +48,15 @@ void main() {
     return patient;
   }
 
+  final facility = List<int>.filled(16, 0xfa);
   Widget app(List<int> patient, int today) => MaterialApp(
       home: PatientScreen(
           records: records,
           patient: patient,
           ids: ids,
           author: 'nurse-a',
-          today: today));
+          today: today,
+          facilityRecord: facility));
 
   Future<void> tapAndWrite(WidgetTester t, Finder f) async {
     await t.runAsync(() async {
@@ -89,11 +91,23 @@ void main() {
     await tapAndWrite(t, find.text(Strings.recordDose).last);
     expect(find.text('2 ${Strings.dueNow}'), findsOneWidget);
     expect(find.bySemanticsLabel('BCG: ${Strings.given}'), findsOneWidget);
-    final given = Given.of(records.all.values.single.current);
+    final given = Given.of(records.all[_hex(patient)]!.current);
     expect(given.single.batch, 'BCG-7A');
     expect(given.single.expiryDays, Gs1.daysOf(2027, 12, 31));
-    expect(records.all.values.single.all.last.author, 'nurse-a',
-        reason: 'attributed');
+    final patientRecord = records.all[_hex(patient)]!;
+    expect(patientRecord.all.last.author, 'nurse-a', reason: 'attributed');
+    final issued = StockMove.of(records.all[_hex(facility)]!.current).single;
+    expect((
+      issued.product,
+      issued.movement,
+      issued.units,
+      issued.batch
+    ), (
+      'BCG',
+      Movement.issue,
+      1,
+      'BCG-7A'
+    ), reason: 'one unit left the stock ledger with the dose');
     semantics.dispose();
   });
 
@@ -137,6 +151,8 @@ void main() {
     expect(find.byKey(const Key('refusal')), findsOneWidget);
     expect(find.text(Strings.expiredVial), findsOneWidget);
     expect(Given.of(records.all.values.single.current), isEmpty);
+    expect(records.all[_hex(facility)], isNull,
+        reason: 'nothing issued either');
   });
 
   testWidgets(
@@ -164,3 +180,6 @@ void main() {
     semantics.dispose();
   });
 }
+
+String _hex(List<int> b) =>
+    b.map((x) => x.toRadixString(16).padLeft(2, '0')).join();

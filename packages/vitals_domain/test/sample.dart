@@ -2,10 +2,18 @@
 // from a seed the tests own, so the domain never needs randomness.
 import 'package:vitals_domain/vitals_domain.dart';
 
-List<int> id(int seed) => List<int>.generate(32, (i) => (seed * 31 + i * 7) & 0xff);
-List<int> patientId(int seed) => List<int>.generate(16, (i) => (seed * 13 + i) & 0xff);
+List<int> id(int seed) =>
+    List<int>.generate(32, (i) => (seed * 31 + i * 7) & 0xff);
+List<int> patientId(int seed) =>
+    List<int>.generate(16, (i) => (seed * 13 + i) & 0xff);
 
-Fact fact(int seed, {required String device, required int wall, FactKind kind = FactKind.vitals, List<int>? supersedes, String author = 'nurse-a'}) => Fact(
+Fact fact(int seed,
+        {required String device,
+        required int wall,
+        FactKind kind = FactKind.vitals,
+        List<int>? supersedes,
+        String author = 'nurse-a'}) =>
+    Fact(
       id: id(seed),
       patient: patientId(1),
       kind: kind,
