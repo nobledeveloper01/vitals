@@ -83,6 +83,9 @@ final class FactLog {
     return out;
   }
 
+  /// How many frames the file holds, whatever they decrypt to.
+  Future<int> frameCount() => _frames();
+
   Future<int> _frames() async {
     if (!await file.exists()) return 0;
     final bytes = await file.readAsBytes();

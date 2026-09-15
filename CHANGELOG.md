@@ -7,6 +7,11 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **Backup and the mirror.** Every fact into one file under a passphrase
+  (PBKDF2, 200k rounds) with every fact checked on restore, from Settings;
+  and `Sync`, the replica met over HTTP as another tablet is met over BLE —
+  push the delta, pull by cursor, union, remember the meeting — proved
+  against a fake replica that keeps the server's contract.
 - **The store.** An encrypted append-only log of canonical facts under a
   keychain key, proved encrypted by reading the file, proved to survive a cut
   tail, opened under the splash; `Records` over it feeding the whiteboard and

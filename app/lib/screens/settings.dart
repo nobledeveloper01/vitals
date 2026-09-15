@@ -1,15 +1,31 @@
 // Settings: the two floor toggles and large type, each read at act time.
+import 'dart:io';
+import 'dart:math';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../design/glass.dart';
 import '../design/motion.dart';
 import '../design/palette.dart';
 import '../design/type.dart';
 import '../speech/strings.dart';
+import '../store/backup.dart';
 import '../store/preferences.dart';
+import '../store/records.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key, required this.records});
+  final Records records;
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  String? _note;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +73,40 @@ class SettingsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                      const SizedBox(height: Gap.m),
+                      // Backup (ADR-0006 #29): every fact into one file under a
+                      // passphrase, and every fact checked on the way back.
+                      Glass(
+                        depth: Depth.low,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(Strings.backup,
+                                style:
+                                    Type.title.copyWith(color: p.textPrimary)),
+                            const SizedBox(height: Gap.xs),
+                            Text(Strings.backupHint,
+                                style: Type.secondary
+                                    .copyWith(color: p.textSecondary)),
+                            const SizedBox(height: Gap.m),
+                            SecondaryButton(
+                                label:
+                                    '${Strings.backUp} (${widget.records.facts})',
+                                onPressed:
+                                    widget.records.facts == 0 ? null : _backUp),
+                            const SizedBox(height: Gap.s),
+                            SecondaryButton(
+                                label: Strings.restore, onPressed: _restore),
+                            if (_note != null) ...[
+                              const SizedBox(height: Gap.m),
+                              Text(_note!,
+                                  style: Type.secondary
+                                      .copyWith(color: p.textSecondary),
+                                  key: const Key('backupNote')),
+                            ],
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -72,6 +122,53 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<String?> _passphrase(String title) async {
+    final c = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+            controller: c,
+            obscureText: true,
+            autofocus: true,
+            decoration: const InputDecoration(labelText: Strings.passphrase)),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(Strings.cancel)),
+          TextButton(
+              onPressed: () => Navigator.pop(context, c.text),
+              child: const Text(Strings.done)),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _backUp() async {
+    final pass = await _passphrase(Strings.backUp);
+    if (pass == null || pass.isEmpty) return;
+    final dir = await getTemporaryDirectory();
+    final file = File(
+        '${dir.path}/vitals-${DateTime.now().toIso8601String().substring(0, 10)}.vitalsbackup');
+    final salt = List<int>.generate(16, (_) => Random.secure().nextInt(256));
+    await Backup.write(widget.records, file, passphrase: pass, salt: salt);
+    await SharePlus.instance.share(
+        ShareParams(files: [XFile(file.path)], text: Strings.backupShareText));
+  }
+
+  Future<void> _restore() async {
+    final picked = await FilePicker.pickFiles();
+    final path = picked.isEmpty ? null : picked.single.path;
+    if (path == null) return;
+    final pass = await _passphrase(Strings.restore);
+    if (pass == null || pass.isEmpty) return;
+    final r =
+        await Backup.restore(widget.records, File(path), passphrase: pass);
+    setState(() => _note =
+        '${Strings.restored} ${r.kept} · ${Strings.refused} ${r.refused}');
   }
 }
 

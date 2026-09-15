@@ -24,8 +24,9 @@ class Shell extends StatelessWidget {
         child: SafeArea(
           child: ListenableBuilder(
             listenable: records,
-            builder: (context, _) =>
-                clinic ? _ClinicHome(records: records) : const _PatientHome(),
+            builder: (context, _) => clinic
+                ? _ClinicHome(records: records)
+                : _PatientHome(records: records),
           ),
         ),
       ),
@@ -46,7 +47,7 @@ class _ClinicHome extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(Gap.l),
             children: [
-              _Header(title: Strings.whiteboard),
+              _Header(title: Strings.whiteboard, records: records),
               const SizedBox(height: Gap.m),
               Glass(
                 depth: Depth.low,
@@ -74,7 +75,8 @@ class _ClinicHome extends StatelessWidget {
 }
 
 class _PatientHome extends StatelessWidget {
-  const _PatientHome();
+  const _PatientHome({required this.records});
+  final Records records;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,7 @@ class _PatientHome extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(Gap.l),
             children: [
-              _Header(title: Strings.myRecord),
+              _Header(title: Strings.myRecord, records: records),
               const SizedBox(height: Gap.m),
               Glass(
                 depth: Depth.low,
@@ -105,8 +107,9 @@ class _PatientHome extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.title});
+  const _Header({required this.title, required this.records});
   final String title;
+  final Records records;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +128,7 @@ class _Header extends StatelessWidget {
             constraints: const BoxConstraints(
                 minWidth: Target.standard, minHeight: Target.standard),
             onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
-                builder: (_) => const SettingsScreen())),
+                builder: (_) => SettingsScreen(records: records))),
             icon: Icon(Icons.tune, color: p.textPrimary),
           ),
         ),

@@ -45,6 +45,16 @@ abstract final class Strings {
       'No record on this phone yet. A facility hands you yours.';
   static const receiveRecord = 'Receive my record';
   static const done = 'Done';
+  static const backup = 'Backup';
+  static const backupHint =
+      'Every fact in one file under a passphrase, to a USB stick or a drive of yours. On the way back each one is checked before it is kept.';
+  static const backUp = 'Back up all records';
+  static const restore = 'Restore from a backup';
+  static const restored = 'Kept';
+  static const refused = 'refused';
+  static const passphrase = 'Passphrase';
+  static const backupShareText =
+      'A Vitals backup. It opens only with its passphrase.';
   static const cancel = 'Cancel';
   static const back = 'Back';
 }

@@ -88,3 +88,7 @@ is now the splash's ground in both appearances — measured by a pixel.
 ran before `pub get`, and a page-transition class lives in a different
 library on the runner's Flutter than on this machine's. `deps` is now a
 target `analyze` depends on, and the transition theme is the platform's own.
+
+**The runner's Flutter was two minors behind this Mac's**, and `path_provider`
+wanted the newer SDK. The workflow pins the version this machine has, which
+is the honest form of "works on my machine": say which machine.
