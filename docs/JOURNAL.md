@@ -230,3 +230,32 @@ the note is the honest part; a test also fails a table that repeats English
 for more than three keys, so a "translation" that is English with a
 different file name cannot pass as one. Naijá shares *days* and *in* with
 English, which is Naijá.
+
+## 2026-09-15, dawn — Phase 5 without a camera
+
+### What we did
+
+The half of exchange that needs no hardware: grants, scope enforced where
+the bytes are built, frames with checksums, the animated QR, the access
+log, verification's three words. The test that matters gathers the frames
+off the widget in reverse order and reads the record back: registration,
+immunisations, vitals, and no note — because the grant did not include
+notes and the note was never in the payload.
+
+### What surprised us
+
+**A periodic `Future.delayed` is a pending timer the test framework will
+not forgive.** The QR cycled on a chain of delayed futures; the test
+ended with one pending and the framework said so. A `Timer.periodic`
+cancelled in `dispose` is the honest shape anyway.
+
+**The design gate refused black.** The QR's modules were `Colors.black`,
+which is a colour outside the palette. It is in the palette now — `code`,
+`#000000` in both themes, with the note that a camera reads it, not a
+person — and the gate did not learn an exception.
+
+**Naijá shares words with English, and the test that catches a fake
+translation had to know how many.** Fifteen of forty-four keys were
+identical, some rightly (*days*, *of*), some lazily (*Done*, *Next*). The
+lazy ones are Naijá now and the threshold is a sixth of the keys; a table
+that is English under another name would fail it by a mile.

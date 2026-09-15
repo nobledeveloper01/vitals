@@ -154,6 +154,21 @@ the patient sees, #16 share grants with scope and expiry, #17 the emergency card
 the patient opts into, #18 the offline facility map, #19 the referral letter,
 #20 the pack photographed for verification.
 
+**Built 2026-09-15, the core, short of a camera.** The share grant as a fact
+on the patient's record — which kinds, to whom, until when — and the payload
+built from the grant and nothing else: a test gathers the frames off the
+screen the way a camera would and reads a record back that holds the
+registration and the granted kinds, and the note that was never in the bytes.
+Frames with index, total and a checksum, gathered in any order, twice, with a
+damaged one refused; the animated QR with the ring in the brand gradient,
+stepping by hand with a count under less motion. The access log: a clinic
+opening a record writes an attributed fact to it, and the patient's phone
+lists every open newest first. Verification with three outcomes — *on the
+list*, *not on the list*, *the list cannot say* — and a test over every
+language for the fourth word. Still to build: the camera side of the QR and
+BLE (R3, hardware), the emergency card (#17), the facility map (#18), the
+referral letter (#19), the pack photographed (#20's camera half).
+
 ## Phase 6 — Pilot hardening → **v1.0**
 
 Two facilities. Lab results, referrals, AEFI, remote wipe, the audit export,

@@ -27,6 +27,7 @@ final class Palette {
     required this.danger,
     required this.fine,
     required this.hairline,
+    required this.code,
   });
 
   final Color base, washA, washB, washC;
@@ -35,6 +36,10 @@ final class Palette {
   final Color glassBorder;
   final Color textPrimary, textSecondary, textOnAccent;
   final Color accent, accentEnd, attention, danger, fine, hairline;
+
+  /// A QR code's modules: pure black in both palettes, because a camera
+  /// reads it, not a person.
+  final Color code;
 
   /// The brand gradient: the mark, the splash, the primary action, a transfer.
   LinearGradient get brand => LinearGradient(
@@ -64,6 +69,7 @@ final class Palette {
     danger: Color(0xFFB3261E),
     fine: Color(0xFF1C7A3C),
     hairline: Color(0xFFC8D2DE),
+    code: Color(0xFF000000),
   );
 
   static const dark = Palette._(
@@ -87,6 +93,7 @@ final class Palette {
     danger: Color(0xFFFF8A80),
     fine: Color(0xFF7BE0A0),
     hairline: Color(0xFF2E3A48),
+    code: Color(0xFF000000),
   );
 
   static Palette of(BuildContext context) =>

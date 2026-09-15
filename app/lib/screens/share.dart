@@ -1,0 +1,345 @@
+// The patient hands their record over (ADR-0006 #3, #16): a grant — which
+// sections, to whom, until when — written as a fact, then the payload built
+// from that grant and nothing else, cut into frames and shown as an
+// animated QR with the progress ring in the brand gradient. With less
+// motion the frames step by hand and the count is the ring.
+import 'dart:async';
+import 'dart:math' as math;
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart' hide Card;
+import 'package:qr/qr.dart';
+import 'package:vitals_domain/vitals_domain.dart';
+
+import '../design/glass.dart';
+import '../design/motion.dart';
+import '../design/palette.dart';
+import '../design/type.dart';
+import '../speech/patient_strings.dart';
+import '../store/ids.dart';
+import '../store/records.dart';
+
+class ShareScreen extends StatefulWidget {
+  const ShareScreen(
+      {super.key,
+      required this.records,
+      required this.patient,
+      required this.ids,
+      required this.today});
+  final Records records;
+  final List<int> patient;
+  final Ids ids;
+  final int today;
+
+  @override
+  State<ShareScreen> createState() => _ShareScreenState();
+}
+
+class _ShareScreenState extends State<ShareScreen> {
+  final _grantee = TextEditingController();
+  final _kinds = <FactKind>{FactKind.immunisation};
+  int _days = 30;
+  List<Frame>? _frames;
+
+  static const _choices = [
+    FactKind.immunisation,
+    FactKind.vitals,
+    FactKind.ancVisit,
+    FactKind.note,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final frames = _frames;
+    return Scaffold(
+      body: Mesh(
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(Gap.l),
+            children: [
+              const Align(
+                  alignment: Alignment.centerLeft, child: BackButton2()),
+              Text(PatientStrings.t('shareRecord'),
+                  style: Type.display.copyWith(color: p.textPrimary)),
+              const SizedBox(height: Gap.m),
+              if (frames == null) ...[
+                Glass(
+                  depth: Depth.low,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        key: const Key('grantee'),
+                        controller: _grantee,
+                        style: Type.body.copyWith(color: p.textPrimary),
+                        decoration: InputDecoration(
+                            labelText: PatientStrings.t('toWhom'),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(Radius2.input))),
+                      ),
+                      const SizedBox(height: Gap.m),
+                      Text(PatientStrings.t('whichParts'),
+                          style:
+                              Type.secondary.copyWith(color: p.textSecondary)),
+                      const SizedBox(height: Gap.xs),
+                      Text(PatientStrings.t('nameAlwaysGoes'),
+                          style: Type.small.copyWith(color: p.textSecondary)),
+                      const SizedBox(height: Gap.s),
+                      Wrap(
+                        spacing: Gap.s,
+                        runSpacing: Gap.s,
+                        children: [
+                          for (final k in _choices)
+                            FilterChip(
+                              key: Key('kind-${k.name}'),
+                              label: Text(PatientStrings.t('kind.${k.name}')),
+                              selected: _kinds.contains(k),
+                              selectedColor: p.accent,
+                              labelStyle: Type.small.copyWith(
+                                  color: _kinds.contains(k)
+                                      ? p.textOnAccent
+                                      : p.textPrimary),
+                              onSelected: (v) => setState(
+                                  () => v ? _kinds.add(k) : _kinds.remove(k)),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: Gap.m),
+                      Text(PatientStrings.t('forHowLong'),
+                          style:
+                              Type.secondary.copyWith(color: p.textSecondary)),
+                      const SizedBox(height: Gap.s),
+                      Wrap(
+                        spacing: Gap.s,
+                        children: [
+                          for (final d in const [1, 30, 365])
+                            ChoiceChip(
+                              key: Key('days-$d'),
+                              label: Text('$d ${PatientStrings.t('days')}'),
+                              selected: _days == d,
+                              selectedColor: p.accent,
+                              labelStyle: Type.small.copyWith(
+                                  color: _days == d
+                                      ? p.textOnAccent
+                                      : p.textPrimary),
+                              onSelected: (_) => setState(() => _days = d),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: Gap.m),
+                PrimaryButton(
+                    label: PatientStrings.t('showCode'),
+                    onPressed: _grantee.text.trim().isEmpty ? null : _grant),
+              ] else ...[
+                AnimatedQr(frames: frames, key: const Key('qr')),
+                const SizedBox(height: Gap.m),
+                Text(
+                    '${PatientStrings.t('holdStill')} · ${_grantee.text.trim()} · ${PatientStrings.t('until')} ${_date(widget.today + _days)}',
+                    style: Type.secondary.copyWith(color: p.textSecondary),
+                    textAlign: TextAlign.center),
+                const SizedBox(height: Gap.m),
+                SecondaryButton(
+                    label: PatientStrings.t('done'),
+                    onPressed: () => Navigator.of(context).pop()),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// The grant as a fact, then the payload from the grant — the same
+  /// function the receiver would use to check what it was handed.
+  Future<void> _grant() async {
+    final grantee = _grantee.text.trim();
+    final grant = Grant(
+        grantee: grantee,
+        kinds: Set.of(_kinds),
+        untilDays: widget.today + _days,
+        givenDays: widget.today);
+    await widget.records.record([
+      Fact(
+          id: widget.ids.fact(),
+          patient: widget.patient,
+          kind: FactKind.access,
+          stamp: widget.ids.stamp(),
+          author: 'patient',
+          payload: grant.encode(),
+          supersedes: null)
+    ]);
+    final record = widget.records.all[_hex(widget.patient)]!;
+    final facts =
+        Scope.payload(record, grantee: grantee, todayDays: widget.today);
+    final bytes = Canonical.bytesOf(Record.of(widget.patient, facts));
+    if (mounted) setState(() => _frames = Frame.cut(bytes));
+  }
+
+  static String _hex(List<int> b) =>
+      b.map((x) => x.toRadixString(16).padLeft(2, '0')).join();
+
+  static String _date(int days) {
+    final d = DateTime.utc(1970).add(Duration(days: days));
+    return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+  }
+}
+
+/// The frames as QR codes, one after another, with the ring around them
+/// filling as the frames go by. With less motion: one frame, stepped by
+/// hand, the ring still counting.
+class AnimatedQr extends StatefulWidget {
+  const AnimatedQr(
+      {super.key,
+      required this.frames,
+      this.perFrame = const Duration(milliseconds: 350)});
+  final List<Frame> frames;
+  final Duration perFrame;
+
+  @override
+  State<AnimatedQr> createState() => _AnimatedQrState();
+}
+
+class _AnimatedQrState extends State<AnimatedQr> {
+  int _i = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!Motion.shared.reduced && widget.frames.length > 1) {
+      _timer = Timer.periodic(widget.perFrame, (_) {
+        if (Motion.shared.reduced) return;
+        setState(() => _i = (_i + 1) % widget.frames.length);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final n = widget.frames.length;
+    final frame = widget.frames[_i];
+    final qr = QrCode.fromUint8List(
+        data: Uint8List.fromList(frame.encode()),
+        errorCorrectLevel: QrErrorCorrectLevel.M);
+    final image = QrImage(qr);
+    final reduced = Motion.shared.reduced;
+    return Semantics(
+      container: true,
+      excludeSemantics: true,
+      label:
+          '${PatientStrings.t('code')} ${_i + 1} ${PatientStrings.t('of')} $n',
+      child: Column(
+        children: [
+          SizedBox(
+            width: 300,
+            height: 300,
+            child: CustomPaint(
+              painter: _RingPainter(
+                  progress: (_i + 1) / n,
+                  colours: [p.accent, p.accentEnd],
+                  track: p.hairline),
+              child: Padding(
+                padding: const EdgeInsets.all(Gap.l),
+                child: Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(Gap.s),
+                  child: CustomPaint(
+                      painter: _QrPainter(image, p.code),
+                      key: Key('frame-$_i')),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: Gap.s),
+          Text('${_i + 1} / $n',
+              style: Type.title.copyWith(color: p.textPrimary),
+              key: const Key('frameCount')),
+          if (reduced && n > 1)
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              IconButton(
+                  tooltip: PatientStrings.t('previous'),
+                  onPressed: () => setState(() => _i = (_i - 1 + n) % n),
+                  icon: Icon(Icons.chevron_left, color: p.textPrimary)),
+              IconButton(
+                  tooltip: PatientStrings.t('next'),
+                  onPressed: () => setState(() => _i = (_i + 1) % n),
+                  icon: Icon(Icons.chevron_right, color: p.textPrimary)),
+            ]),
+        ],
+      ),
+    );
+  }
+}
+
+class _RingPainter extends CustomPainter {
+  _RingPainter(
+      {required this.progress, required this.colours, required this.track});
+  final double progress;
+  final List<Color> colours;
+  final Color track;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final r = rect.deflate(6);
+    canvas.drawArc(
+        r,
+        0,
+        math.pi * 2,
+        false,
+        Paint()
+          ..color = track
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 6);
+    canvas.drawArc(
+        r,
+        -math.pi / 2,
+        math.pi * 2 * progress,
+        false,
+        Paint()
+          ..shader = SweepGradient(
+                  colors: colours, startAngle: 0, endAngle: math.pi * 2)
+              .createShader(rect)
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round
+          ..strokeWidth = 6);
+  }
+
+  @override
+  bool shouldRepaint(_RingPainter old) => old.progress != progress;
+}
+
+class _QrPainter extends CustomPainter {
+  _QrPainter(this.image, this.ink);
+  final QrImage image;
+  final Color ink;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final n = image.moduleCount;
+    final cell = size.width / n;
+    final paint = Paint()..color = ink;
+    for (var y = 0; y < n; y++) {
+      for (var x = 0; x < n; x++) {
+        if (image.isDark(y, x)) {
+          canvas.drawRect(Rect.fromLTWH(x * cell, y * cell, cell, cell), paint);
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_QrPainter old) => old.image != image;
+}

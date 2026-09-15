@@ -20,3 +20,7 @@ export 'src/observations.dart';
 export 'src/anc.dart';
 export 'src/stock.dart';
 export 'src/coldchain.dart';
+export 'src/grant.dart';
+export 'src/access.dart';
+export 'src/frames.dart';
+export 'src/verification.dart';

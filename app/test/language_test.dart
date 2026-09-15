@@ -39,7 +39,9 @@ void main() {
           .where((kv) => PatientStrings.english[kv.key] == kv.value)
           .map((kv) => kv.key)
           .toList();
-      expect(same.length, lessThan(4),
+      // Naijá shares words with English; a table that is English with
+      // another file name would share nearly all of them.
+      expect(same.length, lessThan(PatientStrings.english.length ~/ 6),
           reason: '${e.key.name} repeats English for $same');
     }
   });

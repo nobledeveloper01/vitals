@@ -101,6 +101,7 @@ abstract final class Strings {
   static const noSignAnsweredYes = 'Every sign answered no.';
   static const answeredYesTo = 'The nurse answered yes to:';
   static const stock = 'Stock';
+  static const thisFacility = 'this facility';
   static const countHint = 'Tap a tile once for each unit on the shelf.';
   static const countTheShelf = 'Count the shelf';
   static const recordCount = 'Record the count';

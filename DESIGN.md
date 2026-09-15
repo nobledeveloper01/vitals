@@ -75,6 +75,7 @@ dark, glass and solid. 7:1 for clinical values, 4.5:1 for everything else.
 | `danger` | `#B3261E` | `#FF8A80` | A danger sign the nurse must answer |
 | `fine` | `#1C7A3C` | `#7BE0A0` | Recorded, in range, done |
 | `hairline` | `#C8D2DE` | `#2E3A48` | Where a step in depth is too subtle to read |
+| `code` | `#000000` | `#000000` | A QR code's modules on white, in both palettes: a camera reads it, not a person |
 
 **The brand gradient** runs `accent → accentEnd` at 135°. It is used on the mark, the
 splash, the primary button, and the progress of a transfer. Nowhere else.

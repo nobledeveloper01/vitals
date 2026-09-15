@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SPEECH = ROOT / "app/lib/speech"
 RED, GRN, OFF = "\033[0;31m", "\033[0;32m", "\033[0m"
-KEY = re.compile(r"^\s*'(\w+)':\s*\n?\s*(?:'((?:[^'\\]|\\.)*)'|\"((?:[^\"\\]|\\.)*)\")", re.M)
+KEY = re.compile(r"^\s*'([\w.]+)':\s*\n?\s*(?:'((?:[^'\\]|\\.)*)'|\"((?:[^\"\\]|\\.)*)\")", re.M)
 
 
 def keys(path: Path) -> dict:

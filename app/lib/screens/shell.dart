@@ -17,7 +17,9 @@ import 'patient.dart';
 import 'register.dart';
 import 'registry.dart';
 import 'settings.dart';
+import 'share.dart';
 import 'stock.dart';
+import 'verify.dart';
 import '../store/ids.dart';
 
 class Shell extends StatelessWidget {
@@ -109,7 +111,8 @@ class _ClinicHome extends StatelessWidget {
                             patient: patient,
                             ids: Ids.shared,
                             author: 'staff',
-                            facilityRecord: facilityRecord())));
+                            facilityRecord: facilityRecord(),
+                            openedAt: Strings.thisFacility)));
                   }
                 },
               ),
@@ -164,15 +167,43 @@ class _PatientHome extends StatelessWidget {
                   child: Text(PatientStrings.t('noRecordYet'),
                       style: Type.body.copyWith(color: p.textSecondary)),
                 )
-              else
+              else ...[
                 Reminders(records: records),
+                const SizedBox(height: Gap.m),
+                AccessLogList(records: records),
+              ],
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(Gap.l),
-          child: PrimaryButton(
-              label: PatientStrings.t('receiveRecord'), onPressed: () {}),
+          child: Column(children: [
+            PrimaryButton(
+                label: PatientStrings.t('receiveRecord'), onPressed: () {}),
+            const SizedBox(height: Gap.s),
+            SecondaryButton(
+              label: PatientStrings.t('checkAPack'),
+              onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                      builder: (_) => const VerifyScreen())),
+            ),
+            if (records.all.isNotEmpty) ...[
+              const SizedBox(height: Gap.s),
+              SecondaryButton(
+                label: PatientStrings.t('shareRecord'),
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => ShareScreen(
+                            records: records,
+                            patient: records.all.values.first.patient,
+                            ids: Ids.shared,
+                            today: DateTime.now()
+                                .toUtc()
+                                .difference(DateTime.utc(1970))
+                                .inDays))),
+              ),
+            ],
+          ]),
         ),
       ],
     );
@@ -248,6 +279,49 @@ class Reminders extends StatelessWidget {
       ));
     }
     return Column(children: children);
+  }
+}
+
+/// Who opened the record (ADR-0006 #15): every open, newest first, on
+/// the patient's own phone — the fact travelled with the record.
+class AccessLogList extends StatelessWidget {
+  const AccessLogList({super.key, required this.records, this.now});
+  final Records records;
+  final DateTime? now;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final opens = [for (final r in records.all.values) ...Access.of(r.current)]
+      ..sort((a, b) => b.minutes.compareTo(a.minutes));
+    return Glass(
+      depth: Depth.low,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(PatientStrings.t('whoOpened'),
+              style: Type.title.copyWith(color: p.textPrimary)),
+          const SizedBox(height: Gap.xs),
+          if (opens.isEmpty)
+            Text(PatientStrings.t('nobodyYet'),
+                style: Type.secondary.copyWith(color: p.textSecondary))
+          else
+            for (final a in opens.take(10))
+              Padding(
+                padding: const EdgeInsets.only(top: Gap.xs),
+                child: AttributionChip(
+                  author: a.who,
+                  when: Dates.ago(
+                      DateTime.fromMillisecondsSinceEpoch(a.minutes * 60000,
+                          isUtc: true),
+                      now ?? DateTime.now().toUtc()),
+                  device: a.device,
+                  kind: a.facility,
+                ),
+              ),
+        ],
+      ),
+    );
   }
 }
 
@@ -335,7 +409,8 @@ class WhiteboardList extends StatelessWidget {
                         patient: c.patient,
                         ids: Ids.shared,
                         author: 'staff',
-                        facilityRecord: facilityRecord()))),
+                        facilityRecord: facilityRecord(),
+                        openedAt: Strings.thisFacility))),
                 child: Glass(
                   depth: Depth.low,
                   child: Row(

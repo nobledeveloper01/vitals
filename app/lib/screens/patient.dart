@@ -23,7 +23,7 @@ import 'anc.dart';
 import 'shell.dart' show AttributionChip, Dates;
 import 'vitals.dart';
 
-class PatientScreen extends StatelessWidget {
+class PatientScreen extends StatefulWidget {
   const PatientScreen(
       {super.key,
       required this.records,
@@ -35,7 +35,8 @@ class PatientScreen extends StatelessWidget {
       this.facility = '',
       this.drafts,
       this.nowMinutes,
-      this.facilityRecord = const []});
+      this.facilityRecord = const [],
+      this.openedAt});
   final Records records;
   final List<int> patient;
   final Ids ids;
@@ -56,6 +57,50 @@ class PatientScreen extends StatelessWidget {
 
   /// The facility's record id for the stock decrement; empty on a phone.
   final List<int> facilityRecord;
+
+  /// The facility's name, when a clinic opens the record: the open is
+  /// written to the record as a fact the patient will see (ADR-0006 #15).
+  /// Null on the patient's own phone, which opens its own record.
+  final String? openedAt;
+
+  @override
+  State<PatientScreen> createState() => _PatientScreenState();
+}
+
+class _PatientScreenState extends State<PatientScreen> {
+  Records get records => widget.records;
+  List<int> get patient => widget.patient;
+  Ids get ids => widget.ids;
+  String get author => widget.author;
+  int? get today => widget.today;
+  Future<void> Function(Uint8List pdf, String name)? get share => widget.share;
+  String get facility => widget.facility;
+  Drafts? get drafts => widget.drafts;
+  int? get nowMinutes => widget.nowMinutes;
+  List<int> get facilityRecord => widget.facilityRecord;
+
+  @override
+  void initState() {
+    super.initState();
+    final at = widget.openedAt;
+    if (at != null && records.all.containsKey(_hex(patient))) {
+      records.record([
+        Fact(
+            id: ids.fact(),
+            patient: patient,
+            kind: FactKind.access,
+            stamp: ids.stamp(),
+            author: author,
+            payload: Access(
+                    who: author,
+                    minutes: _nowMinutes,
+                    device: ids.device,
+                    facility: at)
+                .encode(),
+            supersedes: null)
+      ]);
+    }
+  }
 
   int get _nowMinutes =>
       nowMinutes ?? DateTime.now().toUtc().millisecondsSinceEpoch ~/ 60000;

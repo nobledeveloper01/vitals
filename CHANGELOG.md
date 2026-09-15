@@ -7,6 +7,12 @@ is pre-release, so everything is under Unreleased until v1.0.
 
 ### Added
 
+- **Handing the record over.** A share grant — which kinds, to whom, until
+  when — as a fact, enforced where the payload is built; the payload cut
+  into checksummed frames and shown as an animated QR with the ring in the
+  brand gradient, stepped by hand under less motion. The access log the
+  patient sees. A pack checked against a bundled list with three outcomes
+  and never a fourth word.
 - **Five languages on the patient face.** English, Naijá, Yorùbá, Hausa and
   Igbo, each a complete table of the same keys held complete by a gate;
   every table but English marked a draft where it is chosen, until a
